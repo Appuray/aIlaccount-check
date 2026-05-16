@@ -159,11 +159,28 @@ export const AddAccountModal: React.FC<AddAccountModalProps> = ({ isOpen, onClos
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!name.trim() || selectedServices.length === 0) return;
+    if (selectedServices.length === 0) return;
+    
+    // Auto-generate name if empty
+    let finalName = name.trim();
+    if (!finalName) {
+      finalName = selectedServices.map(s => serviceOptions.find(opt => opt.value === s)?.label || s).join(' & ');
+    }
+
     // Create one account per selected provider
     for (let i = 0; i < selectedServices.length; i++) {
       const svc = selectedServices[i];
-      const accountName = selectedServices.length > 1 ? `${name} (${svc})` : name;
+      let accountName = finalName;
+      
+      // If user typed a custom name but selected 2 providers, append the provider name
+      // If they didn't type a name, finalName is already "Gemini & Claude" which is weird for individual accounts.
+      // Better: if name was empty and 2 providers selected, just use the provider name.
+      if (!name.trim() && selectedServices.length > 1) {
+        accountName = serviceOptions.find(opt => opt.value === svc)?.label || svc;
+      } else if (selectedServices.length > 1) {
+        accountName = `${finalName} (${svc})`;
+      }
+
       const cycleDays = (i === 1 && !sameReset) ? computedCycleDays2 : computedCycleDays;
       await addAccount(accountName, svc, tier, priority, selectedTags, cycleDays, notes, maxDailyUses, email);
     }
@@ -695,7 +712,7 @@ export const AddAccountModal: React.FC<AddAccountModalProps> = ({ isOpen, onClos
                   <motion.button
                     whileTap={{ scale: 0.97 }}
                     type="submit"
-                    disabled={!name.trim()}
+                    disabled={selectedServices.length === 0}
                     className="w-full flex items-center justify-center gap-2 py-4 text-[13px] font-black uppercase tracking-widest rounded-xl shadow-md bg-brand-accent text-brand-accent-fg hover:bg-brand-text transition-all hover:shadow-lg hover:-translate-y-0.5 disabled:opacity-50 disabled:bg-brand-surface-elevated disabled:text-brand-text-muted disabled:transform-none disabled:shadow-none"
                   >
                     Add Account
