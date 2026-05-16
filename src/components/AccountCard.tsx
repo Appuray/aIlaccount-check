@@ -4,6 +4,7 @@ import { MoreHorizontal, RefreshCw, Trash2, Mail } from 'lucide-react';
 import { Account } from '../types';
 import { useStore } from '../store';
 import { TimerDisplay } from './TimerDisplay';
+import { LiveCountdown } from './LiveCountdown';
 
 interface AccountCardProps {
   accounts: Account[]; // Group of accounts sharing the same name
@@ -219,10 +220,10 @@ export const AccountCard: React.FC<AccountCardProps> = ({ accounts }) => {
                   <span className={`text-[9px] font-black uppercase tracking-widest ${isExhausted ? 'text-brand-accent' : 'text-brand-text-muted'}`}>
                     {relativeStr}
                   </span>
-                  <div className="flex items-center gap-1.5 text-brand-text-muted">
+                  <div className="flex items-center gap-1.5 text-brand-text-muted bg-brand-surface-elevated px-2.5 py-1 rounded-md border border-brand-border/50">
                     <RefreshCw size={10} strokeWidth={2.5} />
-                    <span className="text-[9px] font-mono font-bold">
-                      {refreshDate ? refreshDate.toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' }) : 'Never'}
+                    <span className="text-[10px] font-mono font-bold text-brand-text">
+                      <LiveCountdown targetDate={refreshDate ? refreshDate.getTime() : null} />
                     </span>
                   </div>
                 </div>
