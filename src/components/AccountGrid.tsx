@@ -32,8 +32,11 @@ export const AccountGrid: React.FC = () => {
 
   const groupedAccounts = Object.values(
     filteredAccounts.reduce((acc, account) => {
-      if (!acc[account.name]) acc[account.name] = [];
-      acc[account.name].push(account);
+      // Strip trailing " (provider)" suffix to group legacy accounts that still have it
+      const baseName = account.name.replace(/\s*\([^)]+\)$/, '').trim();
+      if (!acc[baseName]) acc[baseName] = [];
+      // Pass the cleaned name so the UI header doesn't show the suffix
+      acc[baseName].push({ ...account, name: baseName });
       return acc;
     }, {} as Record<string, Account[]>)
   );
