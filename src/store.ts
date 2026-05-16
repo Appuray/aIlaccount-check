@@ -97,10 +97,14 @@ export const useStore = create<AppState>()(
 
       markExhausted: async (id) => {
         const now = Date.now();
-        const resetAt = now + 24 * 60 * 60 * 1000;
         const account = get().accounts.find(a => a.id === id);
         
         if (!account) return;
+
+        // Calculate actual reset time based on refresh cycle
+        const refreshTime = account.lastRefreshedAt + (account.refreshCycleDays || 1) * 24 * 60 * 60 * 1000;
+        // If the refresh time has already passed, we just give it the full cycle from now
+        const resetAt = refreshTime > now ? refreshTime : now + (account.refreshCycleDays || 1) * 24 * 60 * 60 * 1000;
 
         const updates = { 
           exhaustedAt: now, 
@@ -132,12 +136,12 @@ export const useStore = create<AppState>()(
         if (linkedAccounts.length === 0) return;
 
         const now = Date.now();
-        const resetAt = now + 24 * 60 * 60 * 1000;
-        
         const newEvents = linkedAccounts.map(account => ({ timestamp: now, accountId: account.id, service: account.service }));
         
         const updatedAccounts = accounts.map(acc => {
           if (acc.email && acc.email.toLowerCase() === email.toLowerCase()) {
+            const refreshTime = acc.lastRefreshedAt + (acc.refreshCycleDays || 1) * 24 * 60 * 60 * 1000;
+            const resetAt = refreshTime > now ? refreshTime : now + (acc.refreshCycleDays || 1) * 24 * 60 * 60 * 1000;
             return {
               ...acc,
               exhaustedAt: now,
