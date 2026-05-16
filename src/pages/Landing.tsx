@@ -84,7 +84,7 @@ export const Landing: React.FC = () => {
             >
               All AI
               {/* Inline Image Typography Replacement */}
-              <div className="hidden md:flex h-[70px] w-[140px] bg-white border border-[#E7E5E4] rounded-full items-center justify-center overflow-hidden relative shadow-sm">
+              <div className="hidden md:flex h-[70px] w-[140px] bg-[#E7E5E4] border border-[#D6D3D1] rounded-full items-center justify-center overflow-hidden relative shadow-sm">
                 <motion.div 
                   animate={{ rotate: 360 }}
                   transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
@@ -136,7 +136,7 @@ export const Landing: React.FC = () => {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ ...SPRING, delay: 0.4 }}
-            className="bg-white border border-[#E7E5E4] p-8 shadow-sm"
+            className="bg-[#E7E5E4] border border-[#D6D3D1] p-8 shadow-sm rounded-xl"
           >
             <p className="font-mono text-[#78716C] text-[10px] uppercase tracking-widest mb-6 border-b border-[#E7E5E4] pb-4">Features</p>
             <div className="space-y-4">

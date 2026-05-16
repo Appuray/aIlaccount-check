@@ -54,7 +54,7 @@ export const Signup: React.FC = () => {
         transition={SPRING}
         className="w-full max-w-md"
       >
-        <div className="bg-white p-12 shadow-sm border border-[#E7E5E4]">
+        <div className="bg-[#E7E5E4] border border-[#D6D3D1] p-12 shadow-sm rounded-2xl">
           <div className="mb-10">
             <h2 className="text-3xl font-black text-[#1C1917] mb-2 tracking-tighter uppercase">Create Account</h2>
             <p className="text-[11px] text-[#78716C] font-bold uppercase tracking-widest">Sign up to manage AI quotas.</p>
@@ -77,7 +77,7 @@ export const Signup: React.FC = () => {
                 type="email" 
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full bg-white border border-[#E7E5E4] focus:border-[#C2410C] focus:ring-0 px-4 py-4 text-[13px] font-medium transition-colors outline-none" 
+                className="w-full bg-[#E7E5E4] border border-[#D6D3D1] focus:border-[#C2410C] focus:ring-0 px-4 py-4 text-[13px] font-medium transition-colors outline-none rounded-xl" 
                 placeholder="operator@quotacheck.io"
                 required 
               />
@@ -88,7 +88,7 @@ export const Signup: React.FC = () => {
                 type="password" 
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full bg-white border border-[#E7E5E4] focus:border-[#C2410C] focus:ring-0 px-4 py-4 text-[13px] font-medium transition-colors outline-none" 
+                className="w-full bg-[#E7E5E4] border border-[#D6D3D1] focus:border-[#C2410C] focus:ring-0 px-4 py-4 text-[13px] font-medium transition-colors outline-none rounded-xl" 
                 placeholder="••••••••"
                 required 
               />
@@ -98,7 +98,7 @@ export const Signup: React.FC = () => {
               transition={SPRING}
               type="submit" 
               disabled={loading}
-              className="w-full py-5 bg-[#1C1917] text-[#F5F5F4] font-black text-[11px] uppercase tracking-[0.2em] hover:bg-[#C2410C] transition-colors duration-300 disabled:opacity-50 mt-6"
+              className="w-full py-5 bg-[#1C1917] text-[#F5F5F4] font-black text-[11px] uppercase tracking-[0.2em] hover:bg-[#C2410C] transition-colors duration-300 disabled:opacity-50 mt-6 rounded-xl"
             >
               {loading ? 'Creating...' : 'Sign up'}
             </motion.button>
