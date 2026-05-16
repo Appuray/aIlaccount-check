@@ -37,9 +37,6 @@
 }
 
 /* Dark mode is disabled to enforce the Warm Ivory aesthetic globally */
-.dark {
-  /* All variables inherit from root */
-}
 
 body {
   background: var(--color-brand-bg);
