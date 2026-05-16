@@ -1,54 +1,28 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { MoreHorizontal, RefreshCw, Trash2, Copy, Mail, StickyNote, Zap, Hash } from 'lucide-react';
+import { MoreHorizontal, RefreshCw, Trash2, Mail } from 'lucide-react';
 import { Account } from '../types';
 import { useStore } from '../store';
 import { TimerDisplay } from './TimerDisplay';
 
 interface AccountCardProps {
-  account: Account;
+  accounts: Account[]; // Group of accounts sharing the same name
 }
 
-export const AccountCard: React.FC<AccountCardProps> = ({ account }) => {
+export const AccountCard: React.FC<AccountCardProps> = ({ accounts }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const markExhausted = useStore(state => state.markExhausted);
   const resetAccount = useStore(state => state.resetAccount);
   const markRefreshed = useStore(state => state.markRefreshed);
   const deleteAccount = useStore(state => state.deleteAccount);
-  const duplicateAccount = useStore(state => state.duplicateAccount);
   const selectedAccounts = useStore(state => state.selectedAccounts);
   const toggleSelectAccount = useStore(state => state.toggleSelectAccount);
-  const showToast = useStore(state => state.showToast);
 
-  const isSelected = selectedAccounts.includes(account.id);
-  const isExhausted = account.resetAt !== null;
-
-  const getRefreshInfo = () => {
-    if (!account.lastRefreshedAt) return { daysLeft: 0, refreshDate: null, relativeStr: '—' };
-    const refreshTime = account.lastRefreshedAt + (account.refreshCycleDays || 1) * 24 * 60 * 60 * 1000;
-    const diff = refreshTime - Date.now();
-    const daysLeft = Math.max(0, Math.ceil(diff / (24 * 60 * 60 * 1000)));
-    const refreshDate = new Date(refreshTime);
-    
-    // Build relative string
-    let relativeStr = '—';
-    if (diff <= 0) {
-      relativeStr = 'Now';
-    } else if (diff < 60 * 60 * 1000) {
-      relativeStr = `${Math.ceil(diff / (60 * 1000))}m left`;
-    } else if (diff < 24 * 60 * 60 * 1000) {
-      relativeStr = `${Math.ceil(diff / (60 * 60 * 1000))}h left`;
-    } else {
-      relativeStr = `${daysLeft}d left`;
-    }
-    
-    return { daysLeft, refreshDate, relativeStr };
-  };
-
-  const { refreshDate, relativeStr } = getRefreshInfo();
-  const usageCount = account.usageCount || 0;
-  const maxDailyUses = account.maxDailyUses || 0;
+  // We use the first account for shared metadata (name, color, tier, email, tags)
+  const baseAccount = accounts[0];
+  const isSelected = accounts.some(acc => selectedAccounts.includes(acc.id));
+  const isAllExhausted = accounts.every(acc => acc.resetAt !== null);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -64,62 +38,83 @@ export const AccountCard: React.FC<AccountCardProps> = ({ account }) => {
 
   const handleCardClick = (e: React.MouseEvent) => {
     if ((e.target as HTMLElement).closest('button')) return;
-    toggleSelectAccount(account.id);
+    // Select all accounts in this group
+    accounts.forEach(acc => {
+      if (!selectedAccounts.includes(acc.id)) toggleSelectAccount(acc.id);
+    });
+    // If all were selected, deselect all
+    if (accounts.every(acc => selectedAccounts.includes(acc.id))) {
+       accounts.forEach(acc => toggleSelectAccount(acc.id));
+    }
   };
 
-  const healthColor = account.health > 80 ? '#30A46C' : account.health > 50 ? '#E79D13' : '#E5484D';
+  const getRefreshInfo = (account: Account) => {
+    if (!account.lastRefreshedAt) return { daysLeft: 0, refreshDate: null, relativeStr: '—' };
+    const refreshTime = account.lastRefreshedAt + (account.refreshCycleDays || 1) * 24 * 60 * 60 * 1000;
+    const diff = refreshTime - Date.now();
+    const daysLeft = Math.max(0, Math.ceil(diff / (24 * 60 * 60 * 1000)));
+    const refreshDate = new Date(refreshTime);
+    
+    let relativeStr = '—';
+    if (diff <= 0) relativeStr = 'Now';
+    else if (diff < 60 * 60 * 1000) relativeStr = `${Math.ceil(diff / (60 * 1000))}m left`;
+    else if (diff < 24 * 60 * 60 * 1000) relativeStr = `${Math.ceil(diff / (60 * 60 * 1000))}h left`;
+    else relativeStr = `${daysLeft}d left`;
+    
+    return { daysLeft, refreshDate, relativeStr };
+  };
 
   return (
     <motion.div
       layout
-      id={`account-${account.id}`}
+      id={`account-group-${baseAccount.name}`}
       whileHover={{ y: -2 }}
-      whileTap={{ scale: 0.99 }}
       transition={{ type: "spring", stiffness: 300, damping: 25 }}
       onClick={handleCardClick}
       className={`relative group cursor-pointer transition-all border bg-brand-surface rounded-xl ${
-        isExhausted 
+        isAllExhausted 
           ? 'border-brand-accent/40' 
           : 'border-brand-border hover:border-brand-text/30'
       } ${isSelected ? 'ring-2 ring-brand-accent' : ''}`}
     >
       <div className={`relative overflow-hidden p-5 h-full transition-colors ${
-        isExhausted ? 'bg-brand-accent/5' : ''
+        isAllExhausted ? 'bg-brand-accent/5' : ''
       }`}>
 
-        <div className="flex justify-between items-start mb-4 relative z-10">
+        {/* SHARED HEADER */}
+        <div className="flex justify-between items-start mb-6 relative z-10">
           <div className="flex items-center gap-4">
             <div 
-              className="w-9 h-9 flex items-center justify-center text-brand-accent-fg font-black text-[13px] rounded-lg"
-              style={{ backgroundColor: account.color }}
+              className="w-9 h-9 flex items-center justify-center text-brand-accent-fg font-black text-[13px] rounded-lg shrink-0"
+              style={{ backgroundColor: baseAccount.color }}
             >
-              {account.name.charAt(0).toUpperCase()}
+              {baseAccount.name.charAt(0).toUpperCase()}
             </div>
-            <div>
-              <div className="flex items-center gap-3">
-                <h3 className="text-[16px] font-black text-brand-text truncate max-w-[140px] tracking-tight">{account.name}</h3>
-                <span className={`text-[9px] px-2 py-0.5 font-black uppercase tracking-widest rounded-md ${
-                  account.tier === 'pro' ? 'bg-brand-text text-brand-surface' : 'border border-brand-border text-brand-text-muted'
+            <div className="flex flex-col">
+              <div className="flex items-center gap-2">
+                <h3 className="text-[16px] font-black text-brand-text truncate max-w-[120px] tracking-tight leading-none">{baseAccount.name}</h3>
+                <span className={`text-[9px] px-2 py-0.5 font-black uppercase tracking-widest rounded-md leading-none ${
+                  baseAccount.tier === 'pro' ? 'bg-brand-text text-brand-surface' : 'border border-brand-border text-brand-text-muted'
                 }`}>
-                  {account.tier}
+                  {baseAccount.tier}
                 </span>
               </div>
-              <div className="flex items-center gap-2 mt-1">
-                <p className="text-[11px] text-brand-text-muted font-bold uppercase tracking-widest">{account.service}</p>
-                {account.email && (
-                  <span className="text-[9px] text-brand-text-muted font-medium truncate max-w-[100px] flex items-center gap-1">
-                    <Mail size={8} /> {account.email}
+              {baseAccount.email && (
+                <div className="flex items-center gap-1 mt-1.5">
+                  <Mail size={8} className="text-brand-text-muted" />
+                  <span className="text-[9px] text-brand-text-muted font-medium truncate max-w-[100px] leading-none">
+                    {baseAccount.email}
                   </span>
-                )}
-              </div>
+                </div>
+              )}
             </div>
           </div>
 
-          <div className="relative z-20" ref={menuRef} onClick={e => e.stopPropagation()}>
+          <div className="relative z-20 shrink-0" ref={menuRef} onClick={e => e.stopPropagation()}>
             <motion.button 
               whileTap={{ scale: 0.9 }}
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="p-2 text-brand-text-muted hover:text-brand-text hover:bg-brand-surface-elevated transition-colors rounded-lg"
+              className="p-1.5 text-brand-text-muted hover:text-brand-text hover:bg-brand-surface-elevated transition-colors rounded-lg"
             >
               <MoreHorizontal size={20} strokeWidth={2.5} />
             </motion.button>
@@ -137,7 +132,7 @@ export const AccountCard: React.FC<AccountCardProps> = ({ account }) => {
                   <motion.button
                     whileHover={{ x: 4, backgroundColor: "var(--color-brand-surface-elevated)" }}
                     whileTap={{ scale: 0.98 }}
-                    onClick={() => { markRefreshed(account.id); setIsMenuOpen(false); }}
+                    onClick={() => { accounts.forEach(a => markRefreshed(a.id)); setIsMenuOpen(false); }}
                     className="w-full px-4 py-2.5 text-left text-[10px] font-black tracking-widest text-brand-text-soft flex items-center gap-3 transition-colors uppercase"
                   >
                     <RefreshCw size={14} className="text-brand-text-muted" strokeWidth={2.5} /> Reset Quota
@@ -145,41 +140,10 @@ export const AccountCard: React.FC<AccountCardProps> = ({ account }) => {
                   <motion.button
                     whileHover={{ x: 4, backgroundColor: "var(--color-brand-surface-elevated)" }}
                     whileTap={{ scale: 0.98 }}
-                    onClick={() => { duplicateAccount(account.id); setIsMenuOpen(false); }}
-                    className="w-full px-4 py-2.5 text-left text-[10px] font-black tracking-widest text-brand-text-soft flex items-center gap-3 transition-colors uppercase"
+                    onClick={() => { accounts.forEach(a => deleteAccount(a.id)); setIsMenuOpen(false); }}
+                    className="w-full px-4 py-2.5 text-left text-[10px] font-black tracking-widest text-red-500 hover:text-red-400 flex items-center gap-3 transition-colors uppercase border-t border-brand-border mt-1 pt-2"
                   >
-                    <Copy size={14} className="text-brand-text-muted" strokeWidth={2.5} /> Duplicate Account
-                  </motion.button>
-                  <motion.button
-                    whileHover={{ x: 4, backgroundColor: "var(--color-brand-surface-elevated)" }}
-                    whileTap={{ scale: 0.98 }}
-                    onClick={() => { 
-                      navigator.clipboard.writeText(account.id);
-                      showToast(`Account ID copied: ${account.id.substring(0, 12)}...`);
-                      setIsMenuOpen(false); 
-                    }}
-                    className="w-full px-4 py-2.5 text-left text-[10px] font-black tracking-widest text-brand-text-soft flex items-center gap-3 transition-colors uppercase"
-                  >
-                    <Hash size={14} className="text-brand-text-muted" strokeWidth={2.5} /> Copy Account ID
-                  </motion.button>
-                  <div className="h-px bg-brand-border mx-2" />
-                  {!isExhausted && account.email && (
-                    <motion.button
-                      whileHover={{ x: 4, backgroundColor: "var(--color-brand-surface-elevated)" }}
-                      whileTap={{ scale: 0.98 }}
-                      onClick={() => { useStore.getState().markExhaustedShared(account.email); setIsMenuOpen(false); }}
-                      className="w-full px-4 py-2.5 text-left text-[10px] font-black tracking-widest text-brand-text-soft flex items-center gap-3 transition-colors uppercase"
-                    >
-                      <Zap size={14} className="text-brand-accent" strokeWidth={2.5} /> Exhaust Linked Accounts
-                    </motion.button>
-                  )}
-                  <motion.button
-                    whileHover={{ x: 4, backgroundColor: "var(--color-brand-surface-elevated)" }}
-                    whileTap={{ scale: 0.98 }}
-                    onClick={() => { deleteAccount(account.id); setIsMenuOpen(false); }}
-                    className="w-full px-4 py-2.5 text-left text-[10px] font-black tracking-widest text-brand-accent flex items-center gap-3 transition-colors uppercase"
-                  >
-                    <Trash2 size={14} strokeWidth={2.5} /> Delete Account
+                    <Trash2 size={14} strokeWidth={2.5} /> Delete Group
                   </motion.button>
                 </motion.div>
               )}
@@ -187,110 +151,110 @@ export const AccountCard: React.FC<AccountCardProps> = ({ account }) => {
           </div>
         </div>
 
-        <div className={`h-20 flex flex-col items-center justify-center mb-4 transition-colors border rounded-lg ${
-          isExhausted ? 'bg-brand-accent/5 border-brand-accent/20' : 'bg-brand-surface-elevated border-brand-border'
-        }`}>
-          {isExhausted ? (
-            <div className="text-center">
-              <TimerDisplay resetAt={account.resetAt!} id={account.id} />
-              <p className="text-[10px] text-brand-accent font-black uppercase tracking-widest mt-2">Account Exhausted</p>
-            </div>
-          ) : (
-            <div className="flex flex-col items-center gap-2">
-              <div className="flex items-center gap-2">
-                <div className="w-2 h-2 rounded-full bg-brand-success" />
-                <span className="text-[11px] font-black text-brand-success uppercase tracking-widest">Active</span>
-              </div>
-              <p className="text-[10px] text-brand-text-muted font-bold uppercase tracking-widest">Ready to use</p>
-            </div>
-          )}
-        </div>
-
-        {/* Stats Row */}
-        <div className="space-y-3 mb-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3 flex-1">
-              <div className="flex-1 h-1.5 bg-brand-border overflow-hidden rounded-full">
-                <motion.div 
-                  initial={{ width: 0 }}
-                  animate={{ width: `${account.health}%` }}
-                  transition={{ duration: 1, type: "spring" }}
-                  className="h-full rounded-full"
-                  style={{ backgroundColor: healthColor }}
-                />
-              </div>
-              <span className="text-[12px] font-mono font-black text-brand-text w-12 tabular-nums text-right">{account.health}%</span>
-            </div>
-            <div className="flex items-center gap-1.5 ml-4 px-2.5 py-1 border border-brand-border rounded-md">
-              <span className="text-[10px] font-mono font-black text-brand-accent tabular-nums">{relativeStr}</span>
-            </div>
-          </div>
-
-          {/* Exact Refresh Date */}
-          {refreshDate && (
-            <div className="flex items-center gap-2 px-3 py-2 bg-brand-surface-elevated border border-brand-border rounded-lg">
-              <RefreshCw size={10} className="text-brand-text-muted shrink-0" />
-              <span className="text-[10px] font-bold text-brand-text-muted">Refreshes:</span>
-              <span className="text-[10px] font-mono font-black text-brand-text">
-                {refreshDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}, {refreshDate.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })}
-              </span>
-            </div>
-          )}
-
-          {/* Usage & Limit Indicator */}
-          <div className="flex items-center gap-2 flex-wrap">
-            <div className="flex items-center gap-1.5 px-2 py-1 bg-brand-surface-elevated border border-brand-border rounded-md">
-              <Zap size={10} className="text-brand-accent" />
-              <span className="text-[10px] font-mono font-black text-brand-text tabular-nums">{usageCount}</span>
-              {maxDailyUses > 0 && (
-                <span className="text-[10px] font-mono font-bold text-brand-text-muted tabular-nums">/{maxDailyUses}</span>
-              )}
-            </div>
-            {account.priority > 3 && (
-              <span className="px-2 py-1 bg-brand-text text-brand-surface text-[9px] font-bold uppercase tracking-widest rounded-md">
-                P{account.priority}
-              </span>
-            )}
-          </div>
-
-          <div className="flex flex-wrap gap-2">
-            {account.tags.map(tag => (
+        {/* SHARED TAGS */}
+        {baseAccount.tags && baseAccount.tags.length > 0 && (
+          <div className="flex flex-wrap gap-1.5 mb-6 relative z-10">
+            {baseAccount.tags.map(tag => (
               <span 
                 key={tag} 
-                className="px-2 py-0.5 border border-brand-border text-[9px] text-brand-text-muted font-bold uppercase tracking-widest rounded-md"
+                className="px-2 py-0.5 border border-brand-border bg-brand-surface-elevated text-[9px] text-brand-text-muted font-bold uppercase tracking-widest rounded-md"
               >
                 {tag}
               </span>
             ))}
           </div>
+        )}
 
-          {/* Notes Preview */}
-          {account.notes && (
-            <div className="flex items-start gap-2 mt-1 px-3 py-2 bg-brand-surface-elevated border border-brand-border rounded-lg">
-              <StickyNote size={10} className="text-brand-text-muted shrink-0 mt-0.5" />
-              <p className="text-[10px] text-brand-text-muted font-medium leading-relaxed line-clamp-2">{account.notes}</p>
-            </div>
-          )}
-        </div>
+        {/* PROVIDER LIST */}
+        <div className="space-y-4 relative z-10">
+          {accounts.map((account, index) => {
+            const isExhausted = account.resetAt !== null;
+            const healthColor = account.health > 80 ? '#30A46C' : account.health > 50 ? '#E79D13' : '#E5484D';
+            const { refreshDate, relativeStr } = getRefreshInfo(account);
 
-        <div className="flex gap-0" onClick={e => e.stopPropagation()}>
-          {!isExhausted ? (
-            <motion.button
-              whileTap={{ scale: 0.97 }}
-              onClick={() => markExhausted(account.id)}
-              className="flex-1 py-3 text-[11px] font-black uppercase tracking-widest border border-brand-border bg-brand-surface text-brand-text hover:bg-brand-text hover:text-brand-surface hover:border-brand-text transition-colors rounded-lg"
-            >
-              Mark as Exhausted
-            </motion.button>
-          ) : (
-            <motion.button
-              whileTap={{ scale: 0.97 }}
-              onClick={() => resetAccount(account.id)}
-              className="flex-1 py-3 text-[11px] font-black uppercase tracking-widest bg-brand-text text-brand-surface hover:bg-brand-accent transition-colors rounded-lg"
-            >
-              Reset Account
-            </motion.button>
-          )}
+            return (
+              <div key={account.id} className={`pt-4 ${index > 0 ? "border-t border-brand-border/50" : "border-t border-brand-border"}`}>
+                
+                {/* Service Badge & Status */}
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center gap-2">
+                    <span className="text-[10px] font-black text-brand-text uppercase tracking-widest">
+                      {account.service}
+                    </span>
+                  </div>
+                  
+                  {isExhausted ? (
+                    <div className="flex items-center gap-1.5">
+                      <div className="w-1.5 h-1.5 rounded-full bg-brand-accent" />
+                      <span className="text-[9px] font-black tracking-widest text-brand-accent uppercase">Cooldown</span>
+                    </div>
+                  ) : (
+                    <div className="flex items-center gap-1.5">
+                      <div className="w-1.5 h-1.5 rounded-full bg-brand-success animate-pulse" />
+                      <span className="text-[9px] font-black tracking-widest text-brand-success uppercase">Active</span>
+                    </div>
+                  )}
+                </div>
+
+                {/* Progress Bar Area */}
+                <div className="mb-3">
+                  <div className="flex justify-between items-center mb-1.5">
+                    <div className="flex items-center gap-2 w-full mr-4">
+                      <div className="flex-1 h-1 bg-brand-border rounded-full overflow-hidden">
+                        <motion.div 
+                          className="h-full rounded-full"
+                          style={{ backgroundColor: healthColor }}
+                          initial={{ width: 0 }}
+                          animate={{ width: `${isExhausted ? 0 : account.health}%` }}
+                          transition={{ duration: 1, ease: "easeOut" }}
+                        />
+                      </div>
+                      <span className="text-[9px] font-black text-brand-text font-mono w-6 text-right">{isExhausted ? 0 : account.health}%</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Info Strip */}
+                <div className="flex items-center justify-between mb-3">
+                  <span className={`text-[9px] font-black uppercase tracking-widest ${isExhausted ? 'text-brand-accent' : 'text-brand-text-muted'}`}>
+                    {relativeStr}
+                  </span>
+                  <div className="flex items-center gap-1.5 text-brand-text-muted">
+                    <RefreshCw size={10} strokeWidth={2.5} />
+                    <span className="text-[9px] font-mono font-bold">
+                      {refreshDate ? refreshDate.toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' }) : 'Never'}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Action Button */}
+                {isExhausted ? (
+                  <div className="flex items-center gap-2">
+                    <div className="flex-1">
+                      <TimerDisplay resetAt={account.resetAt!} id={account.id} />
+                    </div>
+                    <motion.button
+                      whileTap={{ scale: 0.95 }}
+                      onClick={(e) => { e.stopPropagation(); resetAccount(account.id); }}
+                      className="px-4 py-2 bg-brand-surface-elevated border border-brand-accent/50 hover:bg-brand-accent/10 transition-colors rounded-lg text-brand-text font-black text-[9px] tracking-widest uppercase shrink-0"
+                    >
+                      Reset
+                    </motion.button>
+                  </div>
+                ) : (
+                  <motion.button
+                    whileHover={{ backgroundColor: "var(--color-brand-surface-elevated)" }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={(e) => { e.stopPropagation(); markExhausted(account.id); }}
+                    className="w-full py-2 bg-brand-bg border border-brand-border transition-colors rounded-lg text-brand-text font-black text-[9px] tracking-widest uppercase"
+                  >
+                    Mark Exhausted
+                  </motion.button>
+                )}
+
+              </div>
+            );
+          })}
         </div>
       </div>
     </motion.div>

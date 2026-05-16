@@ -1,9 +1,9 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Search, LayoutGrid } from 'lucide-react';
+import { LayoutGrid } from 'lucide-react';
 import { useStore } from '../store';
 import { AccountCard } from './AccountCard';
-import { NodeTag } from '../types';
+import { NodeTag, Account } from '../types';
 
 export const AccountGrid: React.FC = () => {
   const accounts = useStore((state) => state.accounts);
@@ -29,6 +29,14 @@ export const AccountGrid: React.FC = () => {
                          
     return matchesSearch && matchesTag && matchesService && matchesStatus;
   });
+
+  const groupedAccounts = Object.values(
+    filteredAccounts.reduce((acc, account) => {
+      if (!acc[account.name]) acc[account.name] = [];
+      acc[account.name].push(account);
+      return acc;
+    }, {} as Record<string, Account[]>)
+  );
 
   return (
     <div className="space-y-10">
@@ -94,28 +102,34 @@ export const AccountGrid: React.FC = () => {
         </motion.div>
       ) : filteredAccounts.length === 0 ? (
         <motion.div 
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
           transition={{ type: "spring", stiffness: 300, damping: 25 }}
-          className="py-24 text-center border border-brand-border bg-brand-surface rounded-xl"
+          className="flex flex-col items-center justify-center py-32 text-center border border-brand-border rounded-xl bg-brand-surface"
         >
-          <div className="w-16 h-16 bg-brand-surface-elevated border border-brand-border flex items-center justify-center mx-auto mb-8 rounded-xl">
-            <Search size={32} strokeWidth={1.5} className="text-brand-text-muted" />
+          <div className="w-16 h-16 bg-brand-surface-elevated rounded-2xl flex items-center justify-center mb-6 shadow-sm border border-brand-border-strong">
+            <LayoutGrid size={24} className="text-brand-text-muted" strokeWidth={2} />
           </div>
-          <h3 className="text-2xl font-black text-brand-text mb-2 tracking-tighter">No Matching Nodes</h3>
-          <p className="text-[13px] text-brand-text-soft font-medium mb-10 max-w-[360px] mx-auto leading-relaxed">Refine your capability tags or cluster status filters to find specific nodes.</p>
-          <motion.button
-            whileTap={{ scale: 0.97 }}
-            onClick={() => {
-              setSearchQuery('');
-              setSelectedTag('all');
-              setSelectedService('all');
-              setSelectedStatus('all');
-            }}
-            className="py-3 px-8 bg-brand-text text-brand-surface font-black text-[11px] uppercase tracking-widest hover:bg-brand-accent transition-colors rounded-lg"
-          >
-            Reset All Filters
-          </motion.button>
+          <h3 className="text-xl font-black text-brand-text mb-2 tracking-tight">Cluster Empty</h3>
+          <p className="text-[11px] text-brand-text-muted font-bold uppercase tracking-widest max-w-xs leading-relaxed">
+            {searchQuery || selectedTag !== 'all' || selectedStatus !== 'all' 
+              ? 'No nodes match your current telemetry filters.'
+              : 'Deploy your first node to begin managing distributed AI quotas.'}
+          </p>
+          {(searchQuery || selectedTag !== 'all' || selectedStatus !== 'all') && (
+            <motion.button
+              whileTap={{ scale: 0.95 }}
+              onClick={() => {
+                setSearchQuery('');
+                setSelectedTag('all');
+                setSelectedService('all');
+                setSelectedStatus('all');
+              }}
+              className="mt-8 py-3 px-8 bg-brand-text text-brand-surface font-black text-[11px] uppercase tracking-widest hover:bg-brand-accent transition-colors rounded-lg"
+            >
+              Reset All Filters
+            </motion.button>
+          )}
         </motion.div>
       ) : (
         <motion.div
@@ -128,9 +142,9 @@ export const AccountGrid: React.FC = () => {
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"
         >
           <AnimatePresence mode="popLayout">
-            {filteredAccounts.map((account) => (
+            {groupedAccounts.map((accountGroup) => (
               <motion.div 
-                key={account.id} 
+                key={accountGroup[0].name} 
                 variants={{
                   hidden: { opacity: 0, y: 15 },
                   show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 300, damping: 25 } }
@@ -139,7 +153,7 @@ export const AccountGrid: React.FC = () => {
                 transition={{ type: "spring", stiffness: 300, damping: 25 }}
                 exit={{ opacity: 0, y: -10, transition: { duration: 0.2 } }}
               >
-                <AccountCard account={account} />
+                <AccountCard accounts={accountGroup} />
               </motion.div>
             ))}
           </AnimatePresence>

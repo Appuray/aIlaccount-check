@@ -172,15 +172,9 @@ export const AddAccountModal: React.FC<AddAccountModalProps> = ({ isOpen, onClos
       const svc = selectedServices[i];
       let accountName = finalName;
       
-      // If user typed a custom name but selected 2 providers, append the provider name
-      // If they didn't type a name, finalName is already "Gemini & Claude" which is weird for individual accounts.
-      // Better: if name was empty and 2 providers selected, just use the provider name.
-      if (!name.trim() && selectedServices.length > 1) {
-        accountName = serviceOptions.find(opt => opt.value === svc)?.label || svc;
-      } else if (selectedServices.length > 1) {
-        accountName = `${finalName} (${svc})`;
-      }
-
+      // We no longer append the service name (e.g. '(gemini)') to the account name.
+      // They will share the exact same name so AccountGrid can group them visually into one card.
+      
       const cycleDays = (i === 1 && !sameReset) ? computedCycleDays2 : computedCycleDays;
       await addAccount(accountName, svc, tier, priority, selectedTags, cycleDays, notes, maxDailyUses, email);
     }
