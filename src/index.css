@@ -126,11 +126,20 @@ html.lenis {
   animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
+/* Force dark text on all inputs */
+input, textarea, select {
+  color: #1C1917 !important;
+  -webkit-text-fill-color: #1C1917 !important;
+}
+
 /* Chrome Autofill Hack to maintain custom backgrounds */
 input:-webkit-autofill,
 input:-webkit-autofill:hover, 
 input:-webkit-autofill:focus, 
-input:-webkit-autofill:active{
-    transition: background-color 5000s ease-in-out 0s;
-    -webkit-text-fill-color: var(--color-brand-text) !important;
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px #EAE7E0 inset !important;
+  -webkit-text-fill-color: #1C1917 !important;
+  color: #1C1917 !important;
+  caret-color: #1C1917 !important;
+  transition: background-color 5000s ease-in-out 0s;
 }
