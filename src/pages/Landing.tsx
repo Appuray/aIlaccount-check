@@ -29,25 +29,25 @@ export const Landing: React.FC = () => {
   }, []);
 
   return (
-    <div className="bg-[#EAE7E0] text-[#1C1917] h-[100dvh] w-full flex items-center justify-center font-sans selection:bg-[#C2410C] selection:text-[#EAE7E0] overflow-hidden relative">
+    <div className="bg-brand-bg text-brand-text h-[100dvh] w-full flex items-center justify-center font-sans selection:bg-brand-accent selection:text-brand-bg overflow-hidden relative">
       {/* Structural Grid Background - Muted Stone lines */}
       <div className="absolute inset-0 pointer-events-none z-0">
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(28,25,23,0.04)_1px,transparent_1px),linear-gradient(90deg,rgba(28,25,23,0.04)_1px,transparent_1px)] bg-[size:4rem_4rem]" />
-        <div className="absolute left-[10%] top-0 bottom-0 w-px bg-[#1C1917]/[0.08]" />
-        <div className="absolute right-[10%] top-0 bottom-0 w-px bg-[#1C1917]/[0.08]" />
+        <div className="absolute inset-0 bg-[linear-gradient(var(--color-brand-border)_1px,transparent_1px),linear-gradient(90deg,var(--color-brand-border)_1px,transparent_1px)] bg-[size:4rem_4rem]" />
+        <div className="absolute left-[10%] top-0 bottom-0 w-px bg-brand-border" />
+        <div className="absolute right-[10%] top-0 bottom-0 w-px bg-brand-border" />
       </div>
 
       {/* Navigation */}
-      <nav className="absolute top-0 left-0 right-0 z-50 px-[10%] py-8 flex justify-between items-center border-b border-[#1C1917]/[0.08] backdrop-blur-sm">
+      <nav className="absolute top-0 left-0 right-0 z-50 px-[10%] py-8 flex justify-between items-center border-b border-brand-border backdrop-blur-sm">
         <div className="flex items-center gap-3">
-          <div className="w-6 h-6 bg-[#1C1917] flex items-center justify-center">
-            <div className="w-2 h-2 bg-[#EAE7E0]" />
+          <div className="w-6 h-6 bg-brand-text flex items-center justify-center rounded-sm">
+            <div className="w-2 h-2 bg-brand-bg" />
           </div>
           <span className="font-black tracking-tighter text-lg">QUOTACHECK</span>
         </div>
         <Link 
           to="/login"
-          className="text-[11px] font-black tracking-widest uppercase hover:text-[#C2410C] transition-colors"
+          className="text-[11px] font-black tracking-widest uppercase hover:text-brand-accent transition-colors"
         >
           Login
         </Link>
@@ -64,11 +64,11 @@ export const Landing: React.FC = () => {
             transition={SPRING}
             className="flex items-center gap-3 mb-6"
           >
-            <div className="h-px w-8 bg-[#C2410C]" />
-            <span className="text-[10px] font-mono text-[#78716C] tracking-[0.2em] uppercase">Simple Account Manager</span>
+            <div className="h-px w-8 bg-brand-accent" />
+            <span className="text-[10px] font-mono text-brand-text-muted tracking-[0.2em] uppercase">Simple Account Manager</span>
           </motion.div>
 
-          <h1 className="text-5xl md:text-6xl lg:text-[85px] font-black leading-[0.9] tracking-tighter uppercase text-[#1C1917]">
+          <h1 className="text-5xl md:text-6xl lg:text-[85px] font-black leading-[0.9] tracking-tighter uppercase text-brand-text">
             <motion.div 
               initial={{ opacity: 0, y: 40 }} 
               animate={{ opacity: 1, y: 0 }} 
@@ -84,16 +84,16 @@ export const Landing: React.FC = () => {
             >
               All AI
               {/* Inline Image Typography Replacement */}
-              <div className="hidden md:flex h-[60px] w-[120px] bg-[#DFDBD2] border border-[#D0CBBF] rounded-full items-center justify-center overflow-hidden relative shadow-sm">
+              <div className="hidden md:flex h-[60px] w-[120px] bg-brand-surface border border-brand-border-strong rounded-full items-center justify-center overflow-hidden relative shadow-sm">
                 <motion.div 
                   animate={{ rotate: 360 }}
                   transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
                   className="absolute inset-0 opacity-10"
                 >
-                  <div className="w-full h-px bg-[#1C1917] absolute top-1/2 -translate-y-1/2" />
-                  <div className="h-full w-px bg-[#1C1917] absolute left-1/2 -translate-x-1/2" />
+                  <div className="w-full h-px bg-brand-text absolute top-1/2 -translate-y-1/2" />
+                  <div className="h-full w-px bg-brand-text absolute left-1/2 -translate-x-1/2" />
                 </motion.div>
-                <Zap size={24} className="text-[#C2410C] relative z-10" />
+                <Zap size={24} className="text-brand-accent relative z-10" />
               </div>
             </motion.div>
             <motion.div 
@@ -109,7 +109,7 @@ export const Landing: React.FC = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ ...SPRING, delay: 0.5 }}
-            className="mt-8 text-[#78716C] text-base md:text-lg max-w-xl leading-relaxed font-medium"
+            className="mt-8 text-brand-text-muted text-base md:text-lg max-w-xl leading-relaxed font-medium"
           >
             A simple dashboard to track usage limits, manage multiple AI tools, and easily switch between accounts when limits are reached.
           </motion.p>
@@ -122,7 +122,7 @@ export const Landing: React.FC = () => {
           >
             <Link 
               to="/signup"
-              className="inline-flex items-center gap-4 bg-[#1C1917] text-[#EAE7E0] px-8 py-5 font-black tracking-widest text-[11px] uppercase hover:bg-[#C2410C] transition-colors duration-300 group shadow-lg shadow-[#1C1917]/10"
+              className="inline-flex items-center gap-4 bg-brand-text text-brand-bg px-8 py-5 font-black tracking-widest text-[11px] uppercase hover:bg-brand-accent transition-colors duration-300 group shadow-lg"
             >
               Get Started
               <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
@@ -136,21 +136,21 @@ export const Landing: React.FC = () => {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ ...SPRING, delay: 0.4 }}
-            className="bg-[#DFDBD2] border border-[#D0CBBF] p-6 shadow-sm rounded-xl"
+            className="bg-brand-surface border border-brand-border-strong p-6 shadow-sm rounded-xl"
           >
-            <p className="font-mono text-[#78716C] text-[10px] uppercase tracking-widest mb-6 border-b border-[#D0CBBF] pb-4">Features</p>
+            <p className="font-mono text-brand-text-muted text-[10px] uppercase tracking-widest mb-6 border-b border-brand-border-strong pb-4">Features</p>
             <div className="space-y-4">
               {[
                 { label: 'Fast Access', val: 'Active', icon: Terminal },
                 { label: 'Cloud Sync', val: 'Enabled', icon: Database },
                 { label: 'Encryption', val: 'Secure', icon: Server }
               ].map((stat, i) => (
-                <div key={i} className="flex items-center justify-between py-3 border-b border-[#EAE7E0] last:border-0">
+                <div key={i} className="flex items-center justify-between py-3 border-b border-brand-border last:border-0">
                   <div className="flex items-center gap-3">
-                    <stat.icon size={14} className="text-[#C2410C]" />
-                    <span className="text-[11px] font-bold tracking-widest text-[#1C1917] uppercase">{stat.label}</span>
+                    <stat.icon size={14} className="text-brand-accent" />
+                    <span className="text-[11px] font-bold tracking-widest text-brand-text uppercase">{stat.label}</span>
                   </div>
-                  <span className="text-[11px] font-mono text-[#78716C]">{stat.val}</span>
+                  <span className="text-[11px] font-mono text-brand-text-muted">{stat.val}</span>
                 </div>
               ))}
             </div>
@@ -159,9 +159,9 @@ export const Landing: React.FC = () => {
       </main>
 
       {/* Footer Area */}
-      <footer className="absolute bottom-0 left-0 right-0 z-10 border-t border-[#1C1917]/[0.08] mx-[10%] py-6 flex justify-between items-center">
-        <p className="text-[10px] font-mono text-[#78716C] uppercase tracking-widest">© 2026 QuotaCheck</p>
-        <p className="text-[10px] font-mono text-[#C2410C] uppercase tracking-widest">v5.0.0</p>
+      <footer className="absolute bottom-0 left-0 right-0 z-10 border-t border-brand-border mx-[10%] py-6 flex justify-between items-center">
+        <p className="text-[10px] font-mono text-brand-text-muted uppercase tracking-widest">© 2026 QuotaCheck</p>
+        <p className="text-[10px] font-mono text-brand-accent uppercase tracking-widest">v5.0.0</p>
       </footer>
     </div>
   );
