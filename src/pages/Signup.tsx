@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import { motion } from 'motion/react';
 import { Link, useNavigate } from 'react-router-dom';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { auth, isFirebaseConfigured } from '../firebase';
 import { useStore } from '../store';
 
 const SPRING = { type: "spring", stiffness: 100, damping: 20 } as const;
 
 export const Signup: React.FC = () => {
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
@@ -30,7 +31,10 @@ export const Signup: React.FC = () => {
     }
 
     try {
-      await createUserWithEmailAndPassword(auth, email, password);
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      if (name.trim() && userCredential.user) {
+        await updateProfile(userCredential.user, { displayName: name.trim() });
+      }
       showToast('Account Created Successfully');
       navigate('/dashboard');
     } catch (err: any) {
@@ -75,13 +79,24 @@ export const Signup: React.FC = () => {
 
           <form onSubmit={handleSignup} className="space-y-6">
             <div className="space-y-2">
+              <label className="text-[9px] font-mono font-bold text-[#78716C] uppercase tracking-[0.2em]">Full Name</label>
+              <input 
+                type="text" 
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="w-full bg-[#EAE7E0] border border-[#D0CBBF] focus:border-[#C2410C] focus:ring-0 px-4 py-4 text-[13px] font-medium transition-colors outline-none rounded-xl placeholder:text-[#6A655F] text-[#1C1917]" 
+                placeholder="John Doe"
+                required 
+              />
+            </div>
+            <div className="space-y-2">
               <label className="text-[9px] font-mono font-bold text-[#78716C] uppercase tracking-[0.2em]">Email Address</label>
               <input 
                 type="email" 
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="w-full bg-[#EAE7E0] border border-[#D0CBBF] focus:border-[#C2410C] focus:ring-0 px-4 py-4 text-[13px] font-medium transition-colors outline-none rounded-xl placeholder:text-[#6A655F] text-[#1C1917]" 
-                placeholder="operator@quotacheck.io"
+                placeholder="you@example.com"
                 required 
               />
             </div>
