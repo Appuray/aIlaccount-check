@@ -125,3 +125,12 @@ html.lenis {
 .animate-fade-in {
   animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
+
+/* Chrome Autofill Hack to maintain custom backgrounds */
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active{
+    transition: background-color 5000s ease-in-out 0s;
+    -webkit-text-fill-color: var(--color-brand-text) !important;
+}

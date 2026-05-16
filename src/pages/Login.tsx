@@ -21,8 +21,11 @@ export const Login: React.FC = () => {
     setLoading(true);
 
     if (!isFirebaseConfigured) {
-      setError("System architecture error: Missing secure environment variables (VITE_FIREBASE_API_KEY). Access denied.");
-      setLoading(false);
+      console.warn("Firebase not configured. Bypassing login for local development.");
+      setTimeout(() => {
+        showToast('Dev Mode: Logged in successfully');
+        navigate('/dashboard');
+      }, 800);
       return;
     }
 
