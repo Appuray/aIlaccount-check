@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>QuotaCheck | AI Account Limit Manager</title>
+    <meta name="description" content="SaaS dashboard for monitoring AI service limits, ensuring uptime, and routing smart requests." />
+    <meta name="keywords" content="AI limits, API quota manager, load balancing, ChatGPT limits, Claude API, Gemini API gateway, node telemetry" />
+    <meta name="author" content="QuotaCheck" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://quotacheck.vercel.app/" />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://quotacheck.vercel.app/" />
+    <meta property="og:title" content="QuotaCheck | AI Account Manager" />
+    <meta property="og:description" content="SaaS dashboard for monitoring AI service limits, ensuring uptime, and routing smart requests." />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:title" content="QuotaCheck | AI Account Manager" />
+    <meta property="twitter:description" content="SaaS dashboard for monitoring AI service limits, ensuring uptime, and routing smart requests." />
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <script>
+      // Apply dark mode immediately to prevent flash
+      if (localStorage.getItem('aim_v5_ultimate')) {
+        try {
+          const state = JSON.parse(localStorage.getItem('aim_v5_ultimate'));
+          if (state.state && state.state.theme === 'dark') {
+            document.documentElement.classList.add('dark');
+          }
+        } catch (e) {}
+      } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.documentElement.classList.add('dark');
+      }
+    </script>
+  </head>
+  <body class="bg-gray-50 dark:bg-gray-900 transition-colors">
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

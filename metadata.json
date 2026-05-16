@@ -1,0 +1,6 @@
+{
+  "name": "QuotaCore",
+  "description": "A real-time dashboard to track 24-hour cooldown timers for multiple AI service accounts (Gemini, ChatGPT, Claude, etc.)",
+  "requestFramePermissions": [],
+  "majorCapabilities": []
+}
