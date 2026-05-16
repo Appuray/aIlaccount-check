@@ -77,7 +77,7 @@ export const Signup: React.FC = () => {
                 type="email" 
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full bg-[#EAE7E0] border border-[#D0CBBF] focus:border-[#C2410C] focus:ring-0 px-4 py-4 text-[13px] font-medium transition-colors outline-none rounded-xl placeholder:text-[#1C1917]/30 text-[#1C1917]" 
+                className="w-full bg-[#EAE7E0] border border-[#D0CBBF] focus:border-[#C2410C] focus:ring-0 px-4 py-4 text-[13px] font-medium transition-colors outline-none rounded-xl placeholder:text-[#6A655F] text-[#1C1917]" 
                 placeholder="operator@quotacheck.io"
                 required 
               />
@@ -88,7 +88,7 @@ export const Signup: React.FC = () => {
                 type="password" 
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full bg-[#EAE7E0] border border-[#D0CBBF] focus:border-[#C2410C] focus:ring-0 px-4 py-4 text-[13px] font-medium transition-colors outline-none rounded-xl placeholder:text-[#1C1917]/30 text-[#1C1917]" 
+                className="w-full bg-[#EAE7E0] border border-[#D0CBBF] focus:border-[#C2410C] focus:ring-0 px-4 py-4 text-[13px] font-medium transition-colors outline-none rounded-xl placeholder:text-[#6A655F] text-[#1C1917]" 
                 placeholder="••••••••"
                 required 
               />
