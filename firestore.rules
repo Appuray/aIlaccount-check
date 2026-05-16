@@ -1,0 +1,33 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // 1. Accounts Collection
+    // Note: Document ID random hota hai, isliye hume document ke andar ka 'userId' field check karna padega.
+    match /accounts/{accountId} {
+      // Read: Koi bhi user sirf apne documents dekh sakta hai jisme userId uska ho
+      allow read: if request.auth != null && resource.data.userId == request.auth.uid;
+      
+      // Create: Naya account banate time, ensure karna ki wo khud ka userId hi add kar raha hai
+      allow create: if request.auth != null && request.resource.data.userId == request.auth.uid;
+      
+      // Update & Delete: Sirf tabhi allow karo jab existing data ka userId logged-in user ka ho
+      allow update, delete: if request.auth != null && resource.data.userId == request.auth.uid;
+    }
+    
+    // 2. Usage History Collection
+    // Agar usage history database me save ho rahi hai:
+    match /usage_history/{historyId} {
+      allow read: if request.auth != null && resource.data.userId == request.auth.uid;
+      allow create: if request.auth != null && request.resource.data.userId == request.auth.uid;
+      allow update, delete: if request.auth != null && resource.data.userId == request.auth.uid;
+    }
+    
+    // 3. System Configuration ya Public Data (Read-only)
+    match /public/{document=**} {
+      allow read: if true;
+      allow write: if false;
+    }
+    
+  }
+}
