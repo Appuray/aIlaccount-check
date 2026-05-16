@@ -18,6 +18,12 @@ export interface Account {
   stability: 'stable' | 'degraded' | 'offline';
   refreshCycleDays: number;
   lastRefreshedAt: number;
+  // Advanced fields
+  notes: string;
+  usageCount: number;
+  maxDailyUses: number; // 0 = unlimited
+  createdAt: number;
+  email: string; // linked email/account identifier
 }
 
 export interface UsageEvent {
@@ -62,7 +68,10 @@ export interface AppState {
   resetAccount: (id: string) => Promise<void>;
   markRefreshed: (id: string) => Promise<void>;
   setRefreshCycle: (id: string, days: number) => Promise<void>;
-  addAccount: (name: string, service: ServiceType, tier: TierType, priority: number, tags: NodeTag[], refreshCycleDays?: number) => Promise<void>;
+  addAccount: (name: string, service: ServiceType, tier: TierType, priority: number, tags: NodeTag[], refreshCycleDays?: number, notes?: string, maxDailyUses?: number, email?: string) => Promise<void>;
+  updateAccountNotes: (id: string, notes: string) => Promise<void>;
+  incrementUsage: (id: string) => void;
+  duplicateAccount: (id: string) => Promise<void>;
   deleteAccount: (id: string) => Promise<void>;
   showToast: (msg: string) => void;
   clearToast: () => void;

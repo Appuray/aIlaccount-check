@@ -6,24 +6,24 @@
   --font-mono: "Geist Mono", monospace;
   --font-display: "Outfit", sans-serif;
   
-  /* CLINICAL EDITORIAL THEME (Stitch Design Taste) */
-  --color-brand-bg: #F9FAFB;
-  --color-brand-surface: #FFFFFF;
-  --color-brand-surface-elevated: #F4F4F5; 
-  --color-brand-border: rgba(24, 24, 27, 0.1); /* Whisper Border */
-  --color-brand-border-strong: rgba(24, 24, 27, 0.2);
+  /* WARM EDITORIAL THEME — Premium Light */
+  --color-brand-bg: #F7F5F0;            /* Warm Parchment */
+  --color-brand-surface: #FFFDF9;       /* Soft Ivory */
+  --color-brand-surface-elevated: #EFECE6; /* Warm Stone */
+  --color-brand-border: rgba(87, 75, 58, 0.12); /* Warm Whisper */
+  --color-brand-border-strong: rgba(87, 75, 58, 0.22);
   
-  --color-brand-accent: #FF3B00; /* Safety Orange */
+  --color-brand-accent: #E5484D;        /* Refined Tomato */
   --color-brand-accent-fg: #FFFFFF;
 
-  --color-brand-text: #18181B; /* Charcoal Ink */
-  --color-brand-text-soft: #52525B;
-  --color-brand-text-muted: #71717A; /* Muted Steel */
+  --color-brand-text: #1C1917;          /* Warm Ink */
+  --color-brand-text-soft: #44403C;     /* Stone 700 */
+  --color-brand-text-muted: #78716C;    /* Stone 500 */
   
-  --color-brand-danger: #FF3B00;
+  --color-brand-danger: #E5484D;
   --color-brand-danger-fg: #FFFFFF;
-  --color-brand-warning: #F59E0B; 
-  --color-brand-success: #00A651; /* Clinical Success */
+  --color-brand-warning: #E79D13; 
+  --color-brand-success: #30A46C;       /* Jade Green */
 
   /* CORE MAPPING */
   --color-bg: var(--color-brand-bg);

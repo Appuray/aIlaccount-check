@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { MoreHorizontal, RefreshCw, Trash2 } from 'lucide-react';
+import { MoreHorizontal, RefreshCw, Trash2, Copy, Mail, StickyNote, Zap, Hash } from 'lucide-react';
 import { Account } from '../types';
 import { useStore } from '../store';
 import { TimerDisplay } from './TimerDisplay';
@@ -16,8 +16,10 @@ export const AccountCard: React.FC<AccountCardProps> = ({ account }) => {
   const resetAccount = useStore(state => state.resetAccount);
   const markRefreshed = useStore(state => state.markRefreshed);
   const deleteAccount = useStore(state => state.deleteAccount);
+  const duplicateAccount = useStore(state => state.duplicateAccount);
   const selectedAccounts = useStore(state => state.selectedAccounts);
   const toggleSelectAccount = useStore(state => state.toggleSelectAccount);
+  const showToast = useStore(state => state.showToast);
 
   const isSelected = selectedAccounts.includes(account.id);
   const isExhausted = account.resetAt !== null;
@@ -30,6 +32,8 @@ export const AccountCard: React.FC<AccountCardProps> = ({ account }) => {
   };
 
   const daysLeft = getDaysUntilRefresh();
+  const usageCount = account.usageCount || 0;
+  const maxDailyUses = account.maxDailyUses || 0;
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -48,7 +52,7 @@ export const AccountCard: React.FC<AccountCardProps> = ({ account }) => {
     toggleSelectAccount(account.id);
   };
 
-  const healthColor = account.health > 80 ? '#00A651' : account.health > 50 ? '#F59E0B' : '#FF3B00';
+  const healthColor = account.health > 80 ? '#30A46C' : account.health > 50 ? '#E79D13' : '#E5484D';
 
   return (
     <motion.div
@@ -85,7 +89,14 @@ export const AccountCard: React.FC<AccountCardProps> = ({ account }) => {
                   {account.tier}
                 </span>
               </div>
-              <p className="text-[11px] text-brand-text-muted font-bold uppercase tracking-widest mt-1">{account.service}</p>
+              <div className="flex items-center gap-2 mt-1">
+                <p className="text-[11px] text-brand-text-muted font-bold uppercase tracking-widest">{account.service}</p>
+                {account.email && (
+                  <span className="text-[9px] text-brand-text-muted font-medium truncate max-w-[100px] flex items-center gap-1">
+                    <Mail size={8} /> {account.email}
+                  </span>
+                )}
+              </div>
             </div>
           </div>
 
@@ -106,7 +117,7 @@ export const AccountCard: React.FC<AccountCardProps> = ({ account }) => {
                   exit={{ opacity: 0, y: -4 }}
                   transition={{ type: "spring", stiffness: 400, damping: 25 }}
                   style={{ transformOrigin: "top right" }}
-                  className="absolute right-0 mt-2 w-48 bg-brand-surface border border-brand-border z-50 overflow-hidden py-1 rounded-lg"
+                  className="absolute right-0 mt-2 w-52 bg-brand-surface border border-brand-border z-50 overflow-hidden py-1 rounded-lg shadow-lg"
                 >
                   <motion.button
                     whileHover={{ x: 4, backgroundColor: "var(--color-brand-surface-elevated)" }}
@@ -115,6 +126,26 @@ export const AccountCard: React.FC<AccountCardProps> = ({ account }) => {
                     className="w-full px-4 py-2.5 text-left text-[10px] font-black tracking-widest text-brand-text-soft flex items-center gap-3 transition-colors uppercase"
                   >
                     <RefreshCw size={14} className="text-brand-text-muted" strokeWidth={2.5} /> Restore Quota
+                  </motion.button>
+                  <motion.button
+                    whileHover={{ x: 4, backgroundColor: "var(--color-brand-surface-elevated)" }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => { duplicateAccount(account.id); setIsMenuOpen(false); }}
+                    className="w-full px-4 py-2.5 text-left text-[10px] font-black tracking-widest text-brand-text-soft flex items-center gap-3 transition-colors uppercase"
+                  >
+                    <Copy size={14} className="text-brand-text-muted" strokeWidth={2.5} /> Duplicate Node
+                  </motion.button>
+                  <motion.button
+                    whileHover={{ x: 4, backgroundColor: "var(--color-brand-surface-elevated)" }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => { 
+                      navigator.clipboard.writeText(account.id);
+                      showToast(`Node ID copied: ${account.id.substring(0, 12)}...`);
+                      setIsMenuOpen(false); 
+                    }}
+                    className="w-full px-4 py-2.5 text-left text-[10px] font-black tracking-widest text-brand-text-soft flex items-center gap-3 transition-colors uppercase"
+                  >
+                    <Hash size={14} className="text-brand-text-muted" strokeWidth={2.5} /> Copy Node ID
                   </motion.button>
                   <div className="h-px bg-brand-border mx-2" />
                   <motion.button
@@ -150,6 +181,7 @@ export const AccountCard: React.FC<AccountCardProps> = ({ account }) => {
           )}
         </div>
 
+        {/* Stats Row */}
         <div className="space-y-3 mb-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3 flex-1">
@@ -169,6 +201,22 @@ export const AccountCard: React.FC<AccountCardProps> = ({ account }) => {
             </div>
           </div>
 
+          {/* Usage & Limit Indicator */}
+          <div className="flex items-center gap-2 flex-wrap">
+            <div className="flex items-center gap-1.5 px-2 py-1 bg-brand-surface-elevated border border-brand-border rounded-md">
+              <Zap size={10} className="text-brand-accent" />
+              <span className="text-[10px] font-mono font-black text-brand-text tabular-nums">{usageCount}</span>
+              {maxDailyUses > 0 && (
+                <span className="text-[10px] font-mono font-bold text-brand-text-muted tabular-nums">/{maxDailyUses}</span>
+              )}
+            </div>
+            {account.priority > 3 && (
+              <span className="px-2 py-1 bg-brand-text text-brand-surface text-[9px] font-bold uppercase tracking-widest rounded-md">
+                P{account.priority}
+              </span>
+            )}
+          </div>
+
           <div className="flex flex-wrap gap-2">
             {account.tags.map(tag => (
               <span 
@@ -178,12 +226,15 @@ export const AccountCard: React.FC<AccountCardProps> = ({ account }) => {
                 {tag}
               </span>
             ))}
-            {account.priority > 3 && (
-              <span className="px-2 py-0.5 bg-brand-text text-brand-surface text-[9px] font-bold uppercase tracking-widest rounded-md">
-                Priority
-              </span>
-            )}
           </div>
+
+          {/* Notes Preview */}
+          {account.notes && (
+            <div className="flex items-start gap-2 mt-1 px-3 py-2 bg-brand-surface-elevated border border-brand-border rounded-lg">
+              <StickyNote size={10} className="text-brand-text-muted shrink-0 mt-0.5" />
+              <p className="text-[10px] text-brand-text-muted font-medium leading-relaxed line-clamp-2">{account.notes}</p>
+            </div>
+          )}
         </div>
 
         <div className="flex gap-0" onClick={e => e.stopPropagation()}>

@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { motion, AnimatePresence, Variants } from 'motion/react';
-import { X, Check } from 'lucide-react';
+import { X, Check, Clock, Calendar } from 'lucide-react';
 import { useStore } from '../store';
 import { ServiceType, TierType, NodeTag } from '../types';
 
@@ -47,11 +47,27 @@ export const AddAccountModal: React.FC<AddAccountModalProps> = ({ isOpen, onClos
   const [name, setName] = useState('');
   const [service, setService] = useState<ServiceType>('gemini');
   const [tier, setTier] = useState<TierType>('free');
+  const [refreshMode, setRefreshMode] = useState<'days' | 'exact'>('days');
   const [refreshCycle, setRefreshCycle] = useState(1);
+  const [exactResetDate, setExactResetDate] = useState('');
+  const [exactResetTime, setExactResetTime] = useState('');
   const [selectedTags, setSelectedTags] = useState<NodeTag[]>([]);
+  const [priority, setPriority] = useState(3);
+  const [notes, setNotes] = useState('');
+  const [email, setEmail] = useState('');
+  const [maxDailyUses, setMaxDailyUses] = useState(0);
+  const [showAdvanced, setShowAdvanced] = useState(false);
   const addAccount = useStore(state => state.addAccount);
 
   const availableTags: NodeTag[] = ['coding', 'creative', 'logic', 'image', 'fast'];
+
+  const serviceOptions: { value: ServiceType; label: string; sub: string }[] = [
+    { value: 'gemini', label: 'Gemini', sub: 'Google AI' },
+    { value: 'claude', label: 'Claude', sub: 'Anthropic' },
+    { value: 'chatgpt', label: 'ChatGPT', sub: 'OpenAI' },
+    { value: 'copilot', label: 'Copilot', sub: 'Microsoft' },
+    { value: 'other', label: 'Other', sub: 'Custom' },
+  ];
 
   const toggleTag = (tag: NodeTag) => {
     setSelectedTags(prev => 
@@ -59,17 +75,52 @@ export const AddAccountModal: React.FC<AddAccountModalProps> = ({ isOpen, onClos
     );
   };
 
+  // Compute the preview reset time
+  const resetPreview = useMemo(() => {
+    if (refreshMode === 'exact' && exactResetDate) {
+      const dateStr = exactResetTime 
+        ? `${exactResetDate}T${exactResetTime}` 
+        : `${exactResetDate}T00:00`;
+      const d = new Date(dateStr);
+      return isNaN(d.getTime()) ? null : d;
+    } else {
+      const d = new Date();
+      d.setDate(d.getDate() + refreshCycle);
+      return d;
+    }
+  }, [refreshMode, refreshCycle, exactResetDate, exactResetTime]);
+
+  // Compute actual refreshCycleDays for the store
+  const computedCycleDays = useMemo(() => {
+    if (refreshMode === 'exact' && resetPreview) {
+      const diffMs = resetPreview.getTime() - Date.now();
+      return Math.max(1, Math.ceil(diffMs / (1000 * 60 * 60 * 24)));
+    }
+    return refreshCycle;
+  }, [refreshMode, resetPreview, refreshCycle]);
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!name.trim()) return;
-    addAccount(name, service, tier, 3, selectedTags, refreshCycle);
+    addAccount(name, service, tier, priority, selectedTags, computedCycleDays, notes, maxDailyUses, email);
     setName('');
     setService('gemini');
     setTier('free');
     setRefreshCycle(1);
+    setRefreshMode('days');
+    setExactResetDate('');
+    setExactResetTime('');
     setSelectedTags([]);
+    setPriority(3);
+    setNotes('');
+    setEmail('');
+    setMaxDailyUses(0);
+    setShowAdvanced(false);
     onClose();
   };
+
+  // Get today's date for min attribute
+  const todayStr = new Date().toISOString().split('T')[0];
 
   return (
     <AnimatePresence mode="wait">
@@ -121,23 +172,62 @@ export const AddAccountModal: React.FC<AddAccountModalProps> = ({ isOpen, onClos
                   />
                 </motion.div>
 
-                <motion.div variants={itemVariants} className="grid grid-cols-2 gap-5">
-                  <div className="space-y-3">
-                    <label className="text-[10px] font-bold text-brand-text-soft uppercase tracking-[0.2em]">Provider</label>
-                    <select
-                      value={service}
-                      onChange={(e) => setService(e.target.value as ServiceType)}
-                      className="w-full bg-brand-surface border border-brand-border focus:border-brand-accent focus:outline-none appearance-none cursor-pointer font-bold text-[13px] py-3.5 px-4 rounded-xl shadow-sm"
-                    >
-                      <option value="gemini">Google Gemini</option>
-                      <option value="chatgpt">ChatGPT</option>
-                      <option value="claude">Claude</option>
-                      <option value="copilot">Copilot</option>
-                      <option value="other">Other</option>
-                    </select>
+                {/* Provider Selection — Button Grid */}
+                <motion.div variants={itemVariants} className="space-y-3">
+                  <label className="text-[10px] font-bold text-brand-text-soft uppercase tracking-[0.2em]">Provider</label>
+                  <div className="grid grid-cols-3 gap-2">
+                    {serviceOptions.map(opt => (
+                      <motion.button
+                        key={opt.value}
+                        whileTap={{ scale: 0.95 }}
+                        type="button"
+                        onClick={() => setService(opt.value)}
+                        className={`py-3 px-2 text-center transition-all border rounded-xl shadow-sm ${
+                          service === opt.value 
+                            ? 'bg-brand-text text-brand-surface border-brand-text' 
+                            : 'bg-brand-surface text-brand-text-muted border-brand-border hover:border-brand-text hover:text-brand-text'
+                        }`}
+                      >
+                        <span className="text-[12px] font-black tracking-wide block">{opt.label}</span>
+                        <span className={`text-[9px] font-bold uppercase tracking-widest mt-0.5 block ${
+                          service === opt.value ? 'opacity-60' : 'opacity-40'
+                        }`}>{opt.sub}</span>
+                      </motion.button>
+                    ))}
                   </div>
-                  <div className="space-y-3">
-                    <label className="text-[10px] font-bold text-brand-text-soft uppercase tracking-[0.2em]">Cycle (Days)</label>
+                </motion.div>
+
+                {/* Refresh Cycle — Dual Mode */}
+                <motion.div variants={itemVariants} className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <label className="text-[10px] font-bold text-brand-text-soft uppercase tracking-[0.2em]">Quota Reset</label>
+                    <div className="flex gap-1 bg-brand-surface-elevated rounded-lg p-0.5">
+                      <button
+                        type="button"
+                        onClick={() => setRefreshMode('days')}
+                        className={`flex items-center gap-1.5 px-3 py-1.5 text-[9px] font-black uppercase tracking-widest rounded-md transition-all ${
+                          refreshMode === 'days' 
+                            ? 'bg-brand-text text-brand-surface shadow-sm' 
+                            : 'text-brand-text-muted hover:text-brand-text'
+                        }`}
+                      >
+                        <Clock size={10} strokeWidth={2.5} /> Days
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setRefreshMode('exact')}
+                        className={`flex items-center gap-1.5 px-3 py-1.5 text-[9px] font-black uppercase tracking-widest rounded-md transition-all ${
+                          refreshMode === 'exact' 
+                            ? 'bg-brand-text text-brand-surface shadow-sm' 
+                            : 'text-brand-text-muted hover:text-brand-text'
+                        }`}
+                      >
+                        <Calendar size={10} strokeWidth={2.5} /> Exact
+                      </button>
+                    </div>
+                  </div>
+
+                  {refreshMode === 'days' ? (
                     <div className="relative">
                       <input
                         type="number"
@@ -145,11 +235,54 @@ export const AddAccountModal: React.FC<AddAccountModalProps> = ({ isOpen, onClos
                         max="365"
                         value={refreshCycle}
                         onChange={(e) => setRefreshCycle(parseInt(e.target.value) || 1)}
-                        className="w-full bg-brand-surface border border-brand-border focus:border-brand-accent focus:outline-none font-bold py-3.5 pl-4 pr-10 rounded-xl shadow-sm"
+                        className="w-full bg-brand-surface border border-brand-border focus:border-brand-accent focus:outline-none font-bold py-3.5 pl-4 pr-16 rounded-xl shadow-sm"
                       />
-                      <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[10px] font-bold text-brand-text-muted">DAYS</span>
+                      <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[10px] font-bold text-brand-text-muted uppercase tracking-widest">Days</span>
                     </div>
-                  </div>
+                  ) : (
+                    <div className="grid grid-cols-2 gap-3">
+                      <div className="space-y-1.5">
+                        <span className="text-[9px] font-bold text-brand-text-muted uppercase tracking-widest">Date</span>
+                        <input
+                          type="date"
+                          min={todayStr}
+                          value={exactResetDate}
+                          onChange={(e) => setExactResetDate(e.target.value)}
+                          className="w-full bg-brand-surface border border-brand-border focus:border-brand-accent focus:outline-none font-bold text-[13px] py-3 px-3 rounded-xl shadow-sm"
+                        />
+                      </div>
+                      <div className="space-y-1.5">
+                        <span className="text-[9px] font-bold text-brand-text-muted uppercase tracking-widest">Time</span>
+                        <input
+                          type="time"
+                          value={exactResetTime}
+                          onChange={(e) => setExactResetTime(e.target.value)}
+                          className="w-full bg-brand-surface border border-brand-border focus:border-brand-accent focus:outline-none font-bold text-[13px] py-3 px-3 rounded-xl shadow-sm"
+                        />
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Live Reset Preview */}
+                  {resetPreview && (
+                    <motion.div 
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: 'auto' }}
+                      className="flex items-center gap-3 bg-brand-surface-elevated border border-brand-border rounded-xl px-4 py-3"
+                    >
+                      <Clock size={14} className="text-brand-accent shrink-0" />
+                      <div>
+                        <p className="text-[9px] font-black text-brand-text-muted uppercase tracking-widest">Quota Refreshes On</p>
+                        <p className="text-[13px] font-bold text-brand-text mt-0.5">
+                          {resetPreview.toLocaleDateString('en-US', { 
+                            month: 'short', day: 'numeric', year: 'numeric' 
+                          })}, {resetPreview.toLocaleTimeString('en-US', { 
+                            hour: 'numeric', minute: '2-digit', hour12: true 
+                          })}
+                        </p>
+                      </div>
+                    </motion.div>
+                  )}
                 </motion.div>
 
                 <motion.div variants={itemVariants} className="space-y-3">
@@ -205,7 +338,102 @@ export const AddAccountModal: React.FC<AddAccountModalProps> = ({ isOpen, onClos
                   </div>
                 </motion.div>
 
-                <motion.div variants={itemVariants} className="pt-8">
+                {/* Advanced Options Toggle */}
+                <motion.div variants={itemVariants}>
+                  <button
+                    type="button"
+                    onClick={() => setShowAdvanced(!showAdvanced)}
+                    className="w-full flex items-center justify-between py-3 px-4 text-[10px] font-black text-brand-text-muted uppercase tracking-widest bg-brand-surface-elevated border border-brand-border rounded-xl hover:border-brand-text hover:text-brand-text transition-colors"
+                  >
+                    <span>Advanced Options</span>
+                    <motion.span
+                      animate={{ rotate: showAdvanced ? 180 : 0 }}
+                      transition={{ type: 'spring', damping: 15 }}
+                      className="text-[14px]"
+                    >▾</motion.span>
+                  </button>
+                </motion.div>
+
+                <AnimatePresence>
+                  {showAdvanced && (
+                    <motion.div
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: 'auto' }}
+                      exit={{ opacity: 0, height: 0 }}
+                      transition={{ type: 'spring', damping: 20, stiffness: 200 }}
+                      className="space-y-6 overflow-hidden"
+                    >
+                      {/* Priority Slider */}
+                      <div className="space-y-3">
+                        <div className="flex items-center justify-between">
+                          <label className="text-[10px] font-bold text-brand-text-soft uppercase tracking-[0.2em]">Priority Level</label>
+                          <span className="text-[12px] font-mono font-black text-brand-text tabular-nums">{priority}/5</span>
+                        </div>
+                        <input
+                          type="range"
+                          min="1"
+                          max="5"
+                          value={priority}
+                          onChange={(e) => setPriority(parseInt(e.target.value))}
+                          className="w-full h-1.5 bg-brand-border rounded-full appearance-none cursor-pointer accent-brand-accent"
+                        />
+                        <div className="flex justify-between px-1">
+                          {[1,2,3,4,5].map(n => (
+                            <span key={n} className={`text-[8px] font-black uppercase tracking-widest ${priority === n ? 'text-brand-accent' : 'text-brand-text-muted'}`}>
+                              {n === 1 ? 'Low' : n === 3 ? 'Normal' : n === 5 ? 'Critical' : '·'}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Email / Account ID */}
+                      <div className="space-y-3">
+                        <label className="text-[10px] font-bold text-brand-text-soft uppercase tracking-[0.2em]">Linked Email / Account</label>
+                        <input
+                          type="text"
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          className="w-full bg-brand-surface border border-brand-border focus:border-brand-accent focus:outline-none transition-colors text-[13px] font-medium py-3 px-4 rounded-xl shadow-sm"
+                          placeholder="user@gmail.com"
+                        />
+                      </div>
+
+                      {/* Max Daily Uses */}
+                      <div className="space-y-3">
+                        <label className="text-[10px] font-bold text-brand-text-soft uppercase tracking-[0.2em]">Max Daily Uses</label>
+                        <div className="relative">
+                          <input
+                            type="number"
+                            min="0"
+                            max="9999"
+                            value={maxDailyUses}
+                            onChange={(e) => setMaxDailyUses(parseInt(e.target.value) || 0)}
+                            className="w-full bg-brand-surface border border-brand-border focus:border-brand-accent focus:outline-none font-bold py-3.5 pl-4 pr-24 rounded-xl shadow-sm"
+                          />
+                          <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[9px] font-bold text-brand-text-muted uppercase tracking-widest">
+                            {maxDailyUses === 0 ? 'Unlimited' : 'per day'}
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Notes */}
+                      <div className="space-y-3">
+                        <label className="text-[10px] font-bold text-brand-text-soft uppercase tracking-[0.2em]">Notes / Memo</label>
+                        <textarea
+                          value={notes}
+                          onChange={(e) => setNotes(e.target.value)}
+                          rows={3}
+                          maxLength={200}
+                          className="w-full bg-brand-surface border border-brand-border focus:border-brand-accent focus:outline-none transition-colors text-[13px] font-medium py-3 px-4 rounded-xl shadow-sm resize-none"
+                          placeholder="e.g. Personal account, shared with team, project-specific..."
+                        />
+                        <p className="text-[9px] text-brand-text-muted font-bold text-right">{notes.length}/200</p>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+
+                <motion.div variants={itemVariants} className="pt-4">
                   <motion.button
                     whileTap={{ scale: 0.97 }}
                     type="submit"

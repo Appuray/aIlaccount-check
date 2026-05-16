@@ -104,6 +104,7 @@ export const useStore = create<AppState>()(
           exhaustedAt: now, 
           resetAt, 
           exhaustCount: (account.exhaustCount || 0) + 1, 
+          usageCount: (account.usageCount || 0) + 1,
           lastUsedAt: now,
           health: Math.max(0, account.health - 20)
         };
@@ -159,8 +160,9 @@ export const useStore = create<AppState>()(
         await dbService.updateAccount(id, updates);
       },
 
-      addAccount: async (name, service, tier, priority, tags, refreshCycleDays = 1) => {
+      addAccount: async (name, service, tier, priority, tags, refreshCycleDays = 1, notes = '', maxDailyUses = 0, email = '') => {
         const { user } = get();
+        const now = Date.now();
         const newAccount: Omit<Account, 'id'> = {
           name,
           service,
@@ -175,16 +177,54 @@ export const useStore = create<AppState>()(
           health: 100,
           stability: 'stable',
           refreshCycleDays,
-          lastRefreshedAt: Date.now()
+          lastRefreshedAt: now,
+          notes,
+          usageCount: 0,
+          maxDailyUses,
+          createdAt: now,
+          email,
         };
 
         if (isFirebaseConfigured && user) {
           await dbService.addAccount(newAccount, user.uid);
         } else {
-          // Fallback for local-only or unauthenticated (though unauthenticated shouldn't reach here)
           await dbService.addAccount(newAccount, 'local-user');
         }
-        get().showToast(`${name} added to system`);
+        get().showToast(`${name} deployed to cluster`);
+      },
+
+      updateAccountNotes: async (id, notes) => {
+        set({
+          accounts: get().accounts.map(acc => 
+            acc.id === id ? { ...acc, notes } : acc
+          )
+        });
+        await dbService.updateAccount(id, { notes });
+      },
+
+      incrementUsage: (id) => {
+        set({
+          accounts: get().accounts.map(acc => 
+            acc.id === id ? { ...acc, usageCount: (acc.usageCount || 0) + 1, lastUsedAt: Date.now() } : acc
+          )
+        });
+      },
+
+      duplicateAccount: async (id) => {
+        const account = get().accounts.find(a => a.id === id);
+        if (!account) return;
+        await get().addAccount(
+          `${account.name}-copy`,
+          account.service,
+          account.tier,
+          account.priority,
+          account.tags,
+          account.refreshCycleDays,
+          account.notes,
+          account.maxDailyUses,
+          account.email
+        );
+        get().showToast(`${account.name} duplicated`);
       },
 
       deleteAccount: async (id) => {
