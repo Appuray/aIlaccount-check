@@ -45,7 +45,7 @@ const itemVariants: Variants = {
 
 export const AddAccountModal: React.FC<AddAccountModalProps> = ({ isOpen, onClose }) => {
   const [name, setName] = useState('');
-  const [service, setService] = useState<ServiceType>('gemini');
+  const [selectedServices, setSelectedServices] = useState<ServiceType[]>(['gemini']);
   const [tier, setTier] = useState<TierType>('free');
   const [refreshMode, setRefreshMode] = useState<'days' | 'exact'>('days');
   const [refreshCycle, setRefreshCycle] = useState(1);
@@ -70,6 +70,23 @@ export const AddAccountModal: React.FC<AddAccountModalProps> = ({ isOpen, onClos
     { value: 'copilot', label: 'Copilot', sub: 'Microsoft' },
     { value: 'other', label: 'Other', sub: 'Custom' },
   ];
+
+  const toggleService = (svc: ServiceType) => {
+    setSelectedServices(prev => {
+      if (prev.includes(svc)) {
+        // Don't allow deselecting if it's the only one
+        if (prev.length === 1) return prev;
+        return prev.filter(s => s !== svc);
+      } else {
+        // Max 2 selections
+        if (prev.length >= 2) {
+          // Replace the oldest selection
+          return [prev[1], svc];
+        }
+        return [...prev, svc];
+      }
+    });
+  };
 
   const toggleTag = (tag: NodeTag) => {
     setSelectedTags(prev => 
@@ -105,12 +122,16 @@ export const AddAccountModal: React.FC<AddAccountModalProps> = ({ isOpen, onClos
     return refreshCycle;
   }, [refreshMode, resetPreview, refreshCycle]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!name.trim()) return;
-    addAccount(name, service, tier, priority, selectedTags, computedCycleDays, notes, maxDailyUses, email);
+    if (!name.trim() || selectedServices.length === 0) return;
+    // Create one account per selected provider
+    for (const svc of selectedServices) {
+      const accountName = selectedServices.length > 1 ? `${name} (${svc})` : name;
+      await addAccount(accountName, svc, tier, priority, selectedTags, computedCycleDays, notes, maxDailyUses, email);
+    }
     setName('');
-    setService('gemini');
+    setSelectedServices(['gemini']);
     setTier('free');
     setRefreshCycle(1);
     setRefreshMode('days');
@@ -180,25 +201,28 @@ export const AddAccountModal: React.FC<AddAccountModalProps> = ({ isOpen, onClos
                   />
                 </motion.div>
 
-                {/* Provider Selection — Button Grid */}
+                {/* Provider Selection — Multi-Select Grid (up to 2) */}
                 <motion.div variants={itemVariants} className="space-y-3">
-                  <label className="text-[10px] font-bold text-brand-text-soft uppercase tracking-[0.2em]">Provider</label>
+                  <div className="flex items-center justify-between">
+                    <label className="text-[10px] font-bold text-brand-text-soft uppercase tracking-[0.2em]">Provider</label>
+                    <span className="text-[9px] font-bold text-brand-text-muted uppercase tracking-widest">{selectedServices.length}/2 selected</span>
+                  </div>
                   <div className="grid grid-cols-3 gap-2">
                     {serviceOptions.map(opt => (
                       <motion.button
                         key={opt.value}
                         whileTap={{ scale: 0.95 }}
                         type="button"
-                        onClick={() => setService(opt.value)}
+                        onClick={() => toggleService(opt.value)}
                         className={`py-3 px-2 text-center transition-all border rounded-xl shadow-sm ${
-                          service === opt.value 
+                          selectedServices.includes(opt.value) 
                             ? 'bg-brand-text text-brand-surface border-brand-text' 
                             : 'bg-brand-surface text-brand-text-muted border-brand-border hover:border-brand-text hover:text-brand-text'
                         }`}
                       >
                         <span className="text-[12px] font-black tracking-wide block">{opt.label}</span>
                         <span className={`text-[9px] font-bold uppercase tracking-widest mt-0.5 block ${
-                          service === opt.value ? 'opacity-60' : 'opacity-40'
+                          selectedServices.includes(opt.value) ? 'opacity-60' : 'opacity-40'
                         }`}>{opt.sub}</span>
                       </motion.button>
                     ))}
