@@ -29,7 +29,7 @@ export const Landing: React.FC = () => {
   }, []);
 
   return (
-    <div className="bg-[#E6E4DD] text-[#2D2A26] min-h-[100dvh] font-sans selection:bg-[#C2410C] selection:text-[#E6E4DD]">
+    <div className="bg-[#E6E4DD] text-[#2D2A26] h-[100dvh] flex flex-col font-sans selection:bg-[#C2410C] selection:text-[#E6E4DD] overflow-hidden">
       {/* Structural Grid Background - Muted Stone lines */}
       <div className="fixed inset-0 pointer-events-none z-0">
         <div className="absolute inset-0 bg-[linear-gradient(rgba(45,42,38,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(45,42,38,0.03)_1px,transparent_1px)] bg-[size:4rem_4rem]" />
@@ -54,21 +54,21 @@ export const Landing: React.FC = () => {
       </nav>
 
       {/* Hero Section - Asymmetric 70/30 Split */}
-      <main className="relative z-10 pt-[25vh] px-[10%] min-h-[100dvh] flex flex-col md:flex-row gap-20">
+      <main className="relative z-10 px-[10%] flex-1 flex flex-col md:flex-row items-center gap-10 md:gap-20 mt-24 md:mt-0">
         
         {/* Left Column - 70% */}
-        <div className="md:w-[70%]">
+        <div className="md:w-[70%] flex flex-col justify-center">
           <motion.div 
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={SPRING}
-            className="flex items-center gap-3 mb-10"
+            className="flex items-center gap-3 mb-6"
           >
             <div className="h-px w-8 bg-[#C2410C]" />
             <span className="text-[10px] font-mono text-[#6A655F] tracking-[0.2em] uppercase">Simple Account Manager</span>
           </motion.div>
 
-          <h1 className="text-5xl md:text-7xl lg:text-[100px] font-black leading-[0.9] tracking-tighter uppercase text-[#2D2A26]">
+          <h1 className="text-5xl md:text-6xl lg:text-[85px] font-black leading-[0.9] tracking-tighter uppercase text-[#2D2A26]">
             <motion.div 
               initial={{ opacity: 0, y: 40 }} 
               animate={{ opacity: 1, y: 0 }} 
@@ -84,7 +84,7 @@ export const Landing: React.FC = () => {
             >
               All AI
               {/* Inline Image Typography Replacement */}
-              <div className="hidden md:flex h-[70px] w-[140px] bg-[#DCD9CE] border border-[#CFCBBE] rounded-full items-center justify-center overflow-hidden relative shadow-sm">
+              <div className="hidden md:flex h-[60px] w-[120px] bg-[#DCD9CE] border border-[#CFCBBE] rounded-full items-center justify-center overflow-hidden relative shadow-sm">
                 <motion.div 
                   animate={{ rotate: 360 }}
                   transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
@@ -109,7 +109,7 @@ export const Landing: React.FC = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ ...SPRING, delay: 0.5 }}
-            className="mt-12 text-[#6A655F] text-lg md:text-xl max-w-xl leading-relaxed font-medium"
+            className="mt-8 text-[#6A655F] text-base md:text-lg max-w-xl leading-relaxed font-medium"
           >
             A simple dashboard to track usage limits, manage multiple AI tools, and easily switch between accounts when limits are reached.
           </motion.p>
@@ -118,7 +118,7 @@ export const Landing: React.FC = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ ...SPRING, delay: 0.6 }}
-            className="mt-16"
+            className="mt-10"
           >
             <Link 
               to="/signup"
@@ -131,12 +131,12 @@ export const Landing: React.FC = () => {
         </div>
 
         {/* Right Column - 30% Asymmetric Balance */}
-        <div className="md:w-[30%] pt-10 md:pt-32 relative">
+        <div className="md:w-[30%] w-full">
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ ...SPRING, delay: 0.4 }}
-            className="bg-[#DCD9CE] border border-[#CFCBBE] p-8 shadow-sm rounded-xl"
+            className="bg-[#DCD9CE] border border-[#CFCBBE] p-6 shadow-sm rounded-xl"
           >
             <p className="font-mono text-[#6A655F] text-[10px] uppercase tracking-widest mb-6 border-b border-[#CFCBBE] pb-4">Features</p>
             <div className="space-y-4">
@@ -159,7 +159,7 @@ export const Landing: React.FC = () => {
       </main>
 
       {/* Footer Area */}
-      <footer className="relative z-10 border-t border-[#2D2A26]/[0.06] mx-[10%] py-12 flex justify-between items-center mt-20">
+      <footer className="relative z-10 border-t border-[#2D2A26]/[0.06] mx-[10%] py-6 flex justify-between items-center mt-auto">
         <p className="text-[10px] font-mono text-[#6A655F] uppercase tracking-widest">© 2026 QuotaCheck</p>
         <p className="text-[10px] font-mono text-[#C2410C] uppercase tracking-widest">v5.0.0</p>
       </footer>
