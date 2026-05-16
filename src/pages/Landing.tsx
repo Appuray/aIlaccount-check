@@ -29,19 +29,19 @@ export const Landing: React.FC = () => {
   }, []);
 
   return (
-    <div className="bg-[#E6E4DD] text-[#2D2A26] h-[100dvh] flex flex-col font-sans selection:bg-[#C2410C] selection:text-[#E6E4DD] overflow-hidden">
+    <div className="bg-[#D8D3C4] text-[#2D2A26] h-[100dvh] w-full flex items-center justify-center font-sans selection:bg-[#C2410C] selection:text-[#D8D3C4] overflow-hidden relative">
       {/* Structural Grid Background - Muted Stone lines */}
-      <div className="fixed inset-0 pointer-events-none z-0">
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(45,42,38,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(45,42,38,0.03)_1px,transparent_1px)] bg-[size:4rem_4rem]" />
-        <div className="absolute left-[10%] top-0 bottom-0 w-px bg-[#2D2A26]/[0.06]" />
-        <div className="absolute right-[10%] top-0 bottom-0 w-px bg-[#2D2A26]/[0.06]" />
+      <div className="absolute inset-0 pointer-events-none z-0">
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(45,42,38,0.04)_1px,transparent_1px),linear-gradient(90deg,rgba(45,42,38,0.04)_1px,transparent_1px)] bg-[size:4rem_4rem]" />
+        <div className="absolute left-[10%] top-0 bottom-0 w-px bg-[#2D2A26]/[0.08]" />
+        <div className="absolute right-[10%] top-0 bottom-0 w-px bg-[#2D2A26]/[0.08]" />
       </div>
 
       {/* Navigation */}
-      <nav className="fixed top-0 left-0 right-0 z-50 px-[10%] py-8 flex justify-between items-center bg-[#E6E4DD]/80 backdrop-blur-md border-b border-[#2D2A26]/[0.06]">
+      <nav className="absolute top-0 left-0 right-0 z-50 px-[10%] py-8 flex justify-between items-center border-b border-[#2D2A26]/[0.08] backdrop-blur-sm">
         <div className="flex items-center gap-3">
           <div className="w-6 h-6 bg-[#2D2A26] flex items-center justify-center">
-            <div className="w-2 h-2 bg-[#E6E4DD]" />
+            <div className="w-2 h-2 bg-[#D8D3C4]" />
           </div>
           <span className="font-black tracking-tighter text-lg">QUOTACHECK</span>
         </div>
@@ -54,7 +54,7 @@ export const Landing: React.FC = () => {
       </nav>
 
       {/* Hero Section - Asymmetric 70/30 Split */}
-      <main className="relative z-10 px-[10%] flex-1 flex flex-col md:flex-row items-center gap-10 md:gap-20 mt-24 md:mt-0">
+      <main className="relative z-10 w-full px-[10%] flex flex-col md:flex-row items-center gap-10 md:gap-20">
         
         {/* Left Column - 70% */}
         <div className="md:w-[70%] flex flex-col justify-center">
@@ -84,7 +84,7 @@ export const Landing: React.FC = () => {
             >
               All AI
               {/* Inline Image Typography Replacement */}
-              <div className="hidden md:flex h-[60px] w-[120px] bg-[#DCD9CE] border border-[#CFCBBE] rounded-full items-center justify-center overflow-hidden relative shadow-sm">
+              <div className="hidden md:flex h-[60px] w-[120px] bg-[#C8C2B0] border border-[#B8B19E] rounded-full items-center justify-center overflow-hidden relative shadow-sm">
                 <motion.div 
                   animate={{ rotate: 360 }}
                   transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
@@ -122,7 +122,7 @@ export const Landing: React.FC = () => {
           >
             <Link 
               to="/signup"
-              className="inline-flex items-center gap-4 bg-[#2D2A26] text-[#E6E4DD] px-8 py-5 font-black tracking-widest text-[11px] uppercase hover:bg-[#C2410C] transition-colors duration-300 group shadow-lg shadow-[#2D2A26]/10"
+              className="inline-flex items-center gap-4 bg-[#2D2A26] text-[#D8D3C4] px-8 py-5 font-black tracking-widest text-[11px] uppercase hover:bg-[#C2410C] transition-colors duration-300 group shadow-lg shadow-[#2D2A26]/10"
             >
               Get Started
               <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
@@ -136,16 +136,16 @@ export const Landing: React.FC = () => {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ ...SPRING, delay: 0.4 }}
-            className="bg-[#DCD9CE] border border-[#CFCBBE] p-6 shadow-sm rounded-xl"
+            className="bg-[#C8C2B0] border border-[#B8B19E] p-6 shadow-sm rounded-xl"
           >
-            <p className="font-mono text-[#6A655F] text-[10px] uppercase tracking-widest mb-6 border-b border-[#CFCBBE] pb-4">Features</p>
+            <p className="font-mono text-[#6A655F] text-[10px] uppercase tracking-widest mb-6 border-b border-[#B8B19E] pb-4">Features</p>
             <div className="space-y-4">
               {[
                 { label: 'Fast Access', val: 'Active', icon: Terminal },
                 { label: 'Cloud Sync', val: 'Enabled', icon: Database },
                 { label: 'Encryption', val: 'Secure', icon: Server }
               ].map((stat, i) => (
-                <div key={i} className="flex items-center justify-between py-3 border-b border-[#E6E4DD] last:border-0">
+                <div key={i} className="flex items-center justify-between py-3 border-b border-[#D8D3C4] last:border-0">
                   <div className="flex items-center gap-3">
                     <stat.icon size={14} className="text-[#C2410C]" />
                     <span className="text-[11px] font-bold tracking-widest text-[#2D2A26] uppercase">{stat.label}</span>
@@ -159,7 +159,7 @@ export const Landing: React.FC = () => {
       </main>
 
       {/* Footer Area */}
-      <footer className="relative z-10 border-t border-[#2D2A26]/[0.06] mx-[10%] py-6 flex justify-between items-center mt-auto">
+      <footer className="absolute bottom-0 left-0 right-0 z-10 border-t border-[#2D2A26]/[0.08] mx-[10%] py-6 flex justify-between items-center">
         <p className="text-[10px] font-mono text-[#6A655F] uppercase tracking-widest">© 2026 QuotaCheck</p>
         <p className="text-[10px] font-mono text-[#C2410C] uppercase tracking-widest">v5.0.0</p>
       </footer>

@@ -38,12 +38,12 @@ export const Login: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#E6E4DD] flex flex-col items-center justify-center p-6 selection:bg-[#C2410C] selection:text-[#E6E4DD] font-sans">
+    <div className="min-h-screen bg-[#D8D3C4] flex flex-col items-center justify-center p-6 selection:bg-[#C2410C] selection:text-[#D8D3C4] font-sans">
       
       {/* Absolute Logo */}
       <Link to="/" className="absolute top-10 left-10 flex items-center gap-3 group text-[#2D2A26]">
         <div className="w-8 h-8 bg-[#2D2A26] flex items-center justify-center transition-transform duration-500 group-hover:rotate-90">
-          <div className="w-2 h-2 bg-[#E6E4DD]" />
+          <div className="w-2 h-2 bg-[#D8D3C4]" />
         </div>
         <span className="text-sm font-black tracking-tighter uppercase group-hover:text-[#C2410C] transition-colors">QuotaCheck</span>
       </Link>
@@ -54,7 +54,7 @@ export const Login: React.FC = () => {
         transition={SPRING}
         className="w-full max-w-md"
       >
-        <div className="bg-[#DCD9CE] border border-[#CFCBBE] p-12 shadow-sm rounded-2xl">
+        <div className="bg-[#C8C2B0] border border-[#B8B19E] p-12 shadow-sm rounded-2xl">
           <div className="mb-10">
             <h2 className="text-3xl font-black text-[#2D2A26] mb-2 tracking-tighter uppercase">Welcome Back</h2>
             <p className="text-[11px] text-[#6A655F] font-bold uppercase tracking-widest">Sign in to your account.</p>
@@ -77,7 +77,7 @@ export const Login: React.FC = () => {
                 type="email" 
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full bg-[#E6E4DD] border border-[#CFCBBE] focus:border-[#C2410C] focus:ring-0 px-4 py-4 text-[13px] font-medium transition-colors outline-none rounded-xl" 
+                className="w-full bg-[#D8D3C4] border border-[#B8B19E] focus:border-[#C2410C] focus:ring-0 px-4 py-4 text-[13px] font-medium transition-colors outline-none rounded-xl" 
                 placeholder="operator@quotacheck.io"
                 required 
               />
@@ -91,7 +91,7 @@ export const Login: React.FC = () => {
                 type="password" 
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full bg-[#E6E4DD] border border-[#CFCBBE] focus:border-[#C2410C] focus:ring-0 px-4 py-4 text-[13px] font-medium transition-colors outline-none rounded-xl" 
+                className="w-full bg-[#D8D3C4] border border-[#B8B19E] focus:border-[#C2410C] focus:ring-0 px-4 py-4 text-[13px] font-medium transition-colors outline-none rounded-xl" 
                 placeholder="••••••••"
                 required 
               />
@@ -101,7 +101,7 @@ export const Login: React.FC = () => {
               transition={SPRING}
               type="submit" 
               disabled={loading}
-              className="w-full py-5 bg-[#2D2A26] text-[#E6E4DD] font-black text-[11px] uppercase tracking-[0.2em] hover:bg-[#C2410C] transition-colors duration-300 disabled:opacity-50 mt-6 rounded-xl"
+              className="w-full py-5 bg-[#2D2A26] text-[#D8D3C4] font-black text-[11px] uppercase tracking-[0.2em] hover:bg-[#C2410C] transition-colors duration-300 disabled:opacity-50 mt-6 rounded-xl"
             >
               {loading ? 'Logging in...' : 'Log in'}
             </motion.button>
