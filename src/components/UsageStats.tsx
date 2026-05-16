@@ -101,7 +101,7 @@ export const UsageStats: React.FC = () => {
               </div>
             </div>
             <div className="h-[320px] w-full">
-              <ResponsiveContainer width="100%" height="100%">
+              <ResponsiveContainer width="100%" height="100%" minWidth={1} minHeight={1}>
                 <AreaChart data={last24h}>
                   <defs>
                     <linearGradient id="usageGradient" x1="0" y1="0" x2="0" y2="1">
@@ -142,7 +142,7 @@ export const UsageStats: React.FC = () => {
               <TrendingUp size={20} className="text-brand-text-muted" strokeWidth={2.5} />
             </div>
             <div className="h-[320px] w-full">
-              <ResponsiveContainer width="100%" height="100%">
+              <ResponsiveContainer width="100%" height="100%" minWidth={1} minHeight={1}>
                 <BarChart data={barData} margin={{ top: 0, right: 0, left: -20, bottom: 0 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="var(--color-brand-border)" vertical={false} />
                   <XAxis dataKey="name" stroke="var(--color-brand-text-muted)" fontSize={10} fontWeight="700" tickLine={false} axisLine={false} dy={15} />

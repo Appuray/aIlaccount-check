@@ -7,8 +7,7 @@ import {
   doc, 
   onSnapshot, 
   query, 
-  where,
-  orderBy
+  where
 } from 'firebase/firestore';
 import { db, isFirebaseConfigured } from '../firebase';
 import { Account } from '../types';
@@ -21,15 +20,16 @@ export const dbService = {
     if (!isFirebaseConfigured) return () => {};
     const q = query(
       collection(db, ACCOUNTS_COLLECTION), 
-      where('userId', '==', userId),
-      orderBy('name', 'asc')
+      where('userId', '==', userId)
     );
     return onSnapshot(q, (snapshot) => {
       const accounts = snapshot.docs.map(doc => ({
         ...doc.data(),
         id: doc.id
       })) as Account[];
-      callback(accounts);
+      // Sort client-side to avoid needing a Firebase composite index
+      const sortedAccounts = accounts.sort((a, b) => a.name.localeCompare(b.name));
+      callback(sortedAccounts);
     });
   },
 
