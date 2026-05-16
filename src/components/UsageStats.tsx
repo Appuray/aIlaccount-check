@@ -67,8 +67,8 @@ export const UsageStats: React.FC = () => {
           />
           <p className="text-[11px] font-bold text-brand-text-muted uppercase tracking-[0.3em]">Network Telemetry</p>
         </div>
-        <h2 className="text-5xl font-black text-brand-text tracking-tighter leading-[0.9]">System<br />Analytics</h2>
-        <p className="text-[14px] font-medium text-brand-text-soft mt-6 leading-relaxed max-w-md">Real-time performance metrics and node exhaustion patterns across the QuotaCheck cluster.</p>
+        <h2 className="text-3xl font-black text-brand-text tracking-tighter leading-[0.9]">System<br />Analytics</h2>
+        <p className="text-[13px] font-medium text-brand-text-soft mt-4 leading-relaxed max-w-md">Real-time performance metrics and node exhaustion patterns across the QuotaCheck cluster.</p>
       </motion.div>
 
       {/* Stats Strip */}
@@ -81,7 +81,7 @@ export const UsageStats: React.FC = () => {
           >
             <stat.icon size={18} className={`${stat.color} mb-3`} strokeWidth={2.5} />
             <p className="text-[10px] font-bold text-brand-text-muted uppercase tracking-widest mb-1">{stat.label}</p>
-            <p className={`text-3xl font-black tracking-tighter font-mono ${stat.color}`}>{stat.value}</p>
+            <p className={`text-2xl font-black tracking-tighter font-mono ${stat.color}`}>{stat.value}</p>
           </motion.div>
         ))}
       </motion.div>
@@ -92,7 +92,7 @@ export const UsageStats: React.FC = () => {
           <div className="p-6">
             <div className="flex items-center justify-between mb-8">
               <div>
-                <h3 className="text-2xl font-black text-brand-text tracking-tight">Load Distribution</h3>
+                <h3 className="text-xl font-black text-brand-text tracking-tight">Load Distribution</h3>
                 <p className="text-[11px] text-brand-text-muted font-bold uppercase tracking-widest mt-2">Exhaustion events over 24h</p>
               </div>
               <div className="px-3 py-1.5 border border-brand-accent text-[10px] font-black text-brand-accent uppercase tracking-widest flex items-center gap-2 rounded-md">
@@ -136,7 +136,7 @@ export const UsageStats: React.FC = () => {
           <div className="p-6">
             <div className="flex items-center justify-between mb-8">
               <div>
-                <h3 className="text-2xl font-black text-brand-text tracking-tight">Service Utilization</h3>
+                <h3 className="text-xl font-black text-brand-text tracking-tight">Service Utilization</h3>
                 <p className="text-[11px] text-brand-text-muted font-bold uppercase tracking-widest mt-2">Cluster activity by provider</p>
               </div>
               <TrendingUp size={20} className="text-brand-text-muted" strokeWidth={2.5} />
@@ -168,7 +168,7 @@ export const UsageStats: React.FC = () => {
       {/* Performance Table */}
       <motion.div variants={itemVariants} className="bg-brand-surface border border-brand-border rounded-xl mt-5 overflow-hidden">
         <div className="px-6 py-5 border-b border-brand-border flex items-center justify-between">
-          <h3 className="text-lg font-black text-brand-text tracking-tight uppercase">Node Performance Ranking</h3>
+          <h3 className="text-base font-black text-brand-text tracking-tight uppercase">Node Performance Ranking</h3>
           <span className="px-3 py-1.5 border border-brand-border text-[10px] font-black text-brand-text-muted uppercase tracking-widest rounded-md">
             Sort: Activity
           </span>
@@ -217,7 +217,7 @@ export const UsageStats: React.FC = () => {
                     </span>
                   </td>
                   <td className="px-6 py-4 text-right">
-                    <span className="text-2xl font-black text-brand-text font-mono group-hover:text-brand-accent transition-colors">{account.exhaustCount}</span>
+                    <span className="text-xl font-black text-brand-text font-mono group-hover:text-brand-accent transition-colors">{account.exhaustCount}</span>
                   </td>
                 </motion.tr>
               ))}

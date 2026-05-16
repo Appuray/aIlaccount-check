@@ -113,7 +113,7 @@ export const CommandPalette: React.FC = () => {
               initial={{ opacity: 0, scale: 0.95, y: -20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: -20 }}
-              className="w-full max-w-2xl bg-brand-surface border border-brand-border overflow-hidden pointer-events-auto rounded-none"
+              className="w-full max-w-2xl bg-brand-surface border border-brand-border overflow-hidden pointer-events-auto rounded-xl shadow-2xl"
               onKeyDown={handleKeyDown}
             >
               <div className="flex items-center px-4 py-4 border-b border-brand-border">
@@ -125,7 +125,7 @@ export const CommandPalette: React.FC = () => {
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
                 />
-                <div className="flex items-center gap-1.5 px-3 py-1.5 border border-brand-border text-[10px] font-black text-brand-text-muted uppercase rounded-none">
+                <div className="flex items-center gap-1.5 px-3 py-1.5 border border-brand-border text-[10px] font-black text-brand-text-muted uppercase rounded-lg">
                   ESC
                 </div>
               </div>
@@ -141,13 +141,13 @@ export const CommandPalette: React.FC = () => {
                           item.action();
                           setIsOpen(false);
                         }}
-                        className={`w-full flex items-center gap-4 px-4 py-3 transition-colors text-left rounded-none ${
+                        className={`w-full flex items-center gap-4 px-4 py-3 transition-colors text-left rounded-xl ${
                           index === selectedIndex 
                             ? 'bg-brand-text text-brand-surface' 
                             : 'text-brand-text-soft hover:bg-brand-surface-elevated'
                         }`}
                       >
-                        <div className={`p-2 ${index === selectedIndex ? '' : 'border border-brand-border'} rounded-none`}>
+                        <div className={`p-2 ${index === selectedIndex ? '' : 'border border-brand-border'} rounded-lg`}>
                           <item.icon size={18} className={index === selectedIndex ? 'text-brand-surface' : ''} />
                         </div>
                         <div className="flex-1">

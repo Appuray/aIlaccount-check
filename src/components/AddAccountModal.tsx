@@ -101,7 +101,7 @@ export const AddAccountModal: React.FC<AddAccountModalProps> = ({ isOpen, onClos
                   whileHover={{ scale: 1.1, rotate: 90 }}
                   whileTap={{ scale: 0.9 }}
                   onClick={onClose}
-                  className="p-2.5 text-brand-text-muted hover:text-brand-text hover:bg-brand-surface-elevated border border-brand-border transition-colors rounded-none"
+                  className="p-2.5 text-brand-text-muted hover:text-brand-text hover:bg-brand-surface-elevated border border-brand-border transition-colors rounded-xl"
                 >
                   <X size={18} strokeWidth={2.5} />
                 </motion.button>
@@ -115,7 +115,7 @@ export const AddAccountModal: React.FC<AddAccountModalProps> = ({ isOpen, onClos
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     maxLength={30}
-                    className="w-full bg-brand-bg border border-brand-border focus:border-brand-accent focus:outline-none transition-colors text-[15px] font-bold py-3.5 px-4 rounded-none"
+                    className="w-full bg-brand-surface border border-brand-border focus:border-brand-accent focus:outline-none transition-colors text-[15px] font-bold py-3.5 px-4 rounded-xl shadow-sm"
                     placeholder="e.g. Neural-Alpha-01"
                     autoFocus
                   />
@@ -127,7 +127,7 @@ export const AddAccountModal: React.FC<AddAccountModalProps> = ({ isOpen, onClos
                     <select
                       value={service}
                       onChange={(e) => setService(e.target.value as ServiceType)}
-                      className="w-full bg-brand-bg border border-brand-border focus:border-brand-accent focus:outline-none appearance-none cursor-pointer font-bold text-[13px] py-3.5 px-4 rounded-none"
+                      className="w-full bg-brand-surface border border-brand-border focus:border-brand-accent focus:outline-none appearance-none cursor-pointer font-bold text-[13px] py-3.5 px-4 rounded-xl shadow-sm"
                     >
                       <option value="gemini">Google Gemini</option>
                       <option value="chatgpt">ChatGPT</option>
@@ -145,7 +145,7 @@ export const AddAccountModal: React.FC<AddAccountModalProps> = ({ isOpen, onClos
                         max="365"
                         value={refreshCycle}
                         onChange={(e) => setRefreshCycle(parseInt(e.target.value) || 1)}
-                        className="w-full bg-brand-bg border border-brand-border focus:border-brand-accent focus:outline-none font-bold py-3.5 pl-4 pr-10 rounded-none"
+                        className="w-full bg-brand-surface border border-brand-border focus:border-brand-accent focus:outline-none font-bold py-3.5 pl-4 pr-10 rounded-xl shadow-sm"
                       />
                       <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[10px] font-bold text-brand-text-muted">DAYS</span>
                     </div>
@@ -154,15 +154,15 @@ export const AddAccountModal: React.FC<AddAccountModalProps> = ({ isOpen, onClos
 
                 <motion.div variants={itemVariants} className="space-y-3">
                   <label className="text-[10px] font-bold text-brand-text-soft uppercase tracking-[0.2em]">License Tier</label>
-                  <div className="flex gap-0 border border-brand-border">
+                  <div className="flex gap-2">
                     <motion.button
                       whileTap={{ scale: 0.97 }}
                       type="button"
                       onClick={() => setTier('pro')}
-                      className={`flex-1 py-3 text-[11px] font-bold uppercase tracking-widest transition-all flex items-center justify-center gap-2 rounded-none ${
+                      className={`flex-1 py-3 text-[11px] font-bold uppercase tracking-widest transition-all flex items-center justify-center gap-2 rounded-xl shadow-sm ${
                         tier === 'pro' 
                           ? 'bg-brand-text text-brand-surface' 
-                          : 'text-brand-text-muted hover:text-brand-text bg-brand-surface'
+                          : 'text-brand-text-muted hover:text-brand-text bg-brand-surface border border-brand-border hover:border-brand-text'
                       }`}
                     >
                       {tier === 'pro' && <Check size={14} strokeWidth={3} className="text-brand-accent" />}
@@ -172,10 +172,10 @@ export const AddAccountModal: React.FC<AddAccountModalProps> = ({ isOpen, onClos
                       whileTap={{ scale: 0.97 }}
                       type="button"
                       onClick={() => setTier('free')}
-                      className={`flex-1 py-3 text-[11px] font-bold uppercase tracking-widest transition-all flex items-center justify-center gap-2 rounded-none ${
+                      className={`flex-1 py-3 text-[11px] font-bold uppercase tracking-widest transition-all flex items-center justify-center gap-2 rounded-xl shadow-sm ${
                         tier === 'free' 
                           ? 'bg-brand-text text-brand-surface' 
-                          : 'text-brand-text-muted hover:text-brand-text bg-brand-surface'
+                          : 'text-brand-text-muted hover:text-brand-text bg-brand-surface border border-brand-border hover:border-brand-text'
                       }`}
                     >
                       {tier === 'free' && <Check size={14} strokeWidth={3} className="text-brand-accent" />}
@@ -193,7 +193,7 @@ export const AddAccountModal: React.FC<AddAccountModalProps> = ({ isOpen, onClos
                         whileTap={{ scale: 0.95 }}
                         type="button"
                         onClick={() => toggleTag(tag)}
-                        className={`px-4 py-2 text-[11px] font-bold uppercase tracking-widest transition-all border rounded-none ${
+                        className={`px-4 py-2 text-[11px] font-bold uppercase tracking-widest transition-all border rounded-xl shadow-sm ${
                           selectedTags.includes(tag)
                             ? 'bg-brand-text text-brand-surface border-brand-text'
                             : 'bg-brand-surface text-brand-text-muted border-brand-border hover:border-brand-text hover:text-brand-text'
@@ -210,7 +210,7 @@ export const AddAccountModal: React.FC<AddAccountModalProps> = ({ isOpen, onClos
                     whileTap={{ scale: 0.97 }}
                     type="submit"
                     disabled={!name.trim()}
-                    className="w-full flex items-center justify-center gap-2 py-4 text-[13px] font-black uppercase tracking-widest rounded-none bg-brand-accent text-brand-accent-fg hover:bg-brand-text transition-colors disabled:opacity-50 disabled:bg-brand-surface-elevated disabled:text-brand-text-muted"
+                    className="w-full flex items-center justify-center gap-2 py-4 text-[13px] font-black uppercase tracking-widest rounded-xl shadow-md bg-brand-accent text-brand-accent-fg hover:bg-brand-text transition-all hover:shadow-lg hover:-translate-y-0.5 disabled:opacity-50 disabled:bg-brand-surface-elevated disabled:text-brand-text-muted disabled:transform-none disabled:shadow-none"
                   >
                     Deploy to Cluster
                   </motion.button>

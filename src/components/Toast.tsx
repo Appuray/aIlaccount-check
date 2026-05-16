@@ -25,7 +25,7 @@ export const Toast: React.FC = () => {
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: 16, opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="bg-brand-text text-brand-surface border border-brand-border px-5 py-3.5 pointer-events-auto flex items-center justify-between gap-4 rounded-none"
+            className="bg-brand-text text-brand-surface border border-brand-border px-5 py-3.5 pointer-events-auto flex items-center justify-between gap-4 rounded-xl shadow-lg"
           >
             <span className="text-sm">{toast}</span>
             <button 

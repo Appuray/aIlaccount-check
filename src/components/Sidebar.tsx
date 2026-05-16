@@ -31,13 +31,13 @@ export const Sidebar: React.FC<{ isOpen: boolean; setIsOpen: (val: boolean) => v
           <motion.div 
             whileHover={{ rotate: 90 }}
             transition={{ type: "spring", stiffness: 300, damping: 20 }}
-            className="w-10 h-10 bg-brand-text flex items-center justify-center cursor-pointer rounded-none"
+            className="w-10 h-10 bg-brand-text flex items-center justify-center cursor-pointer rounded-xl"
           >
-            <div className="w-3 h-3 bg-brand-surface" />
+            <div className="w-3 h-3 bg-brand-surface rounded-sm" />
           </motion.div>
           <div>
-            <h1 className="text-2xl font-black tracking-tighter text-brand-text uppercase">QuotaCheck</h1>
-            <p className="text-[10px] text-brand-text-muted font-bold uppercase tracking-[0.3em] mt-1">Control Panel</p>
+            <h1 className="text-xl font-black tracking-tighter text-brand-text uppercase">QuotaCheck</h1>
+            <p className="text-[9px] text-brand-text-muted font-bold uppercase tracking-[0.3em] mt-1">Control Panel</p>
           </div>
         </div>
       </div>
@@ -53,10 +53,10 @@ export const Sidebar: React.FC<{ isOpen: boolean; setIsOpen: (val: boolean) => v
               setActiveView(item.id);
               if (window.innerWidth < 1024) setIsOpen(false);
             }}
-            className={`relative w-full flex items-center gap-4 px-6 py-4 rounded-none text-[13px] font-black tracking-widest uppercase transition-colors border-l-2 ${
+            className={`relative w-full flex items-center gap-4 px-6 py-4 rounded-xl text-[13px] font-black tracking-widest uppercase transition-all ${
               activeView === item.id 
-                ? 'text-brand-text border-brand-accent bg-brand-surface-elevated/50' 
-                : 'text-brand-text-muted border-transparent hover:text-brand-text hover:bg-brand-surface-elevated/20'
+                ? 'text-brand-text bg-brand-surface-elevated shadow-sm' 
+                : 'text-brand-text-muted hover:text-brand-text hover:bg-brand-surface-elevated/50'
             }`}
           >
             <span className="relative z-10 flex items-center gap-4">
@@ -73,7 +73,7 @@ export const Sidebar: React.FC<{ isOpen: boolean; setIsOpen: (val: boolean) => v
             whileHover={{ x: 4, backgroundColor: "var(--color-brand-surface-elevated)" }}
             whileTap={{ scale: 0.98 }}
             onClick={handleLogout}
-            className="w-full flex items-center gap-4 px-6 py-4 text-[12px] font-black tracking-widest text-brand-danger uppercase transition-colors"
+            className="w-full flex items-center gap-4 px-6 py-4 rounded-xl text-[12px] font-black tracking-widest text-brand-danger uppercase transition-colors"
           >
             <LogOut size={16} strokeWidth={2.5} />
             Disconnect

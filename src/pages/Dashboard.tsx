@@ -46,7 +46,7 @@ const BulkToolbar: React.FC = () => {
         <motion.button 
           whileTap={{ scale: 0.97 }}
           onClick={bulkResetAccounts} 
-          className="flex items-center gap-2 py-3 px-6 bg-brand-surface text-brand-text border border-brand-border font-bold text-[12px] uppercase tracking-widest hover:bg-brand-surface-elevated hover:border-brand-text transition-colors rounded-none"
+          className="flex items-center gap-2 py-3 px-6 bg-brand-surface text-brand-text border border-brand-border font-bold text-[12px] uppercase tracking-widest hover:bg-brand-surface-elevated hover:border-brand-text transition-colors rounded-lg shadow-sm"
         >
           <RefreshCw size={14} strokeWidth={2.5} />
           <span className="hidden sm:inline">Reset</span>
@@ -54,7 +54,7 @@ const BulkToolbar: React.FC = () => {
         <motion.button 
           whileTap={{ scale: 0.97 }}
           onClick={bulkMarkExhausted} 
-          className="flex items-center gap-2 py-3 px-6 bg-brand-surface text-brand-text border border-brand-border font-bold text-[12px] uppercase tracking-widest hover:border-brand-accent hover:text-brand-accent transition-colors rounded-none"
+          className="flex items-center gap-2 py-3 px-6 bg-brand-surface text-brand-text border border-brand-border font-bold text-[12px] uppercase tracking-widest hover:border-brand-accent hover:text-brand-accent transition-colors rounded-lg shadow-sm"
         >
           <Zap size={14} strokeWidth={2.5} />
           <span className="hidden sm:inline">Exhaust</span>
@@ -62,7 +62,7 @@ const BulkToolbar: React.FC = () => {
         <motion.button 
           whileTap={{ scale: 0.97 }}
           onClick={bulkDeleteAccounts} 
-          className="flex items-center gap-2 py-3 px-6 bg-brand-text text-brand-surface font-bold text-[12px] uppercase tracking-widest hover:bg-brand-accent transition-colors rounded-none"
+          className="flex items-center gap-2 py-3 px-6 bg-brand-text text-brand-surface font-bold text-[12px] uppercase tracking-widest hover:bg-brand-accent transition-colors rounded-lg shadow-sm"
         >
           <Trash2 size={14} strokeWidth={2.5} />
           <span className="hidden sm:inline">Delete</span>
@@ -93,7 +93,7 @@ const Stats: React.FC = () => {
           <div className="w-2 h-2 rounded-full bg-brand-success" />
         </div>
         <div>
-          <p className="text-5xl font-black tracking-tighter text-brand-text mb-3">{activeCount}</p>
+          <p className="text-4xl font-black tracking-tighter text-brand-text mb-3">{activeCount}</p>
           <div className="flex items-center gap-4">
             <div className="flex-1 h-1.5 bg-brand-border overflow-hidden rounded-full">
               <motion.div 
@@ -117,7 +117,7 @@ const Stats: React.FC = () => {
           <div className="w-2 h-2 rounded-full bg-brand-warning" />
         </div>
         <div>
-          <p className="text-5xl font-black tracking-tighter text-brand-text mb-3">{cooldownCount}</p>
+          <p className="text-4xl font-black tracking-tighter text-brand-text mb-3">{cooldownCount}</p>
           <div className="flex items-center gap-4">
             <div className="flex-1 h-1.5 bg-brand-border overflow-hidden rounded-full">
               <motion.div 
@@ -211,7 +211,7 @@ export const Dashboard: React.FC = () => {
           </button>
         </header>
 
-        <main className="flex-1 w-full mx-auto px-6 py-12 lg:px-16 lg:py-20 xl:px-24">
+        <main className="flex-1 w-full mx-auto px-6 py-8 lg:px-16 lg:py-12 xl:px-24">
           <div className="animate-slide-up max-w-[1400px]">
             <Header />
             
@@ -300,7 +300,7 @@ export const Dashboard: React.FC = () => {
       
       <button
         onClick={() => setIsModalOpen(true)}
-        className="fixed bottom-8 right-8 w-16 h-16 bg-brand-text text-brand-surface flex items-center justify-center hover:bg-brand-accent transition-colors z-50 rounded-none shadow-[10px_10px_0px_rgba(24,24,27,0.1)] hover:shadow-[10px_10px_0px_rgba(255,59,0,0.2)] hover:-translate-y-1 hover:-translate-x-1"
+        className="fixed bottom-8 right-8 w-16 h-16 bg-brand-text text-brand-surface flex items-center justify-center hover:bg-brand-accent transition-all z-50 rounded-2xl shadow-lg hover:shadow-xl hover:-translate-y-1 hover:scale-105"
       >
         <Plus size={28} strokeWidth={3} />
       </button>

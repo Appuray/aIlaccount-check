@@ -41,40 +41,40 @@ export const Settings: React.FC = () => {
       {/* Header */}
       <div className="pb-12 border-b border-brand-border">
         <p className="text-[11px] font-bold text-brand-text-muted uppercase tracking-[0.3em] mb-6">Configuration</p>
-        <h2 className="text-5xl font-black text-brand-text tracking-tighter">System Settings</h2>
-        <p className="text-[15px] text-brand-text-soft mt-4 font-medium">Manage preferences and cluster data.</p>
+        <h2 className="text-3xl font-black text-brand-text tracking-tighter">System Settings</h2>
+        <p className="text-[14px] text-brand-text-soft mt-3 font-medium">Manage preferences and cluster data.</p>
       </div>
 
       {/* Appearance */}
       <div className="py-8 border-b border-brand-border">
         <h3 className="text-[13px] font-black text-brand-text uppercase tracking-widest mb-6">Appearance</h3>
-        <div className="flex gap-0 border border-brand-border max-w-sm">
+        <div className="flex gap-2 max-w-sm">
           <button
             onClick={() => setTheme('light')}
-            className={`flex-1 py-3 text-[11px] font-black uppercase tracking-widest transition-colors flex items-center justify-center gap-2 rounded-none ${
+            className={`flex-1 py-3 text-[11px] font-black uppercase tracking-widest transition-all flex items-center justify-center gap-2 rounded-xl ${
               theme === 'light' 
-                ? 'bg-brand-text text-brand-surface' 
-                : 'text-brand-text-muted hover:text-brand-text bg-brand-surface'
+                ? 'bg-brand-text text-brand-surface shadow-sm' 
+                : 'text-brand-text-muted hover:text-brand-text bg-brand-surface hover:bg-brand-surface-elevated'
             }`}
           >
             <Sun size={14} strokeWidth={2.5} /> Light
           </button>
           <button
             onClick={() => setTheme('dark')}
-            className={`flex-1 py-3 text-[11px] font-black uppercase tracking-widest transition-colors flex items-center justify-center gap-2 rounded-none border-x border-brand-border ${
+            className={`flex-1 py-3 text-[11px] font-black uppercase tracking-widest transition-all flex items-center justify-center gap-2 rounded-xl ${
               theme === 'dark' 
-                ? 'bg-brand-text text-brand-surface' 
-                : 'text-brand-text-muted hover:text-brand-text bg-brand-surface'
+                ? 'bg-brand-text text-brand-surface shadow-sm' 
+                : 'text-brand-text-muted hover:text-brand-text bg-brand-surface hover:bg-brand-surface-elevated'
             }`}
           >
             <Moon size={14} strokeWidth={2.5} /> Dark
           </button>
           <button
             onClick={() => setTheme('system')}
-            className={`flex-1 py-3 text-[11px] font-black uppercase tracking-widest transition-colors flex items-center justify-center gap-2 rounded-none ${
+            className={`flex-1 py-3 text-[11px] font-black uppercase tracking-widest transition-all flex items-center justify-center gap-2 rounded-xl ${
               theme === 'system' 
-                ? 'bg-brand-text text-brand-surface' 
-                : 'text-brand-text-muted hover:text-brand-text bg-brand-surface'
+                ? 'bg-brand-text text-brand-surface shadow-sm' 
+                : 'text-brand-text-muted hover:text-brand-text bg-brand-surface hover:bg-brand-surface-elevated'
             }`}
           >
             <Monitor size={14} strokeWidth={2.5} /> System
@@ -100,7 +100,7 @@ export const Settings: React.FC = () => {
               type={showKeys ? "text" : "password"}
               value={apiKeys.gemini}
               onChange={(e) => setApiKey('gemini', e.target.value)}
-              className="w-full bg-brand-bg border border-brand-border px-4 py-3 text-[13px] font-mono focus:border-brand-accent outline-none transition-colors rounded-none"
+              className="w-full bg-brand-surface border border-brand-border px-4 py-3 text-[13px] font-mono focus:border-brand-accent outline-none transition-colors rounded-xl shadow-sm"
               placeholder="AI_STUDIO_KEY_..."
             />
           </div>
@@ -110,7 +110,7 @@ export const Settings: React.FC = () => {
               type={showKeys ? "text" : "password"}
               value={apiKeys.openai}
               onChange={(e) => setApiKey('openai', e.target.value)}
-              className="w-full bg-brand-bg border border-brand-border px-4 py-3 text-[13px] font-mono focus:border-brand-accent outline-none transition-colors rounded-none"
+              className="w-full bg-brand-surface border border-brand-border px-4 py-3 text-[13px] font-mono focus:border-brand-accent outline-none transition-colors rounded-xl shadow-sm"
               placeholder="sk-..."
             />
           </div>
@@ -126,13 +126,13 @@ export const Settings: React.FC = () => {
         <div className="flex flex-wrap gap-3">
           <button
             onClick={handleExport}
-            className="py-3 px-6 text-[11px] font-black uppercase tracking-widest border border-brand-border text-brand-text hover:bg-brand-surface-elevated transition-colors flex items-center gap-2 rounded-none"
+            className="py-3 px-6 text-[11px] font-black uppercase tracking-widest bg-brand-surface border border-brand-border text-brand-text hover:bg-brand-surface-elevated transition-colors flex items-center gap-2 rounded-xl shadow-sm"
           >
             <Download size={14} /> Export Nodes
           </button>
           <button
             onClick={() => fileInputRef.current?.click()}
-            className="py-3 px-6 text-[11px] font-black uppercase tracking-widest border border-brand-border text-brand-text hover:bg-brand-surface-elevated transition-colors flex items-center gap-2 rounded-none"
+            className="py-3 px-6 text-[11px] font-black uppercase tracking-widest bg-brand-surface border border-brand-border text-brand-text hover:bg-brand-surface-elevated transition-colors flex items-center gap-2 rounded-xl shadow-sm"
           >
             <Upload size={14} /> Import Config
           </button>
@@ -166,7 +166,7 @@ export const Settings: React.FC = () => {
           </div>
           <button
             onClick={bulkReset}
-            className="w-full py-3 text-[11px] font-black uppercase tracking-widest border border-brand-border text-brand-text hover:bg-brand-text hover:text-brand-surface transition-colors rounded-none"
+            className="w-full py-3 text-[11px] font-black uppercase tracking-widest bg-brand-surface border border-brand-border text-brand-text hover:bg-brand-text hover:text-brand-surface transition-colors rounded-xl shadow-sm"
           >
             Reset Entire Cluster
           </button>
@@ -188,7 +188,7 @@ export const Settings: React.FC = () => {
           </div>
           <button
             onClick={clearHistory}
-            className="w-full py-3 text-[11px] font-black uppercase tracking-widest border border-brand-accent text-brand-accent hover:bg-brand-accent hover:text-brand-surface transition-colors rounded-none"
+            className="w-full py-3 text-[11px] font-black uppercase tracking-widest bg-brand-surface border border-brand-accent text-brand-accent hover:bg-brand-accent hover:text-brand-surface transition-colors rounded-xl shadow-sm"
           >
             Purge Logs
           </button>
@@ -211,12 +211,12 @@ export const Settings: React.FC = () => {
             )}
           </div>
         </div>
-        <div className="space-y-0 max-h-[300px] overflow-y-auto scroll-hide border border-brand-border">
+        <div className="space-y-0 max-h-[300px] overflow-y-auto scroll-hide border border-brand-border rounded-xl bg-brand-surface shadow-sm">
           {accounts.map((acc) => (
             <div key={acc.id} className="flex items-center justify-between px-6 py-4 border-b border-brand-border last:border-b-0 hover:bg-brand-surface-elevated transition-colors">
               <div className="flex items-center gap-4">
                 <div 
-                  className="w-3 h-3 rounded-none"
+                  className="w-3 h-3 rounded-full"
                   style={{ backgroundColor: acc.color }}
                 />
                 <span className="text-[14px] font-bold text-brand-text">{acc.name}</span>

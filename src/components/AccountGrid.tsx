@@ -36,15 +36,15 @@ export const AccountGrid: React.FC = () => {
         <div className="flex flex-col sm:flex-row gap-6 w-full xl:w-auto">
           <div className="flex items-center gap-4">
             <span className="text-[10px] font-bold text-brand-text-muted uppercase tracking-[0.3em]">Status</span>
-            <div className="flex items-center gap-0">
+            <div className="flex items-center gap-1">
               {(['all', 'active', 'cooldown'] as const).map((status) => (
                 <button
                   key={status}
                   onClick={() => setSelectedStatus(status)}
-                  className={`px-4 py-2 text-[11px] font-black uppercase tracking-widest transition-colors whitespace-nowrap rounded-none border-b-2 ${
+                  className={`px-4 py-2 text-[11px] font-black uppercase tracking-widest transition-colors whitespace-nowrap rounded-lg ${
                     selectedStatus === status 
-                      ? 'text-brand-text border-brand-accent' 
-                      : 'text-brand-text-muted border-transparent hover:text-brand-text'
+                      ? 'bg-brand-text text-brand-surface shadow-sm' 
+                      : 'text-brand-text-muted hover:text-brand-text hover:bg-brand-surface-elevated'
                   }`}
                 >
                   {status === 'active' ? 'Operational' : status === 'cooldown' ? 'Exhausted' : 'All'}
@@ -55,15 +55,15 @@ export const AccountGrid: React.FC = () => {
 
           <div className="flex items-center gap-4">
             <span className="text-[10px] font-bold text-brand-text-muted uppercase tracking-[0.3em]">Caps</span>
-            <div className="flex items-center gap-0 w-full sm:w-auto overflow-x-auto scroll-hide pb-1 sm:pb-0">
+            <div className="flex items-center gap-1 w-full sm:w-auto overflow-x-auto scroll-hide pb-1 sm:pb-0">
               {tags.map((tag) => (
                 <button
                   key={tag}
                   onClick={() => setSelectedTag(tag)}
-                  className={`px-4 py-2 text-[11px] font-black uppercase tracking-widest transition-colors whitespace-nowrap rounded-none border-b-2 ${
+                  className={`px-4 py-2 text-[11px] font-black uppercase tracking-widest transition-colors whitespace-nowrap rounded-lg ${
                     selectedTag === tag 
-                      ? 'text-brand-text border-brand-accent' 
-                      : 'text-brand-text-muted border-transparent hover:text-brand-text'
+                      ? 'bg-brand-text text-brand-surface shadow-sm' 
+                      : 'text-brand-text-muted hover:text-brand-text hover:bg-brand-surface-elevated'
                   }`}
                 >
                   {tag}
@@ -89,8 +89,8 @@ export const AccountGrid: React.FC = () => {
           <div className="w-16 h-16 bg-brand-surface-elevated border border-brand-border flex items-center justify-center mx-auto mb-8 rounded-xl">
             <LayoutGrid size={32} strokeWidth={1.5} className="text-brand-text-muted" />
           </div>
-          <h3 className="text-3xl font-black text-brand-text mb-3 tracking-tighter">Cluster Empty</h3>
-          <p className="text-[14px] text-brand-text-soft font-medium max-w-[320px] mx-auto leading-relaxed">Deploy your first node to begin managing distributed AI quotas.</p>
+          <h3 className="text-2xl font-black text-brand-text mb-2 tracking-tighter">Cluster Empty</h3>
+          <p className="text-[13px] text-brand-text-soft font-medium max-w-[320px] mx-auto leading-relaxed">Deploy your first node to begin managing distributed AI quotas.</p>
         </motion.div>
       ) : filteredAccounts.length === 0 ? (
         <motion.div 
@@ -102,8 +102,8 @@ export const AccountGrid: React.FC = () => {
           <div className="w-16 h-16 bg-brand-surface-elevated border border-brand-border flex items-center justify-center mx-auto mb-8 rounded-xl">
             <Search size={32} strokeWidth={1.5} className="text-brand-text-muted" />
           </div>
-          <h3 className="text-3xl font-black text-brand-text mb-3 tracking-tighter">No Matching Nodes</h3>
-          <p className="text-[14px] text-brand-text-soft font-medium mb-12 max-w-[360px] mx-auto leading-relaxed">Refine your capability tags or cluster status filters to find specific nodes.</p>
+          <h3 className="text-2xl font-black text-brand-text mb-2 tracking-tighter">No Matching Nodes</h3>
+          <p className="text-[13px] text-brand-text-soft font-medium mb-10 max-w-[360px] mx-auto leading-relaxed">Refine your capability tags or cluster status filters to find specific nodes.</p>
           <motion.button
             whileTap={{ scale: 0.97 }}
             onClick={() => {

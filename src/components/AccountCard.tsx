@@ -93,7 +93,7 @@ export const AccountCard: React.FC<AccountCardProps> = ({ account }) => {
             <motion.button 
               whileTap={{ scale: 0.9 }}
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="p-2 text-brand-text-muted hover:text-brand-text transition-colors rounded-none"
+              className="p-2 text-brand-text-muted hover:text-brand-text hover:bg-brand-surface-elevated transition-colors rounded-lg"
             >
               <MoreHorizontal size={20} strokeWidth={2.5} />
             </motion.button>

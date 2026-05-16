@@ -44,7 +44,7 @@ export const Header: React.FC = () => {
   return (
     <header className="space-y-0 pb-0 animate-slide-up">
       {/* Hero Zone */}
-      <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 pb-12 border-b border-brand-border">
+      <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-6 pb-8 border-b border-brand-border">
         <motion.div 
           initial={{ opacity: 0, x: -10 }}
           animate={{ opacity: 1, x: 0 }}
@@ -54,11 +54,11 @@ export const Header: React.FC = () => {
             <motion.div 
               animate={{ opacity: [0.5, 1, 0.5] }}
               transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-              className="w-2 h-2 bg-brand-accent" 
+              className="w-2 h-2 rounded-full bg-brand-accent" 
             />
             <p className="text-[11px] font-bold text-brand-text-muted uppercase tracking-[0.3em]">Network Control</p>
           </div>
-          <h1 className="text-6xl lg:text-7xl font-black tracking-tighter text-brand-text leading-[0.9]">
+          <h1 className="text-4xl lg:text-5xl font-black tracking-tighter text-brand-text leading-[1]">
             Account<br />Nodes
           </h1>
           <p className="text-[15px] text-brand-text-soft mt-8 leading-relaxed max-w-md font-medium">
@@ -66,21 +66,20 @@ export const Header: React.FC = () => {
           </p>
         </motion.div>
 
-        <div className="flex flex-col items-stretch gap-4 min-w-[320px]">
-          <div className="relative group">
-            <div className="absolute left-0 top-1/2 -translate-y-1/2 pointer-events-none text-brand-text-muted group-focus-within:text-brand-accent transition-colors flex items-center justify-center z-10 pl-4">
-              <Search size={18} strokeWidth={2.5} />
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-end gap-3 w-full lg:w-auto mt-6 lg:mt-0 lg:ml-auto self-end">
+          <div className="relative group flex-1 sm:w-64">
+            <div className="absolute left-0 top-1/2 -translate-y-1/2 pointer-events-none text-brand-text-muted transition-colors flex items-center justify-center z-10 pl-3">
+              <Search size={14} strokeWidth={2.5} />
             </div>
             <div className="relative">
               <input 
-                id="search-input"
                 type="text" 
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-12 pr-4 py-4 bg-brand-surface border border-brand-border text-brand-text text-[13px] font-bold tracking-wide focus:border-brand-accent focus:outline-none transition-colors rounded-none"
+                className="w-full pl-9 pr-3 py-2.5 bg-brand-surface border border-brand-border text-brand-text text-[11px] font-bold tracking-wide focus:border-brand-accent focus:outline-none transition-colors rounded-lg shadow-sm"
               />
               {!searchQuery && (
-                <div className="absolute inset-y-0 left-12 flex items-center pointer-events-none z-0 overflow-hidden">
+                <div className="absolute inset-y-0 left-9 flex items-center pointer-events-none z-0 overflow-hidden">
                   <AnimatePresence mode="wait">
                     <motion.span
                       key={placeholderIndex}
@@ -88,7 +87,7 @@ export const Header: React.FC = () => {
                       animate={{ y: 0, opacity: 1 }}
                       exit={{ y: -10, opacity: 0 }}
                       transition={{ duration: 0.3, ease: "easeOut" }}
-                      className="text-brand-text-muted text-[13px] font-bold tracking-wide whitespace-nowrap"
+                      className="text-brand-text-muted text-[11px] font-bold tracking-wide whitespace-nowrap"
                     >
                       {placeholders[placeholderIndex]}
                     </motion.span>
@@ -100,56 +99,58 @@ export const Header: React.FC = () => {
           <motion.button 
             whileTap={{ scale: 0.97 }}
             onClick={handleSmartSelect}
-            className="group flex items-center justify-between w-full px-6 py-4 font-black text-[12px] tracking-widest uppercase bg-brand-text text-brand-surface hover:bg-brand-accent transition-colors rounded-none"
+            className="flex items-center justify-center gap-2 px-5 py-2.5 font-black text-[10px] tracking-widest uppercase bg-brand-text text-brand-surface hover:bg-brand-accent transition-colors rounded-lg shadow-sm whitespace-nowrap"
           >
-            Smart Select
-            <Zap size={18} fill="currentColor" strokeWidth={2} />
+            <span>Smart Select</span>
+            <Zap size={14} fill="currentColor" strokeWidth={2} />
           </motion.button>
         </div>
       </div>
 
       {/* Filters Bar */}
-      <div className="flex flex-col md:flex-row items-start md:items-center gap-0 border-b border-brand-border">
-        <div className="flex items-center gap-4 pr-8 py-5 md:border-r border-brand-border">
-          <span className="text-[10px] font-bold text-brand-text-muted uppercase tracking-[0.3em]">Service</span>
-          <div className="flex gap-0">
-            {['all', 'gemini', 'chatgpt', 'claude'].map((s) => (
-              <motion.button
-                key={s}
-                whileTap={{ scale: 0.97 }}
-                onClick={() => setSelectedService(s as any)}
-                className={`px-4 py-2 text-[11px] font-black uppercase tracking-widest transition-colors rounded-none border-b-2 ${
-                  selectedService === s 
-                    ? 'text-brand-text border-brand-accent' 
-                    : 'text-brand-text-muted border-transparent hover:text-brand-text'
-                }`}
-              >
-                {s}
-              </motion.button>
-            ))}
+      <div className="flex flex-col xl:flex-row items-start xl:items-center justify-between border-b border-brand-border">
+        <div className="flex flex-col md:flex-row items-start md:items-center w-full xl:w-auto">
+          <div className="flex items-center gap-4 pr-8 py-5 md:border-r border-brand-border w-full md:w-auto">
+            <span className="text-[10px] font-bold text-brand-text-muted uppercase tracking-[0.3em] min-w-[60px]">Service</span>
+            <div className="flex gap-1 overflow-x-auto scroll-hide pb-1 md:pb-0">
+              {['all', 'gemini', 'chatgpt', 'claude'].map((s) => (
+                <motion.button
+                  key={s}
+                  whileTap={{ scale: 0.97 }}
+                  onClick={() => setSelectedService(s as any)}
+                  className={`px-4 py-2 text-[11px] font-black uppercase tracking-widest transition-all rounded-lg whitespace-nowrap ${
+                    selectedService === s 
+                      ? 'bg-brand-text text-brand-surface shadow-sm' 
+                      : 'text-brand-text-muted hover:text-brand-text hover:bg-brand-surface-elevated'
+                  }`}
+                >
+                  {s}
+                </motion.button>
+              ))}
+            </div>
           </div>
-        </div>
-        <div className="flex items-center gap-4 pl-0 md:pl-8 py-5">
-          <span className="text-[10px] font-bold text-brand-text-muted uppercase tracking-[0.3em]">Status</span>
-          <div className="flex gap-0">
-            {[
-              { id: 'all', label: 'ALL' },
-              { id: 'active', label: 'ACTIVE' },
-              { id: 'cooldown', label: 'COOLDOWN' }
-            ].map((st) => (
-              <motion.button
-                key={st.id}
-                whileTap={{ scale: 0.97 }}
-                onClick={() => setSelectedStatus(st.id as any)}
-                className={`px-4 py-2 text-[11px] font-black uppercase tracking-widest transition-colors rounded-none border-b-2 ${
-                  selectedStatus === st.id 
-                    ? 'text-brand-text border-brand-accent' 
-                    : 'text-brand-text-muted border-transparent hover:text-brand-text'
-                }`}
-              >
-                {st.label}
-              </motion.button>
-            ))}
+          <div className="flex items-center gap-4 pl-0 md:pl-8 py-5 w-full md:w-auto border-t md:border-t-0 border-brand-border">
+            <span className="text-[10px] font-bold text-brand-text-muted uppercase tracking-[0.3em] min-w-[60px]">Status</span>
+            <div className="flex gap-1 overflow-x-auto scroll-hide pb-1 md:pb-0">
+              {[
+                { id: 'all', label: 'ALL' },
+                { id: 'active', label: 'ACTIVE' },
+                { id: 'cooldown', label: 'COOLDOWN' }
+              ].map((st) => (
+                <motion.button
+                  key={st.id}
+                  whileTap={{ scale: 0.97 }}
+                  onClick={() => setSelectedStatus(st.id as any)}
+                  className={`px-4 py-2 text-[11px] font-black uppercase tracking-widest transition-all rounded-lg whitespace-nowrap ${
+                    selectedStatus === st.id 
+                      ? 'bg-brand-text text-brand-surface shadow-sm' 
+                      : 'text-brand-text-muted hover:text-brand-text hover:bg-brand-surface-elevated'
+                  }`}
+                >
+                  {st.label}
+                </motion.button>
+              ))}
+            </div>
           </div>
         </div>
       </div>
@@ -161,7 +162,7 @@ export const Header: React.FC = () => {
         variants={{
           visible: { transition: { staggerChildren: 0.08 } }
         }}
-        className="grid grid-cols-2 sm:grid-cols-4 gap-0 border-b border-brand-border"
+        className="grid grid-cols-2 sm:grid-cols-4 gap-4 py-8"
       >
         <StatCard label="Available" value={availableCount} color="text-brand-success" />
         <StatCard label="Cooldown" value={exhaustedCount} color="text-brand-accent" />
@@ -178,10 +179,10 @@ const StatCard: React.FC<{ label: string; value: number; color: string }> = ({ l
       hidden: { opacity: 0, y: 10 },
       visible: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 300, damping: 25 } }
     }}
-    className="py-8 px-6 border-r border-brand-border last:border-r-0 bg-brand-surface hover:bg-brand-surface-elevated transition-colors cursor-default"
+    className="py-6 px-6 border border-brand-border rounded-xl bg-brand-surface hover:bg-brand-surface-elevated transition-colors cursor-default shadow-sm"
   >
-    <p className="text-[10px] font-bold text-brand-text-muted uppercase tracking-[0.3em] mb-3">{label}</p>
-    <p className={`text-5xl font-black tracking-tighter font-mono ${color}`}>{value}</p>
+    <p className="text-[10px] font-bold text-brand-text-muted uppercase tracking-widest mb-2">{label}</p>
+    <p className={`text-3xl font-black tracking-tighter font-mono ${color}`}>{value}</p>
   </motion.div>
 );
 
