@@ -24,14 +24,29 @@ export const AccountCard: React.FC<AccountCardProps> = ({ account }) => {
   const isSelected = selectedAccounts.includes(account.id);
   const isExhausted = account.resetAt !== null;
 
-  const getDaysUntilRefresh = () => {
-    if (!account.lastRefreshedAt) return 0;
+  const getRefreshInfo = () => {
+    if (!account.lastRefreshedAt) return { daysLeft: 0, refreshDate: null, relativeStr: '—' };
     const refreshTime = account.lastRefreshedAt + (account.refreshCycleDays || 1) * 24 * 60 * 60 * 1000;
     const diff = refreshTime - Date.now();
-    return Math.max(0, Math.ceil(diff / (24 * 60 * 60 * 1000)));
+    const daysLeft = Math.max(0, Math.ceil(diff / (24 * 60 * 60 * 1000)));
+    const refreshDate = new Date(refreshTime);
+    
+    // Build relative string
+    let relativeStr = '—';
+    if (diff <= 0) {
+      relativeStr = 'Now';
+    } else if (diff < 60 * 60 * 1000) {
+      relativeStr = `${Math.ceil(diff / (60 * 1000))}m left`;
+    } else if (diff < 24 * 60 * 60 * 1000) {
+      relativeStr = `${Math.ceil(diff / (60 * 60 * 1000))}h left`;
+    } else {
+      relativeStr = `${daysLeft}d left`;
+    }
+    
+    return { daysLeft, refreshDate, relativeStr };
   };
 
-  const daysLeft = getDaysUntilRefresh();
+  const { refreshDate, relativeStr } = getRefreshInfo();
   const usageCount = account.usageCount || 0;
   const maxDailyUses = account.maxDailyUses || 0;
 
@@ -196,10 +211,21 @@ export const AccountCard: React.FC<AccountCardProps> = ({ account }) => {
               </div>
               <span className="text-[12px] font-mono font-black text-brand-text w-12 tabular-nums text-right">{account.health}%</span>
             </div>
-            <div className="flex items-center gap-2 ml-4 px-2.5 py-1 border border-brand-border rounded-md">
-              <span className="text-[11px] font-mono font-black text-brand-text-muted tabular-nums">{daysLeft}d</span>
+            <div className="flex items-center gap-1.5 ml-4 px-2.5 py-1 border border-brand-border rounded-md">
+              <span className="text-[10px] font-mono font-black text-brand-accent tabular-nums">{relativeStr}</span>
             </div>
           </div>
+
+          {/* Exact Refresh Date */}
+          {refreshDate && (
+            <div className="flex items-center gap-2 px-3 py-2 bg-brand-surface-elevated border border-brand-border rounded-lg">
+              <RefreshCw size={10} className="text-brand-text-muted shrink-0" />
+              <span className="text-[10px] font-bold text-brand-text-muted">Refreshes:</span>
+              <span className="text-[10px] font-mono font-black text-brand-text">
+                {refreshDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}, {refreshDate.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })}
+              </span>
+            </div>
+          )}
 
           {/* Usage & Limit Indicator */}
           <div className="flex items-center gap-2 flex-wrap">
