@@ -36,8 +36,21 @@
   --color-text-muted: var(--color-brand-text-muted);
 }
 
-/* Dark mode is disabled to enforce the Warm Ivory aesthetic globally */
+/* PREMIUM DARK THEME — Warm Charcoal / Espresso */
+.dark {
+  --color-brand-bg: #1C1917;            /* Dark Charcoal */
+  --color-brand-surface: #292524;       /* Stone 800 */
+  --color-brand-surface-elevated: #44403C; /* Stone 700 */
+  --color-brand-border: rgba(234, 231, 224, 0.1); /* Warm Whisper */
+  --color-brand-border-strong: rgba(234, 231, 224, 0.2);
+  
+  --color-brand-accent: #EA580C;        /* Bright Burnt Orange */
+  --color-brand-accent-fg: #1C1917;
 
+  --color-brand-text: #EAE7E0;          /* Warm Ivory */
+  --color-brand-text-soft: #D6D2C4;     /* Soft Ivory */
+  --color-brand-text-muted: #A8A29E;    /* Stone 400 */
+}
 body {
   background: var(--color-brand-bg);
   color: var(--color-brand-text);
