@@ -20,6 +20,7 @@ export const useStore = create<AppState>()(
       selectedAccounts: [],
       theme: 'system',
       user: null,
+      isAuthInitialized: false,
       apiKeys: {
         gemini: '',
         openai: '',
@@ -45,16 +46,17 @@ export const useStore = create<AppState>()(
         if (isFirebaseConfigured) {
           auth.onAuthStateChanged((user: any) => {
             if (user) {
-              set({ user: { uid: user.uid, email: user.email } });
+              set({ user: { uid: user.uid, email: user.email }, isAuthInitialized: true });
               dbService.subscribeToAccounts(user.uid, (accounts) => {
                 get().checkAndReset(accounts);
               });
             } else {
-              set({ user: null, accounts: [] });
+              set({ user: null, accounts: [], isAuthInitialized: true });
             }
           });
         } else {
           get().checkAndReset(get().accounts);
+          set({ isAuthInitialized: true });
         }
       },
 

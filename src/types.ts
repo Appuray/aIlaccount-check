@@ -49,6 +49,7 @@ export interface AppState {
   selectedAccounts: string[];
   theme: 'light' | 'dark' | 'system';
   user: User | null;
+  isAuthInitialized: boolean;
   apiKeys: {
     gemini: string;
     openai: string;

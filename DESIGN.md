@@ -1,48 +1,49 @@
-# Design System: QuotaCheck
+# Design System: QuotaCheck AI (Stitch Aesthetic)
 
 ## 1. Visual Theme & Atmosphere
-A stark, clinical editorial interface with confident asymmetric layouts and fluid spring-physics motion. The atmosphere is highly technical yet sophisticated — like a well-lit architecture studio or a Swiss-designed physical control panel. Density is 6 (Balanced), Variance is 8 (Artsy/Asymmetric), Motion is 5 (Restrained, tactile).
+A clinical, high-agency cockpit with an editorial-tech atmosphere. The vibe is "Deep Space Architecture" — extreme density (8/10), high variance/asymmetry (7/10), and perpetual micro-motion (9/10). The UI feels heavy, precise, and hardware-accelerated, replacing generic AI clichés with structural grid math and striking typographic contrast. It looks less like a standard SaaS app and more like a classified intelligence terminal.
 
 ## 2. Color Palette & Roles
-- **Canvas White** (`#F9FAFB`) — Primary background surface. Open, airy, and clinical.
-- **Pure Surface** (`#FFFFFF`) — Interactive element backgrounds and absolute foregrounds.
-- **Charcoal Ink** (`#18181B`) — Primary text, Zinc-950 depth for maximalist contrast.
-- **Muted Steel** (`#71717A`) — Secondary text, metadata, descriptions.
-- **Whisper Border** (`rgba(24,24,27,0.1)`) — Structural dividers, 1px hairlines.
-- **Safety Orange** (`#FF3B00`) — Single accent for CTAs, exhaustive alerts, focus rings. Extremely controlled usage.
-- **Clinical Success** (`#00A651`) — Status indicators (Operational).
+- **Canvas Black** (`#09090B`) — Base background for the entire application (Zinc 950).
+- **Deep Charcoal Ink** (`#18181B`) — Elevated surfaces, cards, and primary structural containers.
+- **Pure White** (`#FFFFFF`) — Primary Display typography and icons.
+- **Muted Steel** (`#71717A`) — Secondary Body typography, metadata, and borders.
+- **Whisper Line** (`rgba(255,255,255,0.08)`) — Grid lines, border-bottom separators, and subtle structure.
+- **Signal Red** (`#EF4444`) — The ONLY allowed accent color. Used for critical states, active tracking, and high-contrast CTA focus. Saturation kept controlled. No glowing neon.
 
 ## 3. Typography Rules
-- **Display:** `Outfit` (or `Space Grotesk`) — Track-tight, controlled scale, weight-driven hierarchy. Used massively for headers.
-- **Body:** `Inter` is BANNED. We use `Outfit` for sans-serif structural text or standard clean system fonts with relaxed leading, 65ch max-width.
-- **Mono:** `Geist Mono` — For code, metadata, timestamps, high-density numbers.
-- **Banned:** `Inter`, generic system fonts for premium contexts. Serif fonts are strictly banned in this dashboard context.
+- **Display/Headlines:** `Geist` — Track-tight (-0.03em), controlled scale. Uses weight (Black 900) instead of just size for hierarchy.
+- **Body:** `Geist` — Relaxed leading (1.6), max 65ch width. Always Muted Steel.
+- **Mono/Technical:** `Geist Mono` — Used strictly for numbers, API keys, quotas, timestamps, and high-density labels.
+- **Banned Fonts:** `Inter`, `Roboto`, `Arial`.
+- **Typographic Feature:** "Inline Image Typography" — Use small, pill-shaped or circular contextual images directly nested between words in Hero headlines.
 
 ## 4. Component Stylings
-* **Buttons:** Flat, brutalist, sharp corners or perfect pills depending on hierarchy. Tactile push feedback (`scale: 0.97`) on active state. No neon outer glows. Accent fill for primary, ghost/outline with Charcoal text for secondary.
-* **Cards:** BANNED. Replaced by pure layout separation via stark `border-t` or `border-l` hairlines (Whisper Border) and negative space. Elevation shadows are banned. If a container is needed, it uses a 1px solid Charcoal border with `rounded-none`.
-* **Inputs:** Label above, error below. Focus ring in Safety Orange. Hard 1px borders. No floating labels.
-* **Loaders:** Skeletal shimmer matching exact layout dimensions. No circular spinners.
-* **Empty States:** Composed, brutalist typographic compositions — not just "No data".
-* **Status Indicators:** Physical-feeling 1px dots or pills, strictly geometric.
+- **Buttons:** Flat, completely solid `#FFFFFF` with `#09090B` text for primary. No outer glows. On active/click state, tactile 1px Y-axis translate using spring physics.
+- **Cards:** For high-density areas, CARDS ARE BANNED. Use raw `border-top` dividers and structural grid lines instead. If elevation is strictly needed, use subtle `#18181B` fill with a `Whisper Line` border. No drop shadows.
+- **Inputs:** Label above, strictly Mono font. Focus state changes border to `Signal Red`. No floating labels.
+- **Empty States:** Composed architectural layouts. Not just "No data". 
 
 ## 5. Layout Principles
-Grid-first responsive architecture. Asymmetric splits for Hero sections and major dashboard zones (e.g., a massive 70% width block next to a 30% width block).
-Strict single-column collapse below 768px. Max-width containment (e.g., `max-w-7xl`).
-No flexbox percentage math; rely on CSS Grid. Generous internal padding (`py-12`, `py-24`).
-No overlapping elements.
+- **Asymmetric Grid:** Split the screen unevenly (e.g., 60/40 or 70/30). Centered hero sections are strictly BANNED.
+- **No Overlapping:** Every element must live in its own mathematical bounding box. No absolute positioning that covers text.
+- **Strict Collapse:** Below 768px, layout collapses strictly to 1 column. 
+- **Containment:** Max width 1440px, centered, with generous `clamp(2rem, 5vw, 6rem)` horizontal padding.
 
 ## 6. Motion & Interaction
-Spring physics for all interactive elements (`stiffness: 300, damping: 25`). Staggered cascade reveals on lists.
-Perpetual micro-loops on active dashboard components (e.g., a slowly blinking cursor or a ticking mono-clock).
-Hardware-accelerated transforms only.
+- **Engine:** Framer Motion (`motion/react`) with strict spring physics.
+- **Default Spring:** `type: "spring", stiffness: 100, damping: 20`.
+- **Perpetual Micro-Loops:** The background or structural elements should feature slow, infinite panning or pulsing loops (e.g., a slow-moving SVG grid, or a pulsing data conduit).
+- **Stagger:** Lists and UI elements must mount with a cascade delay. No instant-on rendering.
+- **Hardware Acceleration:** Only animate `transform` and `opacity`.
 
-## 7. Anti-Patterns (Banned)
-- NO emojis anywhere.
-- NO `Inter` font.
-- NO pure black (`#000000`).
-- NO neon glows, drop shadows, or glassmorphism.
-- NO 3-column equal grids.
-- NO AI copywriting clichés ("Elevate", "Seamless", "Unleash").
-- NO generic placeholder names.
-- NO overlapping elements — clean spatial separation always.
+## 7. Anti-Patterns (BANNED)
+- ❌ No `Inter` or generic fonts.
+- ❌ No Emojis (use Lucide icons).
+- ❌ No pure black `#000000`.
+- ❌ No neon purple, blue glows, or "AI gradient" text.
+- ❌ No 3-column equal grid layouts for features.
+- ❌ No centered hero text.
+- ❌ No generic "Scroll down" or bouncing chevron arrows.
+- ❌ No clichés: "Elevate your workflow", "Next-gen AI", "Unleash power".
+- ❌ No overlapping elements or chaotic Z-index stacking.
