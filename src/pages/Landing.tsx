@@ -49,7 +49,7 @@ export const Landing: React.FC = () => {
           to="/login"
           className="text-[11px] font-black tracking-widest uppercase hover:text-[#C2410C] transition-colors"
         >
-          System Access
+          Login
         </Link>
       </nav>
 
@@ -65,7 +65,7 @@ export const Landing: React.FC = () => {
             className="flex items-center gap-3 mb-10"
           >
             <div className="h-px w-8 bg-[#C2410C]" />
-            <span className="text-[10px] font-mono text-[#78716C] tracking-[0.2em] uppercase">Architecture Standard v5.0</span>
+            <span className="text-[10px] font-mono text-[#78716C] tracking-[0.2em] uppercase">Simple Account Manager</span>
           </motion.div>
 
           <h1 className="text-5xl md:text-7xl lg:text-[100px] font-black leading-[0.9] tracking-tighter uppercase text-[#1C1917]">
@@ -74,7 +74,7 @@ export const Landing: React.FC = () => {
               animate={{ opacity: 1, y: 0 }} 
               transition={{ ...SPRING, delay: 0.1 }}
             >
-              Control
+              Manage
             </motion.div>
             <motion.div 
               initial={{ opacity: 0, y: 40 }} 
@@ -82,7 +82,7 @@ export const Landing: React.FC = () => {
               transition={{ ...SPRING, delay: 0.2 }}
               className="flex items-center gap-4 my-2"
             >
-              Intelligence
+              All AI
               {/* Inline Image Typography Replacement */}
               <div className="hidden md:flex h-[70px] w-[140px] bg-white border border-[#E7E5E4] rounded-full items-center justify-center overflow-hidden relative shadow-sm">
                 <motion.div 
@@ -101,7 +101,7 @@ export const Landing: React.FC = () => {
               animate={{ opacity: 1, y: 0 }} 
               transition={{ ...SPRING, delay: 0.3 }}
             >
-              At Scale.
+              Accounts.
             </motion.div>
           </h1>
 
@@ -111,7 +111,7 @@ export const Landing: React.FC = () => {
             transition={{ ...SPRING, delay: 0.5 }}
             className="mt-12 text-[#78716C] text-lg md:text-xl max-w-xl leading-relaxed font-medium"
           >
-            A high-density terminal for balancing limits, tracking usage, and routing endpoints across multiple structural models. Not for generic workflows.
+            A simple dashboard to track usage limits, manage multiple AI tools, and easily switch between accounts when limits are reached.
           </motion.p>
 
           <motion.div 
@@ -124,7 +124,7 @@ export const Landing: React.FC = () => {
               to="/signup"
               className="inline-flex items-center gap-4 bg-[#1C1917] text-[#F5F5F4] px-8 py-5 font-black tracking-widest text-[11px] uppercase hover:bg-[#C2410C] transition-colors duration-300 group shadow-lg shadow-[#1C1917]/10"
             >
-              Initialize Node
+              Get Started
               <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
             </Link>
           </motion.div>
@@ -138,12 +138,12 @@ export const Landing: React.FC = () => {
             transition={{ ...SPRING, delay: 0.4 }}
             className="bg-white border border-[#E7E5E4] p-8 shadow-sm"
           >
-            <p className="font-mono text-[#78716C] text-[10px] uppercase tracking-widest mb-6 border-b border-[#E7E5E4] pb-4">System Status</p>
+            <p className="font-mono text-[#78716C] text-[10px] uppercase tracking-widest mb-6 border-b border-[#E7E5E4] pb-4">Features</p>
             <div className="space-y-4">
               {[
-                { label: 'Latency', val: '12ms', icon: Terminal },
-                { label: 'Redundancy', val: 'Active', icon: Database },
-                { label: 'Protocol', val: 'Secure', icon: Server }
+                { label: 'Fast Access', val: 'Active', icon: Terminal },
+                { label: 'Cloud Sync', val: 'Enabled', icon: Database },
+                { label: 'Encryption', val: 'Secure', icon: Server }
               ].map((stat, i) => (
                 <div key={i} className="flex items-center justify-between py-3 border-b border-[#F5F5F4] last:border-0">
                   <div className="flex items-center gap-3">
@@ -160,8 +160,8 @@ export const Landing: React.FC = () => {
 
       {/* Footer Area */}
       <footer className="relative z-10 border-t border-[#1C1917]/[0.06] mx-[10%] py-12 flex justify-between items-center mt-20">
-        <p className="text-[10px] font-mono text-[#78716C] uppercase tracking-widest">© 2026 QuotaCheck Architecture</p>
-        <p className="text-[10px] font-mono text-[#C2410C] uppercase tracking-widest">v5.0.0 — Stable</p>
+        <p className="text-[10px] font-mono text-[#78716C] uppercase tracking-widest">© 2026 QuotaCheck</p>
+        <p className="text-[10px] font-mono text-[#C2410C] uppercase tracking-widest">v5.0.0</p>
       </footer>
     </div>
   );

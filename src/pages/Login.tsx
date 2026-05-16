@@ -56,8 +56,8 @@ export const Login: React.FC = () => {
       >
         <div className="bg-white p-12 shadow-sm border border-[#E7E5E4]">
           <div className="mb-10">
-            <h2 className="text-3xl font-black text-[#1C1917] mb-2 tracking-tighter uppercase">System Access</h2>
-            <p className="text-[11px] text-[#78716C] font-bold uppercase tracking-widest">Verify identity to continue.</p>
+            <h2 className="text-3xl font-black text-[#1C1917] mb-2 tracking-tighter uppercase">Welcome Back</h2>
+            <p className="text-[11px] text-[#78716C] font-bold uppercase tracking-widest">Sign in to your account.</p>
           </div>
           
           {error && (
@@ -72,7 +72,7 @@ export const Login: React.FC = () => {
 
           <form onSubmit={handleLogin} className="space-y-6">
             <div className="space-y-2">
-              <label className="text-[9px] font-mono font-bold text-[#78716C] uppercase tracking-[0.2em]">Identity</label>
+              <label className="text-[9px] font-mono font-bold text-[#78716C] uppercase tracking-[0.2em]">Email Address</label>
               <input 
                 type="email" 
                 value={email}
@@ -84,8 +84,8 @@ export const Login: React.FC = () => {
             </div>
             <div className="space-y-2">
               <div className="flex justify-between items-center">
-                <label className="text-[9px] font-mono font-bold text-[#78716C] uppercase tracking-[0.2em]">Passkey</label>
-                <button type="button" className="text-[9px] font-bold text-[#C2410C] uppercase tracking-[0.2em] hover:text-[#1C1917] transition-colors">Recovery</button>
+                <label className="text-[9px] font-mono font-bold text-[#78716C] uppercase tracking-[0.2em]">Password</label>
+                <button type="button" className="text-[9px] font-bold text-[#C2410C] uppercase tracking-[0.2em] hover:text-[#1C1917] transition-colors">Forgot?</button>
               </div>
               <input 
                 type="password" 
@@ -103,18 +103,18 @@ export const Login: React.FC = () => {
               disabled={loading}
               className="w-full py-5 bg-[#1C1917] text-[#F5F5F4] font-black text-[11px] uppercase tracking-[0.2em] hover:bg-[#C2410C] transition-colors duration-300 disabled:opacity-50 mt-6"
             >
-              {loading ? 'Verifying...' : 'Authenticate'}
+              {loading ? 'Logging in...' : 'Log in'}
             </motion.button>
           </form>
         </div>
         
         <div className="mt-8 flex flex-col md:flex-row items-center justify-between opacity-40">
           <p className="text-[9px] font-mono text-[#1C1917] uppercase tracking-widest">
-            Unregistered? <Link to="/signup" className="text-[#C2410C] hover:underline ml-1">Deploy Node</Link>
+            Don't have an account? <Link to="/signup" className="text-[#C2410C] hover:underline ml-1">Sign up</Link>
           </p>
           <div className="flex gap-4 mt-4 md:mt-0">
-            <span className="text-[9px] font-mono uppercase tracking-widest">RSA 4096</span>
-            <span className="text-[9px] font-mono uppercase tracking-widest">Secured</span>
+            <span className="text-[9px] font-mono uppercase tracking-widest">Secure</span>
+            <span className="text-[9px] font-mono uppercase tracking-widest">Encrypted</span>
           </div>
         </div>
       </motion.div>
