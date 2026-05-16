@@ -46,14 +46,18 @@ export const Playground: React.FC = () => {
     setIsLoading(true);
 
     try {
-      // Logic for model selection based on service
-      const model = targetNode.service === 'gemini' ? 'gemini-1.5-flash' : 'gpt-4';
+      // Fetch API key from store
+      const apiKeys = useStore.getState().apiKeys;
+      const geminiKey = apiKeys.gemini;
       
-      const response = await aiService.generateContent(currentPrompt, model);
+      // Logic for model selection based on service
+      const model = targetNode.service === 'gemini' ? 'gemini-1.5-flash' : 'gemini-1.5-flash'; // Fallback all to gemini-1.5 for now since we only implemented gemini SDK
+      
+      const response = await aiService.generateContent(currentPrompt, model, geminiKey);
       
       setMessages(prev => [...prev, { 
         role: 'assistant', 
-        content: response, 
+        content: response || 'No response generated from the cluster.', 
         node: targetNode?.name 
       }]);
       
@@ -74,7 +78,7 @@ export const Playground: React.FC = () => {
   const activeNode = selectedNodeId === 'auto' ? getBestAccount() : accounts.find(a => a.id === selectedNodeId);
 
   return (
-    <div className="flex flex-col h-[calc(100vh-200px)] animate-slide-up">
+    <div className="flex flex-col h-[calc(100dvh-200px)] animate-slide-up">
       <div className="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-6">
         <div>
           <div className="flex items-center gap-2 mb-2">

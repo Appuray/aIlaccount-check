@@ -32,16 +32,16 @@ export const AccountGrid: React.FC = () => {
 
   return (
     <div className="space-y-10">
-      <div className="flex flex-col xl:flex-row gap-6 items-start xl:items-center justify-between border-b border-brand-border pb-6">
-        <div className="flex flex-col sm:flex-row gap-6 w-full xl:w-auto">
-          <div className="flex items-center gap-4">
-            <span className="text-[10px] font-bold text-brand-text-muted uppercase tracking-[0.3em]">Status</span>
-            <div className="flex items-center gap-1">
+      <div className="flex flex-col xl:flex-row gap-6 items-start xl:items-center justify-between border-b border-brand-border pb-6 w-full min-w-0">
+        <div className="flex flex-col sm:flex-row gap-6 w-full xl:w-auto min-w-0">
+          <div className="flex items-center gap-4 w-full sm:w-auto min-w-0">
+            <span className="text-[10px] font-bold text-brand-text-muted uppercase tracking-[0.3em] shrink-0">Status</span>
+            <div className="flex items-center gap-1 overflow-x-auto scroll-hide pb-2 sm:pb-0 w-full snap-x">
               {(['all', 'active', 'cooldown'] as const).map((status) => (
                 <button
                   key={status}
                   onClick={() => setSelectedStatus(status)}
-                  className={`px-4 py-2 text-[11px] font-black uppercase tracking-widest transition-colors whitespace-nowrap rounded-lg ${
+                  className={`px-4 py-2 text-[11px] font-black uppercase tracking-widest transition-colors whitespace-nowrap snap-start shrink-0 rounded-lg ${
                     selectedStatus === status 
                       ? 'bg-brand-text text-brand-surface shadow-sm' 
                       : 'text-brand-text-muted hover:text-brand-text hover:bg-brand-surface-elevated'
@@ -53,14 +53,14 @@ export const AccountGrid: React.FC = () => {
             </div>
           </div>
 
-          <div className="flex items-center gap-4">
-            <span className="text-[10px] font-bold text-brand-text-muted uppercase tracking-[0.3em]">Caps</span>
-            <div className="flex items-center gap-1 w-full sm:w-auto overflow-x-auto scroll-hide pb-1 sm:pb-0">
+          <div className="flex items-center gap-4 w-full sm:w-auto min-w-0">
+            <span className="text-[10px] font-bold text-brand-text-muted uppercase tracking-[0.3em] shrink-0">Caps</span>
+            <div className="flex items-center gap-1 overflow-x-auto scroll-hide pb-2 sm:pb-0 w-full snap-x">
               {tags.map((tag) => (
                 <button
                   key={tag}
                   onClick={() => setSelectedTag(tag)}
-                  className={`px-4 py-2 text-[11px] font-black uppercase tracking-widest transition-colors whitespace-nowrap rounded-lg ${
+                  className={`px-4 py-2 text-[11px] font-black uppercase tracking-widest transition-colors whitespace-nowrap snap-start shrink-0 rounded-lg ${
                     selectedTag === tag 
                       ? 'bg-brand-text text-brand-surface shadow-sm' 
                       : 'text-brand-text-muted hover:text-brand-text hover:bg-brand-surface-elevated'

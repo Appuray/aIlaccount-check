@@ -44,13 +44,13 @@ export const Header: React.FC = () => {
   return (
     <header className="space-y-0 pb-0 animate-slide-up">
       {/* Hero Zone */}
-      <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-6 pb-8 border-b border-brand-border">
+      <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-4 pb-6 border-b border-brand-border">
         <motion.div 
           initial={{ opacity: 0, x: -10 }}
           animate={{ opacity: 1, x: 0 }}
           className="max-w-2xl"
         >
-          <div className="flex items-center gap-3 mb-8">
+          <div className="flex items-center gap-3 mb-4">
             <motion.div 
               animate={{ opacity: [0.5, 1, 0.5] }}
               transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
@@ -61,12 +61,12 @@ export const Header: React.FC = () => {
           <h1 className="text-4xl lg:text-5xl font-black tracking-tighter text-brand-text leading-[1]">
             Account<br />Nodes
           </h1>
-          <p className="text-[15px] text-brand-text-soft mt-8 leading-relaxed max-w-md font-medium">
+          <p className="text-[14px] text-brand-text-soft mt-4 leading-relaxed max-w-md font-medium">
             Operational dashboard for distributed AI quota management. Monitor health, priority, and cluster performance.
           </p>
         </motion.div>
 
-        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-end gap-3 w-full lg:w-auto mt-6 lg:mt-0 lg:ml-auto self-end">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-end gap-3 w-full lg:w-auto mt-6 lg:mt-0 lg:ml-auto">
           <div className="relative group flex-1 sm:w-64">
             <div className="absolute left-0 top-1/2 -translate-y-1/2 pointer-events-none text-brand-text-muted transition-colors flex items-center justify-center z-10 pl-3">
               <Search size={14} strokeWidth={2.5} />
@@ -108,17 +108,17 @@ export const Header: React.FC = () => {
       </div>
 
       {/* Filters Bar */}
-      <div className="flex flex-col xl:flex-row items-start xl:items-center justify-between border-b border-brand-border">
-        <div className="flex flex-col md:flex-row items-start md:items-center w-full xl:w-auto">
-          <div className="flex items-center gap-4 pr-8 py-5 md:border-r border-brand-border w-full md:w-auto">
-            <span className="text-[10px] font-bold text-brand-text-muted uppercase tracking-[0.3em] min-w-[60px]">Service</span>
-            <div className="flex gap-1 overflow-x-auto scroll-hide pb-1 md:pb-0">
+      <div className="flex flex-col xl:flex-row items-start xl:items-center justify-between border-b border-brand-border w-full min-w-0">
+        <div className="flex flex-col md:flex-row items-start md:items-center w-full xl:w-auto min-w-0">
+          <div className="flex items-center gap-4 pr-0 md:pr-8 py-5 md:border-r border-brand-border w-full md:w-auto min-w-0">
+            <span className="text-[10px] font-bold text-brand-text-muted uppercase tracking-[0.3em] min-w-[60px] shrink-0">Service</span>
+            <div className="flex gap-1 overflow-x-auto scroll-hide pb-2 md:pb-0 w-full snap-x">
               {['all', 'gemini', 'chatgpt', 'claude'].map((s) => (
                 <motion.button
                   key={s}
                   whileTap={{ scale: 0.97 }}
                   onClick={() => setSelectedService(s as any)}
-                  className={`px-4 py-2 text-[11px] font-black uppercase tracking-widest transition-all rounded-lg whitespace-nowrap ${
+                  className={`px-4 py-2 text-[11px] font-black uppercase tracking-widest transition-all rounded-lg whitespace-nowrap snap-start shrink-0 ${
                     selectedService === s 
                       ? 'bg-brand-text text-brand-surface shadow-sm' 
                       : 'text-brand-text-muted hover:text-brand-text hover:bg-brand-surface-elevated'
@@ -129,9 +129,9 @@ export const Header: React.FC = () => {
               ))}
             </div>
           </div>
-          <div className="flex items-center gap-4 pl-0 md:pl-8 py-5 w-full md:w-auto border-t md:border-t-0 border-brand-border">
-            <span className="text-[10px] font-bold text-brand-text-muted uppercase tracking-[0.3em] min-w-[60px]">Status</span>
-            <div className="flex gap-1 overflow-x-auto scroll-hide pb-1 md:pb-0">
+          <div className="flex items-center gap-4 pl-0 md:pl-8 py-5 w-full md:w-auto border-t md:border-t-0 border-brand-border min-w-0">
+            <span className="text-[10px] font-bold text-brand-text-muted uppercase tracking-[0.3em] min-w-[60px] shrink-0">Status</span>
+            <div className="flex gap-1 overflow-x-auto scroll-hide pb-2 md:pb-0 w-full snap-x">
               {[
                 { id: 'all', label: 'ALL' },
                 { id: 'active', label: 'ACTIVE' },
@@ -141,7 +141,7 @@ export const Header: React.FC = () => {
                   key={st.id}
                   whileTap={{ scale: 0.97 }}
                   onClick={() => setSelectedStatus(st.id as any)}
-                  className={`px-4 py-2 text-[11px] font-black uppercase tracking-widest transition-all rounded-lg whitespace-nowrap ${
+                  className={`px-4 py-2 text-[11px] font-black uppercase tracking-widest transition-all rounded-lg whitespace-nowrap snap-start shrink-0 ${
                     selectedStatus === st.id 
                       ? 'bg-brand-text text-brand-surface shadow-sm' 
                       : 'text-brand-text-muted hover:text-brand-text hover:bg-brand-surface-elevated'

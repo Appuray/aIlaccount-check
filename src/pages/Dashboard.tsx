@@ -31,22 +31,22 @@ const BulkToolbar: React.FC = () => {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: 40 }}
       transition={{ type: "spring", stiffness: 300, damping: 25 }}
-      className="fixed bottom-0 left-0 lg:left-64 right-0 z-[100] bg-brand-surface border-t border-brand-border px-8 py-4 flex items-center justify-between"
+      className="fixed bottom-0 left-0 lg:left-64 right-0 z-[100] bg-brand-surface border-t border-brand-border px-4 sm:px-8 py-4 pb-safe flex flex-col sm:flex-row items-center justify-between gap-4 sm:gap-0"
     >
-      <div className="flex items-center gap-6">
-        <span className="text-[14px] font-black text-brand-text uppercase tracking-tight">{selectedAccounts.length} nodes selected</span>
-        <div className="w-px h-6 bg-brand-border" />
+      <div className="flex items-center gap-4 sm:gap-6 w-full sm:w-auto justify-between sm:justify-start">
+        <span className="text-[12px] sm:text-[14px] font-black text-brand-text uppercase tracking-tight">{selectedAccounts.length} nodes selected</span>
+        <div className="w-px h-6 bg-brand-border hidden sm:block" />
         <div className="flex gap-4">
           <button onClick={selectAllAccounts} className="text-[11px] font-bold text-brand-accent hover:text-brand-text uppercase tracking-widest transition-colors">Select all</button>
           <button onClick={deselectAllAccounts} className="text-[11px] font-bold text-brand-text-muted hover:text-brand-text uppercase tracking-widest transition-colors">Deselect</button>
         </div>
       </div>
       
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-2 sm:gap-3 w-full sm:w-auto justify-between sm:justify-end">
         <motion.button 
           whileTap={{ scale: 0.97 }}
           onClick={bulkResetAccounts} 
-          className="flex items-center gap-2 py-3 px-6 bg-brand-surface text-brand-text border border-brand-border font-bold text-[12px] uppercase tracking-widest hover:bg-brand-surface-elevated hover:border-brand-text transition-colors rounded-lg shadow-sm"
+          className="flex-1 sm:flex-none flex items-center justify-center gap-2 py-3 px-4 sm:px-6 bg-brand-surface text-brand-text border border-brand-border font-bold text-[11px] sm:text-[12px] uppercase tracking-widest hover:bg-brand-surface-elevated hover:border-brand-text transition-colors rounded-lg shadow-sm"
         >
           <RefreshCw size={14} strokeWidth={2.5} />
           <span className="hidden sm:inline">Reset</span>
@@ -54,7 +54,7 @@ const BulkToolbar: React.FC = () => {
         <motion.button 
           whileTap={{ scale: 0.97 }}
           onClick={bulkMarkExhausted} 
-          className="flex items-center gap-2 py-3 px-6 bg-brand-surface text-brand-text border border-brand-border font-bold text-[12px] uppercase tracking-widest hover:border-brand-accent hover:text-brand-accent transition-colors rounded-lg shadow-sm"
+          className="flex-1 sm:flex-none flex items-center justify-center gap-2 py-3 px-4 sm:px-6 bg-brand-surface text-brand-text border border-brand-border font-bold text-[11px] sm:text-[12px] uppercase tracking-widest hover:border-brand-accent hover:text-brand-accent transition-colors rounded-lg shadow-sm"
         >
           <Zap size={14} strokeWidth={2.5} />
           <span className="hidden sm:inline">Exhaust</span>
@@ -62,7 +62,7 @@ const BulkToolbar: React.FC = () => {
         <motion.button 
           whileTap={{ scale: 0.97 }}
           onClick={bulkDeleteAccounts} 
-          className="flex items-center gap-2 py-3 px-6 bg-brand-text text-brand-surface font-bold text-[12px] uppercase tracking-widest hover:bg-brand-accent transition-colors rounded-lg shadow-sm"
+          className="flex-1 sm:flex-none flex items-center justify-center gap-2 py-3 px-4 sm:px-6 bg-brand-text text-brand-surface font-bold text-[11px] sm:text-[12px] uppercase tracking-widest hover:bg-brand-accent transition-colors rounded-lg shadow-sm"
         >
           <Trash2 size={14} strokeWidth={2.5} />
           <span className="hidden sm:inline">Delete</span>
@@ -211,11 +211,11 @@ export const Dashboard: React.FC = () => {
           </button>
         </header>
 
-        <main className="flex-1 w-full mx-auto px-6 py-8 lg:px-16 lg:py-12 xl:px-24">
+        <main className="flex-1 w-full mx-auto px-4 py-4 sm:px-6 sm:py-6 lg:px-16 lg:py-8 xl:px-24">
           <div className="animate-slide-up max-w-[1400px]">
             <Header />
             
-            <div className="mt-16">
+            <div className="mt-10">
               <AnimatePresence mode="wait">
                 {activeView === 'dashboard' && (
                   <motion.div
@@ -298,12 +298,15 @@ export const Dashboard: React.FC = () => {
       <CommandPalette />
       <Toast />
       
-      <button
+      <motion.button
         onClick={() => setIsModalOpen(true)}
-        className="fixed bottom-8 right-8 w-16 h-16 bg-brand-text text-brand-surface flex items-center justify-center hover:bg-brand-accent transition-all z-50 rounded-2xl shadow-lg hover:shadow-xl hover:-translate-y-1 hover:scale-105"
+        whileHover={{ scale: 1.05, y: -2 }}
+        whileTap={{ scale: 0.95 }}
+        className="fixed bottom-6 right-6 sm:bottom-8 sm:right-8 flex items-center gap-2 bg-brand-text text-brand-surface px-5 py-3.5 hover:bg-brand-accent transition-colors z-50 rounded-xl shadow-lg group"
       >
-        <Plus size={28} strokeWidth={3} />
-      </button>
+        <Plus size={18} strokeWidth={3} className="group-hover:rotate-90 transition-transform duration-300" />
+        <span className="text-[11px] font-black uppercase tracking-widest hidden sm:inline">Deploy Node</span>
+      </motion.button>
     </div>
   );
 }
