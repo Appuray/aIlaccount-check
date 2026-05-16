@@ -50,7 +50,9 @@ export const AddAccountModal: React.FC<AddAccountModalProps> = ({ isOpen, onClos
   const [refreshMode, setRefreshMode] = useState<'days' | 'exact'>('days');
   const [refreshCycle, setRefreshCycle] = useState(1);
   const [exactResetDate, setExactResetDate] = useState('');
-  const [exactResetTime, setExactResetTime] = useState('');
+  const [exactHour, setExactHour] = useState('12');
+  const [exactMinute, setExactMinute] = useState('00');
+  const [exactAmPm, setExactAmPm] = useState('AM');
   const [selectedTags, setSelectedTags] = useState<NodeTag[]>([]);
   const [priority, setPriority] = useState(3);
   const [notes, setNotes] = useState('');
@@ -78,9 +80,13 @@ export const AddAccountModal: React.FC<AddAccountModalProps> = ({ isOpen, onClos
   // Compute the preview reset time
   const resetPreview = useMemo(() => {
     if (refreshMode === 'exact' && exactResetDate) {
-      const dateStr = exactResetTime 
-        ? `${exactResetDate}T${exactResetTime}` 
-        : `${exactResetDate}T00:00`;
+      let h = parseInt(exactHour);
+      if (exactAmPm === 'PM' && h < 12) h += 12;
+      if (exactAmPm === 'AM' && h === 12) h = 0;
+      const hStr = h.toString().padStart(2, '0');
+      const mStr = exactMinute.padStart(2, '0');
+      
+      const dateStr = `${exactResetDate}T${hStr}:${mStr}`;
       const d = new Date(dateStr);
       return isNaN(d.getTime()) ? null : d;
     } else {
@@ -88,7 +94,7 @@ export const AddAccountModal: React.FC<AddAccountModalProps> = ({ isOpen, onClos
       d.setDate(d.getDate() + refreshCycle);
       return d;
     }
-  }, [refreshMode, refreshCycle, exactResetDate, exactResetTime]);
+  }, [refreshMode, refreshCycle, exactResetDate, exactHour, exactMinute, exactAmPm]);
 
   // Compute actual refreshCycleDays for the store
   const computedCycleDays = useMemo(() => {
@@ -109,7 +115,9 @@ export const AddAccountModal: React.FC<AddAccountModalProps> = ({ isOpen, onClos
     setRefreshCycle(1);
     setRefreshMode('days');
     setExactResetDate('');
-    setExactResetTime('');
+    setExactHour('12');
+    setExactMinute('00');
+    setExactAmPm('AM');
     setSelectedTags([]);
     setPriority(3);
     setNotes('');
@@ -253,12 +261,35 @@ export const AddAccountModal: React.FC<AddAccountModalProps> = ({ isOpen, onClos
                       </div>
                       <div className="space-y-1.5">
                         <span className="text-[9px] font-bold text-brand-text-muted uppercase tracking-widest">Time</span>
-                        <input
-                          type="time"
-                          value={exactResetTime}
-                          onChange={(e) => setExactResetTime(e.target.value)}
-                          className="w-full bg-brand-surface border border-brand-border focus:border-brand-accent focus:outline-none font-bold text-[13px] py-3 px-3 rounded-xl shadow-sm"
-                        />
+                        <div className="flex items-center gap-1">
+                          <select 
+                            value={exactHour}
+                            onChange={(e) => setExactHour(e.target.value)}
+                            className="bg-brand-surface border border-brand-border focus:border-brand-accent focus:outline-none font-bold text-[13px] py-3 px-2 rounded-xl shadow-sm appearance-none text-center flex-1"
+                          >
+                            {Array.from({length: 12}, (_, i) => i + 1).map(h => (
+                              <option key={h} value={h.toString().padStart(2, '0')}>{h.toString().padStart(2, '0')}</option>
+                            ))}
+                          </select>
+                          <span className="text-brand-text font-black">:</span>
+                          <select 
+                            value={exactMinute}
+                            onChange={(e) => setExactMinute(e.target.value)}
+                            className="bg-brand-surface border border-brand-border focus:border-brand-accent focus:outline-none font-bold text-[13px] py-3 px-2 rounded-xl shadow-sm appearance-none text-center flex-1"
+                          >
+                            {Array.from({length: 60}, (_, i) => i).map(m => (
+                              <option key={m} value={m.toString().padStart(2, '0')}>{m.toString().padStart(2, '0')}</option>
+                            ))}
+                          </select>
+                          <select 
+                            value={exactAmPm}
+                            onChange={(e) => setExactAmPm(e.target.value)}
+                            className="bg-brand-surface border border-brand-border focus:border-brand-accent focus:outline-none font-bold text-[13px] py-3 px-2 rounded-xl shadow-sm appearance-none text-center w-16"
+                          >
+                            <option value="AM">AM</option>
+                            <option value="PM">PM</option>
+                          </select>
+                        </div>
                       </div>
                     </div>
                   )}

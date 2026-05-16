@@ -65,6 +65,7 @@ export interface AppState {
   initialize: () => void;
   checkAndReset: (accounts: Account[]) => void;
   markExhausted: (id: string) => Promise<void>;
+  markExhaustedShared: (email: string) => Promise<void>;
   resetAccount: (id: string) => Promise<void>;
   markRefreshed: (id: string) => Promise<void>;
   setRefreshCycle: (id: string, days: number) => Promise<void>;

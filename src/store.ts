@@ -124,6 +124,53 @@ export const useStore = create<AppState>()(
         get().showToast(`${account.name} marked as exhausted`);
       },
 
+      markExhaustedShared: async (email) => {
+        const { accounts } = get();
+        const linkedAccounts = accounts.filter(a => a.email && a.email.toLowerCase() === email.toLowerCase());
+        if (linkedAccounts.length === 0) return;
+
+        const now = Date.now();
+        const resetAt = now + 24 * 60 * 60 * 1000;
+        
+        const newEvents = linkedAccounts.map(account => ({ timestamp: now, accountId: account.id, service: account.service }));
+        
+        const updatedAccounts = accounts.map(acc => {
+          if (acc.email && acc.email.toLowerCase() === email.toLowerCase()) {
+            return {
+              ...acc,
+              exhaustedAt: now,
+              resetAt,
+              exhaustCount: (acc.exhaustCount || 0) + 1,
+              usageCount: (acc.usageCount || 0) + 1,
+              lastUsedAt: now,
+              health: Math.max(0, acc.health - 20)
+            };
+          }
+          return acc;
+        });
+
+        set({ 
+          accounts: updatedAccounts,
+          usageHistory: [...newEvents, ...get().usageHistory]
+        });
+
+        for (const account of linkedAccounts) {
+          const updatedAcc = updatedAccounts.find(a => a.id === account.id);
+          if (updatedAcc) {
+            await dbService.updateAccount(account.id, { 
+              exhaustedAt: updatedAcc.exhaustedAt, 
+              resetAt: updatedAcc.resetAt, 
+              exhaustCount: updatedAcc.exhaustCount, 
+              usageCount: updatedAcc.usageCount,
+              lastUsedAt: updatedAcc.lastUsedAt,
+              health: updatedAcc.health
+            });
+          }
+        }
+        
+        get().showToast(`${linkedAccounts.length} linked accounts marked as exhausted`);
+      },
+
       resetAccount: async (id) => {
         const updates = { resetAt: null, exhaustedAt: null };
         

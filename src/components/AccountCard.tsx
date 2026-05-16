@@ -163,6 +163,16 @@ export const AccountCard: React.FC<AccountCardProps> = ({ account }) => {
                     <Hash size={14} className="text-brand-text-muted" strokeWidth={2.5} /> Copy Account ID
                   </motion.button>
                   <div className="h-px bg-brand-border mx-2" />
+                  {!isExhausted && account.email && (
+                    <motion.button
+                      whileHover={{ x: 4, backgroundColor: "var(--color-brand-surface-elevated)" }}
+                      whileTap={{ scale: 0.98 }}
+                      onClick={() => { useStore.getState().markExhaustedShared(account.email); setIsMenuOpen(false); }}
+                      className="w-full px-4 py-2.5 text-left text-[10px] font-black tracking-widest text-brand-text-soft flex items-center gap-3 transition-colors uppercase"
+                    >
+                      <Zap size={14} className="text-brand-accent" strokeWidth={2.5} /> Exhaust Linked Accounts
+                    </motion.button>
+                  )}
                   <motion.button
                     whileHover={{ x: 4, backgroundColor: "var(--color-brand-surface-elevated)" }}
                     whileTap={{ scale: 0.98 }}
