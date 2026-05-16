@@ -235,9 +235,15 @@ export const useStore = create<AppState>()(
         };
 
         if (isFirebaseConfigured && user) {
+          // In Firebase mode, we let the real-time listener (onSnapshot) sync the new account
           await dbService.addAccount(newAccount, user.uid);
         } else {
-          await dbService.addAccount(newAccount, 'local-user');
+          // Local mode: Add to Zustand state directly
+          const localAccount: Account = {
+            ...newAccount,
+            id: `local-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`
+          };
+          set({ accounts: [...get().accounts, localAccount] });
         }
         get().showToast(`${name} added successfully`);
       },
