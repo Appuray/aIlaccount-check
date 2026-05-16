@@ -47,12 +47,21 @@ export const AddAccountModal: React.FC<AddAccountModalProps> = ({ isOpen, onClos
   const [name, setName] = useState('');
   const [selectedServices, setSelectedServices] = useState<ServiceType[]>(['gemini']);
   const [tier, setTier] = useState<TierType>('free');
+  const [sameReset, setSameReset] = useState(true);
+  // Provider 1 reset
   const [refreshMode, setRefreshMode] = useState<'days' | 'exact'>('days');
   const [refreshCycle, setRefreshCycle] = useState(1);
   const [exactResetDate, setExactResetDate] = useState('');
   const [exactHour, setExactHour] = useState('12');
   const [exactMinute, setExactMinute] = useState('00');
   const [exactAmPm, setExactAmPm] = useState('AM');
+  // Provider 2 reset
+  const [refreshMode2, setRefreshMode2] = useState<'days' | 'exact'>('days');
+  const [refreshCycle2, setRefreshCycle2] = useState(1);
+  const [exactResetDate2, setExactResetDate2] = useState('');
+  const [exactHour2, setExactHour2] = useState('12');
+  const [exactMinute2, setExactMinute2] = useState('00');
+  const [exactAmPm2, setExactAmPm2] = useState('AM');
   const [selectedTags, setSelectedTags] = useState<NodeTag[]>([]);
   const [priority, setPriority] = useState(3);
   const [notes, setNotes] = useState('');
@@ -122,23 +131,58 @@ export const AddAccountModal: React.FC<AddAccountModalProps> = ({ isOpen, onClos
     return refreshCycle;
   }, [refreshMode, resetPreview, refreshCycle]);
 
+  // Provider 2 reset preview
+  const resetPreview2 = useMemo(() => {
+    if (refreshMode2 === 'exact' && exactResetDate2) {
+      let h = parseInt(exactHour2);
+      if (exactAmPm2 === 'PM' && h < 12) h += 12;
+      if (exactAmPm2 === 'AM' && h === 12) h = 0;
+      const hStr = h.toString().padStart(2, '0');
+      const mStr = exactMinute2.padStart(2, '0');
+      const dateStr = `${exactResetDate2}T${hStr}:${mStr}`;
+      const d = new Date(dateStr);
+      return isNaN(d.getTime()) ? null : d;
+    } else {
+      const d = new Date();
+      d.setDate(d.getDate() + refreshCycle2);
+      return d;
+    }
+  }, [refreshMode2, refreshCycle2, exactResetDate2, exactHour2, exactMinute2, exactAmPm2]);
+
+  const computedCycleDays2 = useMemo(() => {
+    if (refreshMode2 === 'exact' && resetPreview2) {
+      const diffMs = resetPreview2.getTime() - Date.now();
+      return Math.max(1, Math.ceil(diffMs / (1000 * 60 * 60 * 24)));
+    }
+    return refreshCycle2;
+  }, [refreshMode2, resetPreview2, refreshCycle2]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!name.trim() || selectedServices.length === 0) return;
     // Create one account per selected provider
-    for (const svc of selectedServices) {
+    for (let i = 0; i < selectedServices.length; i++) {
+      const svc = selectedServices[i];
       const accountName = selectedServices.length > 1 ? `${name} (${svc})` : name;
-      await addAccount(accountName, svc, tier, priority, selectedTags, computedCycleDays, notes, maxDailyUses, email);
+      const cycleDays = (i === 1 && !sameReset) ? computedCycleDays2 : computedCycleDays;
+      await addAccount(accountName, svc, tier, priority, selectedTags, cycleDays, notes, maxDailyUses, email);
     }
     setName('');
     setSelectedServices(['gemini']);
     setTier('free');
+    setSameReset(true);
     setRefreshCycle(1);
     setRefreshMode('days');
     setExactResetDate('');
     setExactHour('12');
     setExactMinute('00');
     setExactAmPm('AM');
+    setRefreshCycle2(1);
+    setRefreshMode2('days');
+    setExactResetDate2('');
+    setExactHour2('12');
+    setExactMinute2('00');
+    setExactAmPm2('AM');
     setSelectedTags([]);
     setPriority(3);
     setNotes('');
@@ -327,7 +371,9 @@ export const AddAccountModal: React.FC<AddAccountModalProps> = ({ isOpen, onClos
                     >
                       <Clock size={14} className="text-brand-accent shrink-0" />
                       <div>
-                        <p className="text-[9px] font-black text-brand-text-muted uppercase tracking-widest">Quota Refreshes On</p>
+                        <p className="text-[9px] font-black text-brand-text-muted uppercase tracking-widest">
+                          {selectedServices.length > 1 && !sameReset ? `${serviceOptions.find(s => s.value === selectedServices[0])?.label} resets` : 'Quota Refreshes On'}
+                        </p>
                         <p className="text-[13px] font-bold text-brand-text mt-0.5">
                           {resetPreview.toLocaleDateString('en-US', { 
                             month: 'short', day: 'numeric', year: 'numeric' 
@@ -339,6 +385,163 @@ export const AddAccountModal: React.FC<AddAccountModalProps> = ({ isOpen, onClos
                     </motion.div>
                   )}
                 </motion.div>
+
+                {/* Same / Different Reset Toggle — Only when 2 providers selected */}
+                {selectedServices.length === 2 && (
+                  <motion.div 
+                    variants={itemVariants} 
+                    className="space-y-3"
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                  >
+                    <div className="flex items-center justify-between">
+                      <label className="text-[10px] font-bold text-brand-text-soft uppercase tracking-[0.2em]">Reset Time</label>
+                      <div className="flex gap-1 bg-brand-surface-elevated rounded-lg p-0.5">
+                        <button
+                          type="button"
+                          onClick={() => setSameReset(true)}
+                          className={`px-3 py-1.5 text-[9px] font-black uppercase tracking-widest rounded-md transition-all ${
+                            sameReset 
+                              ? 'bg-brand-text text-brand-surface shadow-sm' 
+                              : 'text-brand-text-muted hover:text-brand-text'
+                          }`}
+                        >
+                          Same
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setSameReset(false)}
+                          className={`px-3 py-1.5 text-[9px] font-black uppercase tracking-widest rounded-md transition-all ${
+                            !sameReset 
+                              ? 'bg-brand-text text-brand-surface shadow-sm' 
+                              : 'text-brand-text-muted hover:text-brand-text'
+                          }`}
+                        >
+                          Different
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* Provider 2 Reset Controls — Only when "Different" selected */}
+                    <AnimatePresence>
+                      {!sameReset && (
+                        <motion.div
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: 'auto' }}
+                          exit={{ opacity: 0, height: 0 }}
+                          transition={{ type: 'spring', damping: 20, stiffness: 200 }}
+                          className="space-y-3 overflow-hidden"
+                        >
+                          <p className="text-[9px] font-black text-brand-accent uppercase tracking-widest">
+                            {serviceOptions.find(s => s.value === selectedServices[1])?.label} Reset
+                          </p>
+                          <div className="flex gap-1 bg-brand-surface-elevated rounded-lg p-0.5 w-fit">
+                            <button
+                              type="button"
+                              onClick={() => setRefreshMode2('days')}
+                              className={`flex items-center gap-1.5 px-3 py-1.5 text-[9px] font-black uppercase tracking-widest rounded-md transition-all ${
+                                refreshMode2 === 'days' 
+                                  ? 'bg-brand-text text-brand-surface shadow-sm' 
+                                  : 'text-brand-text-muted hover:text-brand-text'
+                              }`}
+                            >
+                              <Clock size={10} strokeWidth={2.5} /> Days
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => setRefreshMode2('exact')}
+                              className={`flex items-center gap-1.5 px-3 py-1.5 text-[9px] font-black uppercase tracking-widest rounded-md transition-all ${
+                                refreshMode2 === 'exact' 
+                                  ? 'bg-brand-text text-brand-surface shadow-sm' 
+                                  : 'text-brand-text-muted hover:text-brand-text'
+                              }`}
+                            >
+                              <Calendar size={10} strokeWidth={2.5} /> Exact
+                            </button>
+                          </div>
+
+                          {refreshMode2 === 'days' ? (
+                            <div className="relative">
+                              <input
+                                type="number"
+                                min="1"
+                                max="365"
+                                value={refreshCycle2}
+                                onChange={(e) => setRefreshCycle2(parseInt(e.target.value) || 1)}
+                                className="w-full bg-brand-surface border border-brand-border focus:border-brand-accent focus:outline-none font-bold py-3.5 pl-4 pr-16 rounded-xl shadow-sm"
+                              />
+                              <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[10px] font-bold text-brand-text-muted uppercase tracking-widest">Days</span>
+                            </div>
+                          ) : (
+                            <div className="grid grid-cols-2 gap-3">
+                              <div className="space-y-1.5">
+                                <span className="text-[9px] font-bold text-brand-text-muted uppercase tracking-widest">Date</span>
+                                <input
+                                  type="date"
+                                  min={todayStr}
+                                  value={exactResetDate2}
+                                  onChange={(e) => setExactResetDate2(e.target.value)}
+                                  className="w-full bg-brand-surface border border-brand-border focus:border-brand-accent focus:outline-none font-bold text-[13px] py-3 px-3 rounded-xl shadow-sm"
+                                />
+                              </div>
+                              <div className="space-y-1.5">
+                                <span className="text-[9px] font-bold text-brand-text-muted uppercase tracking-widest">Time</span>
+                                <div className="flex items-center gap-1">
+                                  <select 
+                                    value={exactHour2}
+                                    onChange={(e) => setExactHour2(e.target.value)}
+                                    className="bg-brand-surface border border-brand-border focus:border-brand-accent focus:outline-none font-bold text-[13px] py-3 px-2 rounded-xl shadow-sm appearance-none text-center flex-1"
+                                  >
+                                    {Array.from({length: 12}, (_, i) => i + 1).map(h => (
+                                      <option key={h} value={h.toString().padStart(2, '0')}>{h.toString().padStart(2, '0')}</option>
+                                    ))}
+                                  </select>
+                                  <span className="text-brand-text font-black">:</span>
+                                  <select 
+                                    value={exactMinute2}
+                                    onChange={(e) => setExactMinute2(e.target.value)}
+                                    className="bg-brand-surface border border-brand-border focus:border-brand-accent focus:outline-none font-bold text-[13px] py-3 px-2 rounded-xl shadow-sm appearance-none text-center flex-1"
+                                  >
+                                    {Array.from({length: 60}, (_, i) => i).map(m => (
+                                      <option key={m} value={m.toString().padStart(2, '0')}>{m.toString().padStart(2, '0')}</option>
+                                    ))}
+                                  </select>
+                                  <select 
+                                    value={exactAmPm2}
+                                    onChange={(e) => setExactAmPm2(e.target.value)}
+                                    className="bg-brand-surface border border-brand-border focus:border-brand-accent focus:outline-none font-bold text-[13px] py-3 px-2 rounded-xl shadow-sm appearance-none text-center w-16"
+                                  >
+                                    <option value="AM">AM</option>
+                                    <option value="PM">PM</option>
+                                  </select>
+                                </div>
+                              </div>
+                            </div>
+                          )}
+
+                          {/* Provider 2 Reset Preview */}
+                          {resetPreview2 && (
+                            <div className="flex items-center gap-3 bg-brand-surface-elevated border border-brand-border rounded-xl px-4 py-3">
+                              <Clock size={14} className="text-brand-accent shrink-0" />
+                              <div>
+                                <p className="text-[9px] font-black text-brand-text-muted uppercase tracking-widest">
+                                  {serviceOptions.find(s => s.value === selectedServices[1])?.label} resets
+                                </p>
+                                <p className="text-[13px] font-bold text-brand-text mt-0.5">
+                                  {resetPreview2.toLocaleDateString('en-US', { 
+                                    month: 'short', day: 'numeric', year: 'numeric' 
+                                  })}, {resetPreview2.toLocaleTimeString('en-US', { 
+                                    hour: 'numeric', minute: '2-digit', hour12: true 
+                                  })}
+                                </p>
+                              </div>
+                            </div>
+                          )}
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </motion.div>
+                )}
 
                 <motion.div variants={itemVariants} className="space-y-3">
                   <label className="text-[10px] font-bold text-brand-text-soft uppercase tracking-[0.2em]">License Tier</label>
