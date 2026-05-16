@@ -140,7 +140,7 @@ export const AccountCard: React.FC<AccountCardProps> = ({ account }) => {
                     onClick={() => { markRefreshed(account.id); setIsMenuOpen(false); }}
                     className="w-full px-4 py-2.5 text-left text-[10px] font-black tracking-widest text-brand-text-soft flex items-center gap-3 transition-colors uppercase"
                   >
-                    <RefreshCw size={14} className="text-brand-text-muted" strokeWidth={2.5} /> Restore Quota
+                    <RefreshCw size={14} className="text-brand-text-muted" strokeWidth={2.5} /> Reset Quota
                   </motion.button>
                   <motion.button
                     whileHover={{ x: 4, backgroundColor: "var(--color-brand-surface-elevated)" }}
@@ -148,19 +148,19 @@ export const AccountCard: React.FC<AccountCardProps> = ({ account }) => {
                     onClick={() => { duplicateAccount(account.id); setIsMenuOpen(false); }}
                     className="w-full px-4 py-2.5 text-left text-[10px] font-black tracking-widest text-brand-text-soft flex items-center gap-3 transition-colors uppercase"
                   >
-                    <Copy size={14} className="text-brand-text-muted" strokeWidth={2.5} /> Duplicate Node
+                    <Copy size={14} className="text-brand-text-muted" strokeWidth={2.5} /> Duplicate Account
                   </motion.button>
                   <motion.button
                     whileHover={{ x: 4, backgroundColor: "var(--color-brand-surface-elevated)" }}
                     whileTap={{ scale: 0.98 }}
                     onClick={() => { 
                       navigator.clipboard.writeText(account.id);
-                      showToast(`Node ID copied: ${account.id.substring(0, 12)}...`);
+                      showToast(`Account ID copied: ${account.id.substring(0, 12)}...`);
                       setIsMenuOpen(false); 
                     }}
                     className="w-full px-4 py-2.5 text-left text-[10px] font-black tracking-widest text-brand-text-soft flex items-center gap-3 transition-colors uppercase"
                   >
-                    <Hash size={14} className="text-brand-text-muted" strokeWidth={2.5} /> Copy Node ID
+                    <Hash size={14} className="text-brand-text-muted" strokeWidth={2.5} /> Copy Account ID
                   </motion.button>
                   <div className="h-px bg-brand-border mx-2" />
                   <motion.button
@@ -169,7 +169,7 @@ export const AccountCard: React.FC<AccountCardProps> = ({ account }) => {
                     onClick={() => { deleteAccount(account.id); setIsMenuOpen(false); }}
                     className="w-full px-4 py-2.5 text-left text-[10px] font-black tracking-widest text-brand-accent flex items-center gap-3 transition-colors uppercase"
                   >
-                    <Trash2 size={14} strokeWidth={2.5} /> Purge Node
+                    <Trash2 size={14} strokeWidth={2.5} /> Delete Account
                   </motion.button>
                 </motion.div>
               )}
@@ -183,15 +183,15 @@ export const AccountCard: React.FC<AccountCardProps> = ({ account }) => {
           {isExhausted ? (
             <div className="text-center">
               <TimerDisplay resetAt={account.resetAt!} id={account.id} />
-              <p className="text-[10px] text-brand-accent font-black uppercase tracking-widest mt-2">Node Re-routing</p>
+              <p className="text-[10px] text-brand-accent font-black uppercase tracking-widest mt-2">Account Exhausted</p>
             </div>
           ) : (
             <div className="flex flex-col items-center gap-2">
               <div className="flex items-center gap-2">
                 <div className="w-2 h-2 rounded-full bg-brand-success" />
-                <span className="text-[11px] font-black text-brand-success uppercase tracking-widest">Live</span>
+                <span className="text-[11px] font-black text-brand-success uppercase tracking-widest">Active</span>
               </div>
-              <p className="text-[10px] text-brand-text-muted font-bold uppercase tracking-widest">Optimized &amp; Ready</p>
+              <p className="text-[10px] text-brand-text-muted font-bold uppercase tracking-widest">Ready to use</p>
             </div>
           )}
         </div>
@@ -270,7 +270,7 @@ export const AccountCard: React.FC<AccountCardProps> = ({ account }) => {
               onClick={() => markExhausted(account.id)}
               className="flex-1 py-3 text-[11px] font-black uppercase tracking-widest border border-brand-border bg-brand-surface text-brand-text hover:bg-brand-text hover:text-brand-surface hover:border-brand-text transition-colors rounded-lg"
             >
-              Mark Used
+              Mark as Exhausted
             </motion.button>
           ) : (
             <motion.button
@@ -278,7 +278,7 @@ export const AccountCard: React.FC<AccountCardProps> = ({ account }) => {
               onClick={() => resetAccount(account.id)}
               className="flex-1 py-3 text-[11px] font-black uppercase tracking-widest bg-brand-text text-brand-surface hover:bg-brand-accent transition-colors rounded-lg"
             >
-              Reset Node
+              Reset Account
             </motion.button>
           )}
         </div>

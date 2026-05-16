@@ -137,8 +137,8 @@ const Stats: React.FC = () => {
         className="p-5 border border-brand-border rounded-xl flex flex-col justify-center items-start bg-brand-surface hover:bg-brand-surface-elevated transition-colors"
       >
         <Zap size={24} strokeWidth={2} className="text-brand-accent mb-4" />
-        <h3 className="text-lg font-black text-brand-text tracking-tight uppercase">Neural Engine Active</h3>
-        <p className="text-[11px] text-brand-text-muted mt-2 font-bold uppercase tracking-widest leading-relaxed">Smart routing running.<br/>Nodes balanced.</p>
+        <h3 className="text-lg font-black text-brand-text tracking-tight uppercase">Smart Routing Active</h3>
+        <p className="text-[11px] text-brand-text-muted mt-2 font-bold uppercase tracking-widest leading-relaxed">Automatically selects<br/>the best account.</p>
       </motion.div>
     </motion.div>
   );
@@ -305,7 +305,7 @@ export const Dashboard: React.FC = () => {
         className="fixed bottom-6 right-6 sm:bottom-8 sm:right-8 flex items-center gap-2 bg-brand-text text-brand-surface px-5 py-3.5 hover:bg-brand-accent transition-colors z-50 rounded-xl shadow-lg group"
       >
         <Plus size={18} strokeWidth={3} className="group-hover:rotate-90 transition-transform duration-300" />
-        <span className="text-[11px] font-black uppercase tracking-widest hidden sm:inline">Deploy Node</span>
+        <span className="text-[11px] font-black uppercase tracking-widest hidden sm:inline">Add Account</span>
       </motion.button>
     </div>
   );

@@ -18,7 +18,7 @@ export const Header: React.FC = () => {
   const availableCount = accounts.length - exhaustedCount;
 
   // Typewriter placeholder logic
-  const placeholders = ["Search nodes... (/)", "Find 'Cluster-Alpha'", "Search tags (e.g. coding)", "Search by tier..."];
+  const placeholders = ["Search accounts... (/)", "Find 'Personal Gemini'", "Search by tags (e.g. coding)", "Search by tier..."];
   const [placeholderIndex, setPlaceholderIndex] = useState(0);
 
   useEffect(() => {
@@ -56,13 +56,13 @@ export const Header: React.FC = () => {
               transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
               className="w-2 h-2 rounded-full bg-brand-accent" 
             />
-            <p className="text-[11px] font-bold text-brand-text-muted uppercase tracking-[0.3em]">Network Control</p>
+            <p className="text-[11px] font-bold text-brand-text-muted uppercase tracking-[0.3em]">Account Control</p>
           </div>
           <h1 className="text-4xl lg:text-5xl font-black tracking-tighter text-brand-text leading-[1]">
-            Account<br />Nodes
+            AI<br />Accounts
           </h1>
           <p className="text-[14px] text-brand-text-soft mt-4 leading-relaxed max-w-md font-medium">
-            Operational dashboard for distributed AI quota management. Monitor health, priority, and cluster performance.
+            Manage your AI service accounts, track usage limits, and monitor account health.
           </p>
         </motion.div>
 
@@ -101,7 +101,7 @@ export const Header: React.FC = () => {
             onClick={handleSmartSelect}
             className="flex items-center justify-center gap-2 px-5 py-2.5 font-black text-[10px] tracking-widest uppercase bg-brand-text text-brand-surface hover:bg-brand-accent transition-colors rounded-lg shadow-sm whitespace-nowrap"
           >
-            <span>Smart Select</span>
+            <span>Auto-Select</span>
             <Zap size={14} fill="currentColor" strokeWidth={2} />
           </motion.button>
         </div>
@@ -167,7 +167,7 @@ export const Header: React.FC = () => {
         <StatCard label="Available" value={availableCount} color="text-brand-success" />
         <StatCard label="Cooldown" value={exhaustedCount} color="text-brand-accent" />
         <StatCard label="Healthy" value={accounts.filter(a => a.health > 80).length} color="text-brand-text" />
-        <StatCard label="Total Nodes" value={accounts.length} color="text-brand-text" />
+        <StatCard label="Total Accounts" value={accounts.length} color="text-brand-text" />
       </motion.div>
     </header>
   );

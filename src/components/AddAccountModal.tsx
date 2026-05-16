@@ -145,8 +145,8 @@ export const AddAccountModal: React.FC<AddAccountModalProps> = ({ isOpen, onClos
             <div className="p-8">
               <motion.div variants={itemVariants} className="flex justify-between items-center mb-10">
                 <div>
-                  <h2 className="text-2xl font-black text-brand-text tracking-tighter">Deploy Node</h2>
-                  <p className="text-[12px] text-brand-text-muted font-bold mt-1 uppercase tracking-widest">Cluster Configuration</p>
+                  <h2 className="text-2xl font-black text-brand-text tracking-tighter">Add Account</h2>
+                  <p className="text-[12px] text-brand-text-muted font-bold mt-1 uppercase tracking-widest">Account Details</p>
                 </div>
                 <motion.button 
                   whileHover={{ scale: 1.1, rotate: 90 }}
@@ -160,14 +160,14 @@ export const AddAccountModal: React.FC<AddAccountModalProps> = ({ isOpen, onClos
 
               <form onSubmit={handleSubmit} className="space-y-8">
                 <motion.div variants={itemVariants} className="space-y-3">
-                  <label className="text-[10px] font-bold text-brand-text-soft uppercase tracking-[0.2em]">Node Designation</label>
+                  <label className="text-[10px] font-bold text-brand-text-soft uppercase tracking-[0.2em]">Account Name</label>
                   <input
                     type="text"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     maxLength={30}
                     className="w-full bg-brand-surface border border-brand-border focus:border-brand-accent focus:outline-none transition-colors text-[15px] font-bold py-3.5 px-4 rounded-xl shadow-sm"
-                    placeholder="e.g. Neural-Alpha-01"
+                    placeholder="e.g. Personal Gemini"
                     autoFocus
                   />
                 </motion.div>
@@ -318,7 +318,7 @@ export const AddAccountModal: React.FC<AddAccountModalProps> = ({ isOpen, onClos
                 </motion.div>
 
                 <motion.div variants={itemVariants} className="space-y-3">
-                  <label className="text-[10px] font-bold text-brand-text-soft uppercase tracking-[0.2em]">Neural Tags</label>
+                  <label className="text-[10px] font-bold text-brand-text-soft uppercase tracking-[0.2em]">Tags / Categories</label>
                   <div className="flex flex-wrap gap-2.5">
                     {availableTags.map(tag => (
                       <motion.button
@@ -440,7 +440,7 @@ export const AddAccountModal: React.FC<AddAccountModalProps> = ({ isOpen, onClos
                     disabled={!name.trim()}
                     className="w-full flex items-center justify-center gap-2 py-4 text-[13px] font-black uppercase tracking-widest rounded-xl shadow-md bg-brand-accent text-brand-accent-fg hover:bg-brand-text transition-all hover:shadow-lg hover:-translate-y-0.5 disabled:opacity-50 disabled:bg-brand-surface-elevated disabled:text-brand-text-muted disabled:transform-none disabled:shadow-none"
                   >
-                    Deploy to Cluster
+                    Add Account
                   </motion.button>
                 </motion.div>
               </form>

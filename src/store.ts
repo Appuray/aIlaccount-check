@@ -75,7 +75,7 @@ export const useStore = create<AppState>()(
               expiredIds.has(acc.id) ? { ...acc, resetAt: null, exhaustedAt: null } : acc
             );
             dbService.bulkUpdate(expiredAccounts, { resetAt: null, exhaustedAt: null });
-            get().showToast(`${expiredAccounts.length} nodes restored to network`);
+            get().showToast(`${expiredAccounts.length} accounts restored`);
           }
           if (refreshingAccounts.length > 0) {
             const refreshingIds = new Set(refreshingAccounts.map(a => a.id));
@@ -84,7 +84,7 @@ export const useStore = create<AppState>()(
             );
             dbService.bulkUpdate(refreshingAccounts, { lastRefreshedAt: now, health: 100 });
             refreshingAccounts.forEach(a => {
-              get().showToast(`CREDIT_REFRESH: ${a.name} is now full power!`);
+              get().showToast(`Quota Refreshed: ${a.name} is ready`);
             });
           }
           set({ accounts: updatedAccounts });
@@ -147,7 +147,7 @@ export const useStore = create<AppState>()(
         });
 
         await dbService.updateAccount(id, updates);
-        get().showToast(`CREDITS_RESTORED: ${id.substring(0, 8)}...`);
+        get().showToast(`Quota Restored: ${id.substring(0, 8)}...`);
       },
 
       setRefreshCycle: async (id, days) => {
@@ -190,7 +190,7 @@ export const useStore = create<AppState>()(
         } else {
           await dbService.addAccount(newAccount, 'local-user');
         }
-        get().showToast(`${name} deployed to cluster`);
+        get().showToast(`${name} added successfully`);
       },
 
       updateAccountNotes: async (id, notes) => {
@@ -247,7 +247,7 @@ export const useStore = create<AppState>()(
 
         const { accounts } = get();
         await dbService.bulkUpdate(accounts, updates);
-        get().showToast('Global node reset complete');
+        get().showToast('All accounts reset');
       },
 
       clearHistory: () => {
