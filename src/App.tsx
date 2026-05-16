@@ -31,6 +31,11 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 
 export default function App() {
   const theme = useStore((state) => state.theme);
+  const initialize = useStore((state) => state.initialize);
+
+  useEffect(() => {
+    initialize();
+  }, [initialize]);
 
   useEffect(() => {
     // Theme sync
