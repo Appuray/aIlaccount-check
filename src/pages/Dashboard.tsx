@@ -213,7 +213,7 @@ export const Dashboard: React.FC = () => {
 
         <main className="flex-1 w-full mx-auto px-4 py-4 sm:px-6 sm:py-6 lg:px-16 lg:py-8 xl:px-24">
           <div className="animate-slide-up max-w-[1400px]">
-            <Header />
+            <Header onAddAccount={() => setIsModalOpen(true)} />
             
             <div className="mt-10">
               <AnimatePresence mode="wait">
@@ -297,16 +297,6 @@ export const Dashboard: React.FC = () => {
       <AddAccountModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
       <CommandPalette />
       <Toast />
-      
-      <motion.button
-        onClick={() => setIsModalOpen(true)}
-        whileHover={{ scale: 1.05, y: -2 }}
-        whileTap={{ scale: 0.95 }}
-        className="fixed bottom-6 right-6 sm:bottom-8 sm:right-8 flex items-center gap-2 bg-brand-text text-brand-surface px-5 py-3.5 hover:bg-brand-accent transition-colors z-50 rounded-xl shadow-lg group"
-      >
-        <Plus size={18} strokeWidth={3} className="group-hover:rotate-90 transition-transform duration-300" />
-        <span className="text-[11px] font-black uppercase tracking-widest hidden sm:inline">Add Account</span>
-      </motion.button>
     </div>
   );
 }

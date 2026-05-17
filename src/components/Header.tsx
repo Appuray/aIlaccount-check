@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useStore } from '../store';
 import { motion, AnimatePresence } from 'motion/react';
-import { Zap, Search } from 'lucide-react';
+import { Zap, Search, Plus } from 'lucide-react';
 
-export const Header: React.FC = () => {
+interface HeaderProps {
+  onAddAccount: () => void;
+}
+
+export const Header: React.FC<HeaderProps> = ({ onAddAccount }) => {
   const accounts = useStore((state) => state.accounts);
   const getBestAccount = useStore((state) => state.getBestAccount);
   const showToast = useStore((state) => state.showToast);
@@ -96,14 +100,24 @@ export const Header: React.FC = () => {
               )}
             </div>
           </div>
-          <motion.button 
-            whileTap={{ scale: 0.97 }}
-            onClick={handleSmartSelect}
-            className="flex items-center justify-center gap-2 px-5 py-2.5 font-black text-[10px] tracking-widest uppercase bg-brand-text text-brand-surface hover:bg-brand-accent transition-colors rounded-lg shadow-sm whitespace-nowrap"
-          >
-            <span>Auto-Select</span>
-            <Zap size={14} fill="currentColor" strokeWidth={2} />
-          </motion.button>
+          <div className="flex items-center gap-3 w-full sm:w-auto">
+            <motion.button 
+              whileTap={{ scale: 0.97 }}
+              onClick={handleSmartSelect}
+              className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-5 py-2.5 font-black text-[10px] tracking-widest uppercase bg-brand-surface border border-brand-border text-brand-text hover:bg-brand-surface-elevated transition-colors rounded-lg shadow-sm whitespace-nowrap"
+            >
+              <span>Auto-Select</span>
+              <Zap size={14} fill="currentColor" strokeWidth={2} />
+            </motion.button>
+            <motion.button 
+              whileTap={{ scale: 0.97 }}
+              onClick={onAddAccount}
+              className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-5 py-2.5 font-black text-[10px] tracking-widest uppercase bg-brand-text text-brand-surface hover:bg-brand-accent transition-colors rounded-lg shadow-sm whitespace-nowrap group"
+            >
+              <Plus size={14} strokeWidth={3} className="group-hover:rotate-90 transition-transform duration-300" />
+              <span>Add Node</span>
+            </motion.button>
+          </div>
         </div>
       </div>
 
