@@ -171,7 +171,7 @@ export const AccountCard: React.FC<AccountCardProps> = ({ accounts }) => {
           {accounts.map((account, index) => {
             const isExhausted = account.resetAt !== null;
             const healthColor = account.health > 80 ? '#30A46C' : account.health > 50 ? '#E79D13' : '#E5484D';
-            const { refreshDate, relativeStr } = getRefreshInfo(account);
+            const { refreshDate } = getRefreshInfo(account);
 
             return (
               <div key={account.id} className={`pt-4 ${index > 0 ? "border-t border-brand-border/50" : "border-t border-brand-border"}`}>

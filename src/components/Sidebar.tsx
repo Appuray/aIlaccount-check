@@ -121,7 +121,7 @@ export const Sidebar: React.FC<{ isOpen: boolean; setIsOpen: (val: boolean) => v
         transition={{ type: 'spring', damping: 25, stiffness: 200, mass: 0.8 }}
         className="fixed inset-y-0 left-0 w-[300px] z-[70] lg:hidden bg-brand-surface border-r border-brand-border"
       >
-        <div className="flex flex-col h-full py-12">
+        <div className="flex flex-col h-full py-12 overflow-y-auto">
           <NavContent />
         </div>
       </motion.aside>
