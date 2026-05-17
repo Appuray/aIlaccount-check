@@ -93,7 +93,7 @@ export const AccountCard: React.FC<AccountCardProps> = ({ accounts }) => {
             </div>
             <div className="flex flex-col">
               <div className="flex items-center gap-2">
-                <h3 className="text-[16px] font-black text-brand-text truncate max-w-[120px] tracking-tight leading-none">{baseAccount.name}</h3>
+                <h3 className="text-[16px] font-black text-brand-text truncate max-w-[140px] sm:max-w-[200px] tracking-tight leading-none">{baseAccount.name}</h3>
                 <span className={`text-[9px] px-2 py-0.5 font-black uppercase tracking-widest rounded-md leading-none ${
                   baseAccount.tier === 'pro' ? 'bg-brand-text text-brand-surface' : 'border border-brand-border text-brand-text-muted'
                 }`}>
@@ -216,7 +216,7 @@ export const AccountCard: React.FC<AccountCardProps> = ({ accounts }) => {
                 </div>
 
                 {/* Info Strip */}
-                <div className="flex items-center justify-between mb-3">
+                <div className="flex flex-wrap sm:flex-nowrap items-center justify-between gap-2 mb-3">
                   <span className={`text-[9px] font-black uppercase tracking-widest ${isExhausted ? 'text-brand-accent' : 'text-brand-text-muted'}`}>
                     {relativeStr}
                   </span>
