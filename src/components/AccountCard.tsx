@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { MoreHorizontal, RefreshCw, Trash2, Mail } from 'lucide-react';
+import { MoreHorizontal, Clock, RefreshCw, Trash2, Mail } from 'lucide-react';
 import { Account } from '../types';
 import { useStore } from '../store';
 import { TimerDisplay } from './TimerDisplay';
@@ -197,34 +197,31 @@ export const AccountCard: React.FC<AccountCardProps> = ({ accounts }) => {
                   )}
                 </div>
 
-                {/* Progress Bar Area */}
-                <div className="mb-3">
-                  <div className="flex justify-between items-center mb-1.5">
-                    <div className="flex items-center gap-2 w-full mr-4">
-                      <div className="flex-1 h-1 bg-brand-border rounded-full overflow-hidden">
-                        <motion.div 
-                          className="h-full rounded-full"
-                          style={{ backgroundColor: healthColor }}
-                          initial={{ width: 0 }}
-                          animate={{ width: `${isExhausted ? 0 : account.health}%` }}
-                          transition={{ duration: 1, ease: "easeOut" }}
-                        />
-                      </div>
-                      <span className="text-[9px] font-black text-brand-text font-mono w-6 text-right">{isExhausted ? 0 : account.health}%</span>
+                {/* Info & Progress Area */}
+                <div className="mb-4">
+                  <div className="flex justify-between items-end mb-2">
+                    <span className="text-[9px] font-black uppercase tracking-widest text-brand-text-muted">
+                      Health
+                    </span>
+                    <div className="flex items-center gap-1.5 text-brand-text-muted">
+                      <Clock size={10} strokeWidth={2.5} />
+                      <span className="text-[9px] font-mono font-bold text-brand-text tracking-widest uppercase">
+                        <LiveCountdown targetDate={refreshDate ? refreshDate.getTime() : null} />
+                      </span>
                     </div>
                   </div>
-                </div>
-
-                {/* Info Strip */}
-                <div className="flex flex-wrap sm:flex-nowrap items-center justify-between gap-2 mb-3">
-                  <span className={`text-[9px] font-black uppercase tracking-widest ${isExhausted ? 'text-brand-accent' : 'text-brand-text-muted'}`}>
-                    {relativeStr}
-                  </span>
-                  <div className="flex items-center gap-1.5 text-brand-text-muted bg-brand-surface-elevated px-2.5 py-1 rounded-md border border-brand-border/50">
-                    <RefreshCw size={10} strokeWidth={2.5} />
-                    <span className="text-[10px] font-mono font-bold text-brand-text">
-                      <LiveCountdown targetDate={refreshDate ? refreshDate.getTime() : null} />
-                    </span>
+                  
+                  <div className="flex items-center gap-3 w-full">
+                    <div className="flex-1 h-1.5 bg-brand-border rounded-full overflow-hidden">
+                      <motion.div 
+                        className="h-full rounded-full"
+                        style={{ backgroundColor: healthColor }}
+                        initial={{ width: 0 }}
+                        animate={{ width: `${isExhausted ? 0 : account.health}%` }}
+                        transition={{ duration: 1, ease: "easeOut" }}
+                      />
+                    </div>
+                    <span className="text-[10px] font-black text-brand-text font-mono w-7 text-right">{isExhausted ? 0 : account.health}%</span>
                   </div>
                 </div>
 
