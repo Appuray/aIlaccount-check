@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Plus, Menu, Trash2, RefreshCw, Zap } from 'lucide-react';
+import { Menu, Trash2, RefreshCw, Zap } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useNavigate } from 'react-router-dom';
 import { Header } from '../components/Header';
