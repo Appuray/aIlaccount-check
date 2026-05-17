@@ -229,7 +229,7 @@ export const Dashboard: React.FC = () => {
                     <Stats />
                     <AccountGrid />
                     
-                    <div className="mt-24 pt-8 border-t border-brand-border flex items-center justify-between">
+                    <div className="mt-24 pt-8 pb-24 sm:pb-32 border-t border-brand-border flex items-center justify-between">
                       <p className="text-[11px] font-bold text-brand-text-muted uppercase tracking-widest">QuotaCheck Terminal v5.0</p>
                       <div className="flex items-center gap-4">
                         <kbd className="hidden sm:inline-flex items-center gap-2 px-3 py-1.5 border border-brand-border text-[10px] font-black text-brand-text-muted uppercase">
